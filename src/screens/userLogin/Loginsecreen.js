@@ -5,14 +5,14 @@ import {
   TouchableOpacity,
   Image,
   View,
-  StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import {AuthContext} from '../context/AuthContext';
+import styles from './styles';
+import {AuthContext} from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 // You can use your custom background image
-import BackgroundImage from '../assets/IMG_20231018_154004.jpg';
+import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
 
 // const login= async(email, password)=>{
 // try {
@@ -54,11 +54,8 @@ const LoginScreen = ({navigation}) => {
   // });
 
   // const [error, setError] = useState('');
-
   // const { email, password } = userInfo;
-  const image = {
-    uri: 'https://img.freepik.com/free-vector/abstract-shiny-grey-technology-background_1035-12620.jpg?w=740&t=st=1667419101~exp=1667419701~hmac=3bbdef34e890179fbe282cbbf64169f4f1d670dcc98086340713541f09d6ac23',
-  };
+
   // const handleOnChangeText = (value, fieldName) => {
   //   setUserInfo({ ...userInfo, [fieldName]: value });
   // };
@@ -96,13 +93,10 @@ const LoginScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={isLoading} />
-      <Image
-        style={{flex: 1, width: null, marginTop: -500}}
-        source={BackgroundImage}
-      />
+      <Image style={styles.image} source={BackgroundImage} />
       <View style={styles.bottomView}>
-        <View style={{marginBottom: 35}}>
-          <Text style={styles.loginText}>Phone Verification</Text>
+        <View style={{marginBottom: 40}}>
+          <Text style={styles.loginText}>User Verification</Text>
           <Text style={styles.loginText1}>Enter the register User Id </Text>
         </View>
         <View style={styles.wrapper}>
@@ -133,7 +127,6 @@ const LoginScreen = ({navigation}) => {
               textContentType="password"
             />
           </View>
-
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
@@ -141,105 +134,10 @@ const LoginScreen = ({navigation}) => {
             }}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
-
-          {/* <View style={{flexDirection: 'row', marginTop: 20}}>
-              <Text>Don't have an account? </Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.link}>Register</Text>
-              </TouchableOpacity>
-            </View> */}
         </View>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wrapper: {
-    width: '80%',
-  },
-  avatar: {
-    marginBottom: 37,
-    backgroundColor: 'white',
-  },
-  input: {
-    // marginBottom: 12,
-    // padding: 5,
-    // borderWidth: 1,
-    // borderColor: 'black',
-    // borderRadius: 10,
-    // paddingHorizontal: 10,
-    height: 40,
-    flex: 1,
-    fontFamily: 'SourceSansProRegular',
-    fontSize: 16,
-    color: '#333',
-  },
-  link: {
-    color: 'blue',
-  },
-  bottomView: {
-    // backgroundColor: '#fff',
-    opacity: 0.95,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingTop: 10,
-    paddingBottom: 40,
-    // paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  loginText: {
-    // fontFamily: 'SourceSansProBold',
-    fontSize: 34,
-    marginTop: 12,
-    marginBottom: 4,
-    color: 'white',
-    textAlign: 'center',
-    fontWieght: 'bold',
-  },
-  loginText1: {
-    // fontFamily: 'SourceSansProBold',
-    fontSize: 24,
-    marginTop: 12,
-    marginBottom: 4,
-    color: 'white',
-    textAlign: 'center',
-  },
-  inputView: {
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#f1f3f6',
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  loginButton: {
-    backgroundColor: '#454545',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  loginButtonText: {
-    color: '#fff',
-    fontFamily: 'SourceSansProBold',
-    alignSelf: 'center',
-    fontSize: 18,
-  },
-});
 
 export default LoginScreen;
