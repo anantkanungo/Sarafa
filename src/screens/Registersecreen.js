@@ -10,20 +10,20 @@ import {
 } from 'react-native';
 import client from '../config';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {AuthContext} from '../context/AuthContext.js';
+// import {AuthContext} from '../context/AuthContext.js';
 const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [Confpassword, setConfPassword] = useState('');
-  const {isLoading, register, error} = useContext(AuthContext);
+  // const {isLoading, register, error} = useContext(AuthContext);
   const image = {
     uri: 'https://img.freepik.com/free-vector/abstract-shiny-grey-technology-background_1035-12620.jpg?w=740&t=st=1667419101~exp=1667419701~hmac=3bbdef34e890179fbe282cbbf64169f4f1d670dcc98086340713541f09d6ac23',
   };
 
   return (
     <View style={styles.container}>
-      <Spinner visible={isLoading} />
+      {/* <Spinner visible={isLoading} /> */}
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Text style={styles.title}>Sing Up</Text>
         <View style={styles.wrapper}>
@@ -59,9 +59,9 @@ const RegisterScreen = ({navigation}) => {
 
           <Button
             title="Register"
-            onPress={() => {
-              register(name, email, password, Confpassword, navigation);
-            }}
+            // onPress={() => {
+            //   register(name, email, password, Confpassword, navigation);
+            // }}
           />
 
           <View style={{flexDirection: 'row', marginTop: 20}}>

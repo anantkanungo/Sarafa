@@ -1,22 +1,22 @@
-import React from 'react';
+// https://github.com/oblador/react-native-vector-icons
+import React, {useEffect} from 'react';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/Store';
+import Root from './src/navigation/Root';
 import {StatusBar} from 'react-native';
-import Navigation from './src/components/Navigation';
-import {AuthProvider} from './src/context/AuthContext';
+// https://github.com/crazycodeboy/react-native-splash-screen
+// import SplashScreen from 'react-native-splash-screen';
+
 const App = () => {
+  useEffect(() => {
+    // SplashScreen.hide();
+  }, []);
+
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <StatusBar backgroundColor="#454545" />
-      <Navigation />
-    </AuthProvider>
+      <Root />
+    </Provider>
   );
 };
-
 export default App;
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
