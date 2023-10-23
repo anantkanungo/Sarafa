@@ -9,13 +9,13 @@ export const AuthProvider = ({children}) => {
   const [splashLoading, setSplashLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const register = async (name, email, password, Confpassword, navigation) => {
+  const register = async (name, userId, password, Confpassword, navigation) => {
     try {
       const {data} = await client.post(
         '/create-user',
         {
           fullname: name,
-          email,
+          userId,
           password,
           confirmPassword: Confpassword,
         },
@@ -46,13 +46,13 @@ export const AuthProvider = ({children}) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (userId, password) => {
     setIsLoading(true);
     try {
       const {data} = await client.post(
-        '/sign-in',
+        '/adminlogin',
         {
-          email,
+          userId,
           password,
         },
         {

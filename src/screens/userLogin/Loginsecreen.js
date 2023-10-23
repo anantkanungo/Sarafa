@@ -14,12 +14,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
 // You can use your custom background image
 import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
 
-// const login= async(email, password)=>{
+// const login= async(userId, password)=>{
 // try {
 //   const {data} =  await client.post(
 //     '/sign-in',
 //     {
-//       email,
+//       userId,
 //       password,
 //     },
 //     {
@@ -44,17 +44,17 @@ import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
 // }
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const {isLoading, login, error} = useContext(AuthContext);
   //   const { setIsLoggedIn, setProfile } = useLogin();
   // const [userInfo, setUserInfo] = useState({
-  //   email: '',
+  //   userId: '',
   //   password: '',
   // });
 
   // const [error, setError] = useState('');
-  // const { email, password } = userInfo;
+  // const { userId, password } = userInfo;
 
   // const handleOnChangeText = (value, fieldName) => {
   //   setUserInfo({ ...userInfo, [fieldName]: value });
@@ -64,7 +64,7 @@ const LoginScreen = ({navigation}) => {
   //   if (!isValidObjField(userInfo))
   //     return updateError('Required all fields!', setError);
 
-  //   if (!isValidEmail(email)) return updateError('Invalid email!', setError);
+  //   if (!isValidUserId(userId)) return updateError('Invalid userId!', setError);
 
   //   if (!password.trim() || password.length < 8)
   //     return updateError('Password is too short!', setError);
@@ -78,7 +78,7 @@ const LoginScreen = ({navigation}) => {
   //       const res = await client.post('/sign-in', { ...userInfo });
 
   //       if (res.data.success) {
-  //         setUserInfo({ email: '', password: '' });
+  //         setUserInfo({ userId: '', password: '' });
   //         setProfile(res.data.user);
   //         setIsLoggedIn(true);
   //       }
@@ -108,8 +108,8 @@ const LoginScreen = ({navigation}) => {
           <View style={styles.inputView}>
             <TextInput
               style={styles.input}
-              value={email}
-              onChangeText={email => setEmail(email)}
+              value={userId}
+              onChangeText={userId => setUserId(userId)}
               label="User"
               placeholder="User Id"
               autoCapitalize="none"
@@ -130,7 +130,7 @@ const LoginScreen = ({navigation}) => {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
-              login(email, password);
+              login(userId, password);
             }}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
