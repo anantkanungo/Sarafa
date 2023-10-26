@@ -11,7 +11,7 @@ const Root = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="HomeScreen"
         screenOptions={{
           headerShown: false,
         }}>

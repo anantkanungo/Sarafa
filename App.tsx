@@ -1,4 +1,3 @@
-// https://github.com/oblador/react-native-vector-icons
 import React, {useEffect} from 'react';
 import Root from './src/navigation/Root';
 import {StatusBar} from 'react-native';
