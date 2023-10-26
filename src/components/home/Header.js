@@ -11,7 +11,7 @@ export default function Header() {
         resizeMode="cover"
         source={BackgroundImage}>
         <Text style={{fontSize: 32, color: 'white', fontWeight: 'bold'}}>Hello, UserName</Text>
-        <Text style={{fontSize: 32, color: 'white', fontWeight: 'bold'}}>John Jewelers</Text>
+        <Text style={{fontSize: 32, color: 'white', fontWeight: 'bold'}}>Jewelers name</Text>
       </ImageBackground>
     </View>
   );
@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 30,
     justifyContent: 'space-between',
-    paddingBottom: 50,
+    paddingBottom: 40,
   },
 });
