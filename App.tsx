@@ -1,3 +1,4 @@
+// https://www.npmjs.com/package/react-native-screenshot-prevent
 import React, {useEffect} from 'react';
 import Root from './src/navigation/Root';
 import {StatusBar} from 'react-native';
