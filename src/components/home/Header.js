@@ -12,7 +12,7 @@ export default function Header() {
         source={BackgroundImage}>
         <Text
           style={{
-            fontSize: 32,
+            fontSize: 26,
             color: 'white',
             fontWeight: 'bold',
             marginBottom: 10,

@@ -5,6 +5,8 @@ import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 // https://github.com/crazycodeboy/react-native-splash-screen
 // import SplashScreen from 'react-native-splash-screen';
+import {Provider} from 'react-redux';
+import gstore from './src/reduxThunk/Store';
 
 const App = () => {
   useEffect(() => {
@@ -12,10 +14,12 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor="#454545" />
-      <Root />
-    </NavigationContainer>
+    <Provider store={gstore}>
+      <NavigationContainer>
+        <StatusBar backgroundColor="#454545" />
+        <Root />
+      </NavigationContainer>
+    </Provider>
   );
 };
 export default App;

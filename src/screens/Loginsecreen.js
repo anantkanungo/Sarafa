@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   TextInput,
@@ -7,14 +7,22 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-import styles from './styles';
-
+import styles from './loginStyles';
+import {connect} from 'react-redux';
+import {customerLogin} from '../reduxThunk/Action';
 // You can use your custom background image
-import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
+import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
-const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
+const LoginScreen = ({getCustomerDetails, props, navigation}) => {
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleAddDetail = () => {
+    getCustomerDetails(userId, password);
+    setUserId('');
+    setPassword('');
+    navigation.navigate('BottomTab'); // Navigate to the home screen
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,8 +36,7 @@ const LoginScreen = ({navigation}) => {
           <View style={styles.inputView}>
             <TextInput
               style={styles.input}
-              value={email}
-              onChangeText={email => setEmail(email)}
+              onChangeText={e => setUserId(e)}
               label="User"
               placeholder="User Id"
               autoCapitalize="none"
@@ -38,8 +45,7 @@ const LoginScreen = ({navigation}) => {
           <View style={styles.inputView}>
             <TextInput
               style={styles.input}
-              value={password}
-              onChangeText={password => setPassword(password)}
+              onChangeText={e => setPassword(e)}
               label="Password"
               secureTextEntry={true}
               placeholder="Password"
@@ -49,7 +55,7 @@ const LoginScreen = ({navigation}) => {
           </View>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => navigation.navigate('HomeScreen')}>
+            onPress={handleAddDetail}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -58,4 +64,19 @@ const LoginScreen = ({navigation}) => {
   );
 };
 
-export default LoginScreen;
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getCustomerDetails: (userId, password) =>
+      dispatch(customerLogin(userId, password)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
