@@ -7,10 +7,10 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-import styles from './styles';
+import styles from './loginStyles';
 
 // You can use your custom background image
-import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
+import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -49,7 +49,7 @@ const LoginScreen = ({navigation}) => {
           </View>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => navigation.navigate('HomeScreen')}>
+            onPress={() => navigation.navigate('BottomTab')}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
         </View>
