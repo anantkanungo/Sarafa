@@ -11,7 +11,7 @@ const Root = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="BottomTab"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
         }}>

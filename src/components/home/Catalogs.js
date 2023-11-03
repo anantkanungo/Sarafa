@@ -41,7 +41,7 @@ const Catalogs = () => {
       <FlatList
         data={DATA}
         renderItem={({item}) => (
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <TouchableOpacity style={styles.item}>
               <Image
                 style={styles.tinyLogo}
