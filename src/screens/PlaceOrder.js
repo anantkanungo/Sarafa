@@ -22,10 +22,15 @@ const PlaceOrder = ({navigation}) => {
   const [desc, onChangeDecs] = useState('');
   const [width, onChangeWidth] = useState('');
   const [size, onChangeSize] = useState('');
+<<<<<<< HEAD
   const [quantity, onChangeQuantity] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isListening, setIsListening] = useState(false);
+=======
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
 
   const selectDoc = async () => {
     try {
@@ -41,7 +46,10 @@ const PlaceOrder = ({navigation}) => {
     }
   };
   return (
+<<<<<<< HEAD
     // main container
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
     <View style={styles.container}>
       <View style={styles.header_container}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -53,19 +61,29 @@ const PlaceOrder = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
+<<<<<<< HEAD
 
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
       <ScrollView>
         <View style={styles.contain}>
           <TouchableOpacity onPress={selectDoc}>
             <Image style={styles.image} source={UploadImage} />
           </TouchableOpacity>
         </View>
+<<<<<<< HEAD
 
         <View
           style={{
             borderWidth: 1,
             marginVertical: 15,
             borderRadius: 5,
+=======
+        <View
+          style={{
+            borderWidth: 1,
+            margin: 10,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
           }}>
           <Picker
             selectedValue={selectedJewelry}
@@ -79,10 +97,17 @@ const PlaceOrder = ({navigation}) => {
             <Picker.Item label="Pendal" value="pendal" />
           </Picker>
         </View>
+<<<<<<< HEAD
 
         <View
           style={{
             flexDirection: 'row',
+=======
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
           }}>
           <TextInput
             style={styles.input}
@@ -91,6 +116,7 @@ const PlaceOrder = ({navigation}) => {
             value={desc}
           />
           <View style={{justifyContent: 'space-evenly'}}>
+<<<<<<< HEAD
             <TouchableOpacity
               onPress={() => setIsListening(!isListening)}
               style={styles.voiceButton}>
@@ -155,11 +181,19 @@ const PlaceOrder = ({navigation}) => {
                 style={styles.tinyLogo}
                 source={{
                   uri: 'https://cdn-icons-png.flaticon.com/128/149/149705.png',
+=======
+            <TouchableOpacity style={{borderWidth: 1, padding: 3}}>
+              <Image
+                style={styles.tinyLogo}
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/7175/7175253.png',
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
                 }}
               />
             </TouchableOpacity>
           </View>
         </View>
+<<<<<<< HEAD
 
         <View
           style={{
@@ -168,6 +202,35 @@ const PlaceOrder = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
+=======
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            margin: 10,
+            borderWidth: 1,
+          }}>
+          <Text style={{fontSize: 22, marginLeft: 10, color: '#000000'}}>टंच :</Text>
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 5,
+              width: '40%',
+            }}>
+            <Picker
+              selectedValue={selectedTunch}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedTunch(itemValue)
+              }>
+              <Picker.Item label="50" value="5" />
+              <Picker.Item label="75" value="7" />
+              <Picker.Item label="90" value="9" />
+            </Picker>
+          </View>
+          <Text style={{fontSize: 22, color: '#000000'}}>%</Text>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
           <Text style={{fontSize: 22, color: '#000000'}}>Weigth :</Text>
           <TextInput
             style={styles.input1}
@@ -175,6 +238,10 @@ const PlaceOrder = ({navigation}) => {
             onChangeText={onChangeWidth}
             value={width}
           />
+<<<<<<< HEAD
+=======
+
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
           <Text style={{fontSize: 22, color: '#000000'}}>Size :</Text>
           <TextInput
             style={styles.input1}
@@ -187,6 +254,7 @@ const PlaceOrder = ({navigation}) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
+<<<<<<< HEAD
             justifyContent: 'center',
           }}>
           <Text style={{fontSize: 22, color: '#000000'}}>Quantity :</Text>
@@ -210,13 +278,25 @@ const PlaceOrder = ({navigation}) => {
           <Switch
             trackColor={{false: '#767577', true: '#767577'}}
             thumbColor={isEnabled ? '#000000' : '#f4f3f4'}
+=======
+            margin: 10,
+            justifyContent: 'space-around',
+          }}>
+          <Text style={{fontSize: 22, color: '#000000'}}>Urgent Delivery :</Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
             style={{transform: [{scaleX: 1.2}, {scaleY: 1.2}]}}
           />
         </View>
+<<<<<<< HEAD
 
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
             <Text style={styles.loginButtonText}>Submit</Text>
@@ -232,27 +312,43 @@ export default PlaceOrder;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     marginHorizontal: 10,
   },
   image: {
     height: 150,
     width: 150,
+=======
+  },
+  image: {
+    height: 200,
+    width: 200,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
   },
   header_container: {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
+<<<<<<< HEAD
+=======
+    marginHorizontal: 10,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
   },
   contain: {
     alignItems: 'center',
     margin: 10,
   },
   tinyLogo: {
+<<<<<<< HEAD
     width: 40,
+=======
+    width: 30,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
     height: 40,
     resizeMode: 'contain',
   },
   input: {
+<<<<<<< HEAD
     flex: 1,
     height: 50,
     borderWidth: 1,
@@ -268,6 +364,21 @@ const styles = StyleSheet.create({
     width: 70,
     fontSize: 18,
     borderRadius: 5,
+=======
+    height: 50,
+    // margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: 285,
+    fontSize: 22,
+  },
+  input1: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: 70,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
   },
   loginButton: {
     backgroundColor: '#454545',
@@ -282,6 +393,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+<<<<<<< HEAD
   voiceButton: {
     marginLeft: 10,
     fontSize: 24,
@@ -295,4 +407,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     color: '#000000',
   },
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
 });

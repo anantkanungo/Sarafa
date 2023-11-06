@@ -8,8 +8,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import styles from './loginStyles';
+<<<<<<< HEAD
 import {connect} from 'react-redux';
 import {customerLogin} from '../reduxThunk/Action';
+=======
+
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
 // You can use your custom background image
 import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
@@ -55,7 +59,11 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
           </View>
           <TouchableOpacity
             style={styles.loginButton}
+<<<<<<< HEAD
             onPress={handleAddDetail}>
+=======
+            onPress={() => navigation.navigate('BottomTab')}>
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
         </View>

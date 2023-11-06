@@ -33,7 +33,10 @@
     "react-native-vector-icons": "^10.0.0",
     "react-redux": "^8.1.3",
     "redux": "^4.2.1",
+<<<<<<< HEAD
     "redux-logger": "^3.0.6",
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
     "redux-thunk": "^2.4.2",
     "rn-fetch-blob": "^0.12.0"
   },

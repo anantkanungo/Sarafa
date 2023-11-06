@@ -36,17 +36,25 @@ const Catalogs = () => {
   return (
     <View style={styles.container}>
       <View style={{alignItems: 'center'}}>
+<<<<<<< HEAD
         <Text style={styles.headerText}>Catalog</Text>
+=======
+        <Text style={styles.headerText}>Catalog's</Text>
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
       </View>
       <FlatList
         data={DATA}
         renderItem={({item}) => (
+<<<<<<< HEAD
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignContent: 'center',
             }}>
+=======
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
             <TouchableOpacity style={styles.item}>
               <Image
                 style={styles.tinyLogo}
@@ -86,6 +94,7 @@ export default Catalogs;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     paddingTop: 10,
   },
   headerText: {
@@ -99,8 +108,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
+=======
+    // paddingTop: 50,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+  },
+  headerText: {
+    fontSize: 36,
+    color: '#000000',
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 20,
   },
   tinyLogo: {
+<<<<<<< HEAD
     width: 130,
     height: 130,
     // resizeMode: 'contain',
@@ -109,6 +133,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#8c8274',
     padding: 4,
     alignItems: 'center',
+=======
+    width: 100,
+    height: 140,
+    // resizeMode: 'contain',
+  },
+  item: {
+    backgroundColor: '#abaaa8',
+    padding: 20,
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
     marginVertical: 8,
     marginHorizontal: 18,
     width: 140,
@@ -116,6 +149,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     textAlign: 'center',
+<<<<<<< HEAD
     color: '#000000',
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
   },
 });
