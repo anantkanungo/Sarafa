@@ -11,6 +11,9 @@ router.post('/adminlogin', Login);
 router.post('/adduser', CreateUser);
 // POST Request || user login 
 router.post('/userlogin', UserLogin);
-
+// POST Request || add product
+router.post('/placeorder', PlaceOrder)
+// GET Requst || get all products in admin panel
+router.get('/allorders', GetAllOrder)
 
 module.exports = router;
