@@ -22,10 +22,21 @@ const PlaceOrder = ({navigation}) => {
   const [desc, onChangeDecs] = useState('');
   const [width, onChangeWidth] = useState('');
   const [size, onChangeSize] = useState('');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
   const [quantity, onChangeQuantity] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isListening, setIsListening] = useState(false);
+<<<<<<< HEAD
+=======
+=======
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
 
   const selectDoc = async () => {
     try {
@@ -41,7 +52,14 @@ const PlaceOrder = ({navigation}) => {
     }
   };
   return (
+<<<<<<< HEAD
     // main container
+=======
+<<<<<<< HEAD
+    // main container
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
     <View style={styles.container}>
       <View style={styles.header_container}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -53,22 +71,42 @@ const PlaceOrder = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
       <ScrollView>
         <View style={styles.contain}>
           <TouchableOpacity onPress={selectDoc}>
             <Image style={styles.image} source={UploadImage} />
           </TouchableOpacity>
         </View>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
         <View
           style={{
             borderWidth: 1,
             marginVertical: 15,
             borderRadius: 5,
+<<<<<<< HEAD
           }}>
+=======
+=======
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
         <View
           style={{
             borderWidth: 1,
             margin: 10,
+<<<<<<< HEAD
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
           }}>
           <Picker
             selectedValue={selectedJewelry}
@@ -82,13 +120,26 @@ const PlaceOrder = ({navigation}) => {
             <Picker.Item label="Pendal" value="pendal" />
           </Picker>
         </View>
+<<<<<<< HEAD
         <View
           style={{
             flexDirection: 'row',
+=======
+<<<<<<< HEAD
+
+        <View
+          style={{
+            flexDirection: 'row',
+=======
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
+<<<<<<< HEAD
+=======
+>>>>>>> eca87f322b93767119684e4ba0e1ba24f6c6b538
+>>>>>>> 8cb5f2abe5f2fdc473043cbb9d5aac8d8516d42e
           }}>
           <TextInput
             style={styles.input}
