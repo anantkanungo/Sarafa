@@ -2,6 +2,7 @@ const express = require("express");
 const { Login } = require("../controllers/adminLogin");
 const { CreateUser } = require("../controllers/createUser");
 const { UserLogin } = require("../controllers/userLogin");
+const {GetAllOrder, PlaceOrder } = require("../controllers/order");
 const router = express.Router();
 
 
