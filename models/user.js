@@ -15,7 +15,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ['customer','broker', 'workshop', 'kariger'],
     default: 'customer'
-  }
+  },
+  name:{
+    type: String,
+    required: true
+},
+address: {
+    type: String
+}
 
 })
 
