@@ -2,9 +2,9 @@ import React, {useEffect} from 'react';
 // https://reactnavigation.org/docs/getting-started/
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
-// import {authToken} from '../reduxThunk/Type';
-import {authToken, customerLogin} from '../reduxThunk/Action';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {authToken} from '../reduxThunk/Type';
+import {customerLogin} from '../reduxThunk/Action';
 import LoginScreen from '../screens/Loginsecreen';
 import BottomTab from './BottomTab';
 // import StackNavigator from '../navigation/stackNavigator';
@@ -16,17 +16,29 @@ const Root = ({token}) => {
   const dispatch = useDispatch();
 
   const preLoad = async () => {
-    await AsyncStorage.getItem('@AuthToken')
-      .then(value => {
-        // console.log(value)
-        if (value) {
-          dispatch({
-            type: authToken,
-            payload: value,
-          });
-        }
-      })
-      .catch(err => console.log('Root error : ', err));
+    try {
+      const value = await AsyncStorage.getItem('@AuthToken')
+      if (value !== null) {
+        dispatch({
+          type: authToken,
+          payload: value,
+        });
+      }  
+    } catch (error) {
+      console.log('🚀Root error: ', error)
+    }
+    
+    // await AsyncStorage.getItem('@AuthToken')
+      // .then(value => {
+      //   // console.log(value)
+      //   if (value) {
+      //     dispatch({
+      //       type: authToken,
+      //       payload: value,
+      //     });
+      //   }
+      // })
+      // .catch(err => console.log('Root error : ', err));
   };
 
   useEffect(() => {

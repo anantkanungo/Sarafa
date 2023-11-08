@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,73 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
+import Voice from '@react-native-voice/voice';
 
-const App = () => {
+const Recording = () => {
   const [messages, setMessages] = useState([]);
   const [isListening, setIsListening] = useState(false);
   const [recognizedText, setRecognizedText] = useState('');
 
-  const sendMessage = () => {
-    if (recognizedText) {
-      setMessages([...messages, {text: recognizedText, sender: 'user'}]);
-      setRecognizedText('');
+  useEffect(() => {
+    Voice.onSpeechStart = onSpeechStart;
+    Voice.onSpeechEnd = stopListing;
+    Voice.onSpeechResults = onSpeechResults;
+    Voice.onSpeechError = (error) => console.log('onSpeechError: ', error)
+
+    const androidPermissionChecking = async () => {
+      if (Platform.OS === 'android') {
+        const hasPermission = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        )
+        console.log('androidPermissionChecking - hasPermission:', hasPermission)
+        const getService = await Voice.getSpeechRecognitionServices();
+        console.log('androidPermissionChecking - getService: ', getService)
+      }
+    }
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners)
+    }
+  }, [])
+
+  const onSpeechStart = (event) => {
+    console.log('Recording onSpeechStart...', event);
+  }
+
+  const onSpeechResults = (event) => {
+    console.log('Recording onSpeechReesults...', event);
+    const text = event.value[0]
+    setRecognizedText(text)
+  };
+
+  const startListing = async () => {
+    setIsListening(true);
+    try {
+      await Voice.start('en-IN');
+    } catch (error) {
+      console.log('startListing - error:', error)
     }
   };
+
+  const stopListing = async () => {
+    try {
+      Voice.removeAllListeners();
+      await Voice.stop()
+      setIsListening(false)
+    } catch (error) {
+      console.log('stopListing - error:', error)
+    }
+  };
+
+  const sendMessage = () => {
+    if (recognizedText) {
+      setMessages([...messages, { text: recognizedText, sender: 'user' }]);
+      setRecognizedText('');
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -50,7 +104,9 @@ const App = () => {
           onChangeText={text => setRecognizedText(text)}
         />
         <TouchableOpacity
-          onPress={() => setIsListening(!isListening)}
+          onPress={() => {
+            isListening ? stopListing() : startListing();
+          }}
           style={styles.voiceButton}>
           {isListening ? (
             <Text style={styles.voiceButtonText}>•••</Text>
@@ -59,7 +115,7 @@ const App = () => {
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/512/4980/4980251.png',
               }}
-              style={{width: 45, height: 45}}
+              style={{ width: 45, height: 45 }}
             />
           )}
         </TouchableOpacity>
@@ -68,8 +124,8 @@ const App = () => {
         </TouchableOpacity>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -125,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Recording;

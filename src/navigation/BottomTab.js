@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // https://github.com/oblador/react-native-vector-icons
 // fontawesome.com
@@ -11,6 +11,7 @@ function PendingOrder() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Pending Order!</Text>
+      {/* <Button /> */}
     </View>
   );
 }

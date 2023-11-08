@@ -7,24 +7,26 @@ import {
   Text,
   Switch,
   ScrollView,
+  SafeAreaView,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import UploadImage from '../assets/UploadImage.png';
 // https://www.npmjs.com/package/@react-native-picker/picker
 // https://github.com/lawnstarter/react-native-picker-select/issues/402
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 // https://www.npmjs.com/package/react-native-document-picker
 import DocumentPicker from 'react-native-document-picker';
+import Voice from '@react-native-voice/voice';
 
-const PlaceOrder = ({navigation}) => {
+const PlaceOrder = ({ navigation }) => {
   const [selectedJewelry, setSelectedJewelry] = useState();
   const [selectedTunch, setSelectedTunch] = useState();
-  const [desc, onChangeDecs] = useState('');
   const [width, onChangeWidth] = useState('');
   const [size, onChangeSize] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const [isListening, setIsListening] = useState(false);
 
   const selectDoc = async () => {
     try {
@@ -39,8 +41,65 @@ const PlaceOrder = ({navigation}) => {
       }
     }
   };
+
+  // Voice Recording
+  const [isListening, setIsListening] = useState(false);
+  const [recognizedText, setRecognizedText] = useState('');
+
+  useEffect(() => {
+    Voice.onSpeechStart = onSpeechStart;
+    Voice.onSpeechEnd = stopListing;
+    Voice.onSpeechResults = onSpeechResults;
+    Voice.onSpeechError = (error) => console.log('onSpeechError: ', error)
+
+    const androidPermissionChecking = async () => {
+      if (Platform.OS === 'android') {
+        const hasPermission = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        )
+        console.log('androidPermissionChecking - hasPermission:', hasPermission)
+        const getService = await Voice.getSpeechRecognitionServices();
+        console.log('androidPermissionChecking - getService: ', getService)
+      }
+    }
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners)
+    }
+  }, [])
+
+  const onSpeechStart = (event) => {
+    console.log('Recording onSpeechStart...', event);
+  }
+
+  const onSpeechResults = (event) => {
+    console.log('Recording onSpeechReesults...', event);
+    const text = event.value[0]
+    setRecognizedText(text)
+  };
+
+  const startListing = async () => {
+    setIsListening(true);
+    try {
+      await Voice.start('en-US');
+    } catch (error) {
+      console.log('startListing - error:', error)
+    }
+  };
+
+  const stopListing = async () => {
+    try {
+      Voice.removeAllListeners();
+      await Voice.stop()
+      setIsListening(false)
+    } catch (error) {
+      console.log('stopListing - error:', error)
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <SafeAreaView />
       <View style={styles.header_container}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -85,13 +144,14 @@ const PlaceOrder = ({navigation}) => {
           <TextInput
             style={styles.input}
             placeholder="Description"
-            onChangeText={onChangeDecs}
-            value={desc}
+            onChangeText={text => setRecognizedText(text)}
+            value={recognizedText}
           />
-          <View style={{justifyContent: 'space-evenly'}}>
+          <View style={{ justifyContent: 'space-evenly' }}>
             <TouchableOpacity
-              onPress={() => setIsListening(!isListening)}
-              style={styles.voiceButton}>
+              onPress={() => {
+                isListening ? stopListing() : startListing();
+              }}>
               {isListening ? (
                 <Text style={styles.voiceButtonText}>•••</Text>
               ) : (
@@ -119,7 +179,7 @@ const PlaceOrder = ({navigation}) => {
               marginVertical: 15,
               borderRadius: 5,
             }}>
-            <Text style={{fontSize: 22, marginLeft: 10, color: '#000000'}}>
+            <Text style={{ fontSize: 22, marginLeft: 10, color: '#000000' }}>
               टंच :
             </Text>
             <View
@@ -140,9 +200,9 @@ const PlaceOrder = ({navigation}) => {
                 <Picker.Item label="90" value="9" />
               </Picker>
             </View>
-            <Text style={{fontSize: 22, margin: 10, color: '#000000'}}>%</Text>
+            <Text style={{ fontSize: 22, margin: 10, color: '#000000' }}>%</Text>
           </View>
-          <View style={{justifyContent: 'space-evenly', marginLeft: 10}}>
+          <View style={{ justifyContent: 'space-evenly', marginLeft: 10 }}>
             <TouchableOpacity
               style={{
                 borderWidth: 1,
@@ -166,14 +226,14 @@ const PlaceOrder = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{fontSize: 22, color: '#000000'}}>Weigth :</Text>
+          <Text style={{ fontSize: 22, color: '#000000' }}>Weigth :</Text>
           <TextInput
             style={styles.input1}
             placeholder="g"
             onChangeText={onChangeWidth}
             value={width}
           />
-          <Text style={{fontSize: 22, color: '#000000'}}>Size :</Text>
+          <Text style={{ fontSize: 22, color: '#000000' }}>Size :</Text>
           <TextInput
             style={styles.input1}
             placeholder=""
@@ -187,7 +247,7 @@ const PlaceOrder = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{fontSize: 22, color: '#000000'}}>Quantity :</Text>
+          <Text style={{ fontSize: 22, color: '#000000' }}>Quantity :</Text>
           <TextInput
             style={styles.input1}
             placeholder=""
@@ -202,21 +262,21 @@ const PlaceOrder = ({navigation}) => {
             margin: 10,
             justifyContent: 'space-around',
           }}>
-          <Text style={{fontSize: 22, color: '#000000'}}>
+          <Text style={{ fontSize: 22, color: '#000000' }}>
             Urgent Delivery :
           </Text>
           <Switch
-            trackColor={{false: '#767577', true: '#767577'}}
+            trackColor={{ false: '#767577', true: '#767577' }}
             thumbColor={isEnabled ? '#000000' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
-            style={{transform: [{scaleX: 1.2}, {scaleY: 1.2}]}}
+            style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
           />
         </View>
 
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
+        <View style={{ alignItems: 'center' }}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => { }}>
             <Text style={styles.loginButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>

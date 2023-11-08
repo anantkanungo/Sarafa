@@ -5,8 +5,8 @@ import {
   customerLoginError,
 } from './Type';
 import axios from 'axios';
-import {Alert} from 'react-native';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthFunction = () => dispatch => {
   dispatch({
@@ -52,13 +52,19 @@ export const customerLogin = (userId, password) => {
       })
       .then(async response => {
         // console.log(response.data)
-        var details = response.data;
+        const details = response.data;
+        const token = response.data.token;
         dispatch(customerLogin_Success(details));
-        dispatch({type: authToken, payload: response.data.data?.token});
+        dispatch({ type: authToken, payload: token });
         // Storing token to AsyncStorage
-        await AsyncStorage.setItem('@AuthToken', response.data.data?.token);
+        // await AsyncStorage.setItem('@AuthToken', response.data.token);
         // alert("success");
         // this.props.navigation.navigate('Home');
+        try {
+          await AsyncStorage.setItem('@AuthToken', token);
+        } catch (error) {
+          console.error('AsyncStorage error:', error);
+        }
       })
       .catch(err => {
         Alert.alert('Login Failed', 'Some error occurred, please retry');
