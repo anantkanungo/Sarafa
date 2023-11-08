@@ -1,4 +1,5 @@
 import {
+  authToken,
   customerLoginError,
   customerLoginSuccess,
   customerLoginRequest,
@@ -8,10 +9,16 @@ const loginInitialState = {
   loading: false,
   details: {},
   error: '',
+  token: null,
 };
 
 export const reducerLogin = (state = loginInitialState, action) => {
   switch (action.type) {
+    case authToken:
+      return {
+        ...state,
+        token: action.payload,
+      };
     case customerLoginRequest:
       return {
         ...state,

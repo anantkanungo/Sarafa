@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './loginStyles';
 import {connect} from 'react-redux';
-import {customerLogin} from '../reduxThunk/Action';
+import {AuthFunction, customerLogin} from '../reduxThunk/Action';
 // You can use your custom background image
 import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
@@ -21,7 +21,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
     getCustomerDetails(userId, password);
     setUserId('');
     setPassword('');
-    navigation.navigate('BottomTab'); // Navigate to the home screen
+    // navigation.navigate('BottomTab'); // Navigate to the home screen
   };
 
   return (
@@ -37,7 +37,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
             <TextInput
               style={styles.input}
               onChangeText={e => setUserId(e)}
-              label="User"
+              // label="User"
               placeholder="User Id"
               autoCapitalize="none"
             />
@@ -46,7 +46,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
             <TextInput
               style={styles.input}
               onChangeText={e => setPassword(e)}
-              label="Password"
+              // label="Password"
               secureTextEntry={true}
               placeholder="Password"
               autoCapitalize="none"
@@ -74,6 +74,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    AuthFunction,
     getCustomerDetails: (userId, password) =>
       dispatch(customerLogin(userId, password)),
   };

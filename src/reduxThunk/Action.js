@@ -1,9 +1,19 @@
 import {
+  authToken,
   customerLoginRequest,
   customerLoginSuccess,
   customerLoginError,
 } from './Type';
 import axios from 'axios';
+import {Alert} from 'react-native';
+import {AsyncStorage} from '@react-native-async-storage/async-storage';
+
+export const AuthFunction = () => dispatch => {
+  dispatch({
+    type: authToken,
+    payload: 's',
+  });
+};
 
 const customerLogin_Request = () => {
   return {
@@ -33,15 +43,39 @@ export const customerLogin = (userId, password) => {
     };
 
     axios
-      .post('http://192.168.43.208:8000/adminlogin', params)
-      .then(response => {
+      .post('http://139.59.58.151:8000/userlogin', params, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+      .then(async response => {
         // console.log(response.data)
         var details = response.data;
         dispatch(customerLogin_Success(details));
+        dispatch({type: authToken, payload: response.data.data?.token});
+        // Storing token to AsyncStorage
+        await AsyncStorage.setItem('@AuthToken', response.data.data?.token);
+        // alert("success");
+        // this.props.navigation.navigate('Home');
       })
       .catch(err => {
+        Alert.alert('Login Failed', 'Some error occurred, please retry');
         console.log(err);
         dispatch(customerLogin_Error(err));
       });
   };
 };
+
+// http://139.59.58.151:8000/adminlogin
+// JSON Content
+// {
+//   "userId" : "ngjewel", "password" : "ng_info"
+// }
+
+// http://139.59.58.151:8000/userlogin
+// JSON Content
+// {
+//   "userId" : "user666", "password" : "user666"
+// }
