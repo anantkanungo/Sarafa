@@ -1,13 +1,12 @@
 import React, {useEffect} from 'react';
 // https://reactnavigation.org/docs/getting-started/
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {authToken} from '../reduxThunk/Type';
 import {customerLogin} from '../reduxThunk/Action';
 import LoginScreen from '../screens/Loginsecreen';
-import BottomTab from './BottomTab';
-// import StackNavigator from '../navigation/stackNavigator';
+import StackNavigator from './StackNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,28 +16,16 @@ const Root = ({token}) => {
 
   const preLoad = async () => {
     try {
-      const value = await AsyncStorage.getItem('@AuthToken')
+      const value = await AsyncStorage.getItem('@AuthToken');
       if (value !== null) {
         dispatch({
           type: authToken,
           payload: value,
         });
-      }  
+      }
     } catch (error) {
-      console.log('🚀Root error: ', error)
+      console.log('🚀Root error: ', error);
     }
-    
-    // await AsyncStorage.getItem('@AuthToken')
-      // .then(value => {
-      //   // console.log(value)
-      //   if (value) {
-      //     dispatch({
-      //       type: authToken,
-      //       payload: value,
-      //     });
-      //   }
-      // })
-      // .catch(err => console.log('Root error : ', err));
   };
 
   useEffect(() => {
@@ -47,17 +34,23 @@ const Root = ({token}) => {
 
   return (
     <>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {token === null ? (
+      {token === null ? (
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerShown: false,
+          }}>
           <Stack.Screen name="Login" component={LoginScreen} />
-        ) : (
-          <Stack.Screen name="BottomTab" component={BottomTab} />
-        )}
-      </Stack.Navigator>
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Screen name="StackNavigator" component={StackNavigator} />
+        </Stack.Navigator>
+      )}
     </>
   );
 };

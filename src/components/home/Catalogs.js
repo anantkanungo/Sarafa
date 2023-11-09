@@ -31,7 +31,7 @@ const DATA = [
   },
 ];
 
-const Catalogs = () => {
+const Catalogs = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{alignItems: 'center'}}>
@@ -42,11 +42,14 @@ const Catalogs = () => {
         renderItem={({item}) => (
           <View
             style={{
+              flex: 1,
               flexDirection: 'row',
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => navigation.navigate('Catagories')}>
               <Image
                 style={styles.tinyLogo}
                 source={{
@@ -64,14 +67,6 @@ const Catalogs = () => {
               />
               <Text style={styles.title}>{item.title}</Text>
             </TouchableOpacity>
-            {/* <View style={styles.item_container}>
-                <Text style={styles.title} numberOfLines={1}>
-                  Title
-                </Text>
-                <Text style={styles.subtitle} numberOfLines={1}>
-                  Desc
-                </Text>
-              </View> */}
           </View>
         )}
         keyExtractor={item => item.id}
@@ -100,7 +95,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   tinyLogo: {
-    width: 130,
+    flex: 1,
+    width: '100%',
     height: 130,
     // resizeMode: 'contain',
   },
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 8,
     marginHorizontal: 18,
-    width: 140,
+    flex: 1,
   },
   title: {
     fontSize: 22,

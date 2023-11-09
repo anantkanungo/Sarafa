@@ -5,7 +5,6 @@ import BackgroundImage from '../../assets/IMG_HEADER.jpg';
 export default function Header() {
   return (
     <View style={styles.container}>
-      {/* <Image style={styles.image} source={BackgroundImage} /> */}
       <ImageBackground
         style={styles.image}
         resizeMode="cover"

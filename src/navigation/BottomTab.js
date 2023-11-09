@@ -10,7 +10,7 @@ import PlaceOrder from '../screens/PlaceOrder';
 function PendingOrder() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Pending Order!</Text>
+      <Text style={{color: '#000000', fontSize: 22}}>Pending Order!</Text>
       {/* <Button /> */}
     </View>
   );

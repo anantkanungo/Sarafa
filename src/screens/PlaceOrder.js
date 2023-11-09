@@ -129,11 +129,19 @@ const PlaceOrder = ({navigation}) => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedJewelry(itemValue)
             }>
-            <Picker.Item label="Tikka" value="tikka" />
-            <Picker.Item label="Haar" value="haar" />
-            <Picker.Item label="MS" value="mS" />
-            <Picker.Item label="Latkan" value="latkan" />
-            <Picker.Item label="Pendal" value="pendal" />
+            <Picker.Item style={{color: '#000'}} label="Tikka" value="tikka" />
+            <Picker.Item style={{color: '#000'}} label="Haar" value="haar" />
+            <Picker.Item style={{color: '#000'}} label="MS" value="mS" />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="Latkan"
+              value="latkan"
+            />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="Pendal"
+              value="pendal"
+            />
           </Picker>
         </View>
         {/* Description & voiceButton */}
@@ -141,6 +149,7 @@ const PlaceOrder = ({navigation}) => {
           <TextInput
             style={Styles.input}
             placeholder="Description"
+            placeholderTextColor="#495057"
             onChangeText={text => setRecognizedText(text)}
             value={recognizedText}
           />
@@ -173,9 +182,9 @@ const PlaceOrder = ({navigation}) => {
                 onValueChange={(itemValue, itemIndex) =>
                   setSelectedTunch(itemValue)
                 }>
-                <Picker.Item label="50" value="5" />
-                <Picker.Item label="75" value="7" />
-                <Picker.Item label="90" value="9" />
+                <Picker.Item style={{color:'#000'}} label="50" value="5" />
+                <Picker.Item style={{color:'#000'}} label="75" value="7" />
+                <Picker.Item style={{color:'#000'}} label="90" value="9" />
               </Picker>
             </View>
             <Text style={Styles.tunchView3}>%</Text>
@@ -197,6 +206,7 @@ const PlaceOrder = ({navigation}) => {
           <TextInput
             style={Styles.input1}
             placeholder="g"
+            placeholderTextColor="#495057"
             onChangeText={onChangeWidth}
             value={width}
           />
