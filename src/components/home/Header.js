@@ -42,5 +42,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     justifyContent: 'space-between',
     paddingBottom: 45,
+    backgroundColor: '#000',
+    opacity: 100,
   },
 });
