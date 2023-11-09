@@ -8,10 +8,6 @@ const OrderShcema = new mongoose.Schema({
         enum: ['ring', 'earring','bangle', 'chain', 'necklace', 'nosepin', 'pendants', 'mangalsutra', 'others'],
         default: 'ring'
     },
-    Shop: {
-        type: mongoose.Schema.ObjectId, 
-        ref: 'Customer'
-    },
     image: {
         data: Buffer,
         contentType: String
