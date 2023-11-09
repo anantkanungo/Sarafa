@@ -40,13 +40,7 @@ const Catalogs = ({navigation}) => {
       <FlatList
         data={DATA}
         renderItem={({item}) => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignContent: 'center',
-            }}>
+          <View style={styles.flatlistConatiner}>
             <TouchableOpacity
               style={styles.item}
               onPress={() => navigation.navigate('Catagories')}>
@@ -80,7 +74,6 @@ export default Catalogs;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
   },
   headerText: {
     fontSize: 36,
@@ -88,16 +81,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     margin: 5,
   },
-  imageContainer: {
+  flatlistConatiner: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
+  // imageContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   padding: 20,
+  // },
   tinyLogo: {
     flex: 1,
     width: '100%',
-    height: 130,
+    height: 150,
     // resizeMode: 'contain',
   },
   item: {
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 4,
     alignItems: 'center',
     marginVertical: 8,
-    marginHorizontal: 18,
+    marginHorizontal: 15,
     flex: 1,
   },
   title: {

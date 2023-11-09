@@ -182,9 +182,9 @@ const PlaceOrder = ({navigation}) => {
                 onValueChange={(itemValue, itemIndex) =>
                   setSelectedTunch(itemValue)
                 }>
-                <Picker.Item style={{color:'#000'}} label="50" value="5" />
-                <Picker.Item style={{color:'#000'}} label="75" value="7" />
-                <Picker.Item style={{color:'#000'}} label="90" value="9" />
+                <Picker.Item style={{color: '#000'}} label="50" value="5" />
+                <Picker.Item style={{color: '#000'}} label="75" value="7" />
+                <Picker.Item style={{color: '#000'}} label="90" value="9" />
               </Picker>
             </View>
             <Text style={Styles.tunchView3}>%</Text>
