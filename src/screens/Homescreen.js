@@ -11,12 +11,12 @@ import {
 import Header from '../components/home/Header.js';
 import Catalogs from '../components/home/Catalogs.js';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text style={styles.welcome}>Welcome {userInfo.user.fullname}</Text> */}
       <Header />
-      <Catalogs />
+      <Catalogs navigation={navigation} />
     </SafeAreaView>
   );
 };
