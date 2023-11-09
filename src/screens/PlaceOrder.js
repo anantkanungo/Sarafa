@@ -24,6 +24,7 @@ const PlaceOrder = ({navigation}) => {
   const [selectedTunch, setSelectedTunch] = useState();
   const [width, onChangeWidth] = useState('');
   const [size, onChangeSize] = useState('');
+  const [quantity, onChangeQuantity] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -212,8 +213,8 @@ const PlaceOrder = ({navigation}) => {
           <TextInput
             style={Styles.input1}
             placeholder=""
-            onChangeText={onChangeWidth}
-            value={width}
+            onChangeText={onChangeQuantity}
+            value={quantity}
           />
         </View>
         {/* Switch */}

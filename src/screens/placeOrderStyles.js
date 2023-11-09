@@ -37,6 +37,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     marginVertical: 15,
     borderRadius: 5,
+    color: '#000000',
   },
   // Description & voiceButton
   input: {
@@ -46,6 +47,7 @@ export default StyleSheet.create({
     padding: 10,
     fontSize: 22,
     borderRadius: 5,
+    color: '#000000',
   },
   voiceButton: {
     marginLeft: 10,
@@ -53,6 +55,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     padding: 3.5,
     borderRadius: 5,
+    color: '#000000',
   },
   voiceButtonText: {
     fontSize: 24,
@@ -68,6 +71,7 @@ export default StyleSheet.create({
     flex: 1,
     marginVertical: 15,
     borderRadius: 5,
+    color: '#000000',
   },
   tunchView1: {
     fontSize: 22,
@@ -80,6 +84,7 @@ export default StyleSheet.create({
     flex: 1,
     height: 40,
     justifyContent: 'center',
+    color: '#000000',
   },
   tunchView3: {
     fontSize: 22,
@@ -94,6 +99,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     padding: 3,
     borderRadius: 5,
+    color: '#000000',
   },
   // weight & Size
   wsContainer: {
@@ -110,6 +116,7 @@ export default StyleSheet.create({
     width: 70,
     fontSize: 18,
     borderRadius: 5,
+    color: '#000000',
   },
   // Switch
   switchContainer: {
