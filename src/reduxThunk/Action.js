@@ -46,11 +46,11 @@ export const customerLogin = (userId, password) => {
       .post('http://139.59.58.151:8000/userlogin', params, {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       })
       .then(async response => {
-        // console.log(response.data)
+        console.log(response.data);
         const token = response.data.token;
         const details = response.data;
         if (token && details) {
@@ -80,6 +80,10 @@ export const customerLogin = (userId, password) => {
 // JSON Content
 // {
 //   "userId" : "ngjewel", "password" : "ng_info"
+// }
+// multipart/form-data
+// {
+//   "category" : "", "image" : "", "description" : "", "quantity" : "", "size" : "", "weight" : "", "tunch" :  ""
 // }
 
 // http://139.59.58.151:8000/userlogin

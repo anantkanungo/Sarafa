@@ -17,10 +17,10 @@ export default StyleSheet.create({
     height: 60,
     flex: 1,
     fontSize: 32,
-    color: '#333',
     fontWeight: 'bold',
     textAlign: 'center',
     marginLeft: -25,
+    color: '#000000',
   },
   bottomView: {
     // backgroundColor: '#fff',

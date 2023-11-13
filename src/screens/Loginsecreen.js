@@ -39,7 +39,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               onChangeText={e => setUserId(e)}
               // label="User"
               placeholder="User Id"
-              autoCapitalize="none"
+              placeholderTextColor="#495057"
             />
           </View>
           <View style={styles.inputView}>
@@ -49,6 +49,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               // label="Password"
               secureTextEntry={true}
               placeholder="Password"
+              placeholderTextColor="#495057"
               autoCapitalize="none"
               textContentType="password"
             />

@@ -1,20 +1,11 @@
 import * as React from 'react';
-import {Button, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // https://github.com/oblador/react-native-vector-icons
 // fontawesome.com
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../screens/Homescreen';
 import PlaceOrder from '../screens/PlaceOrder';
-
-function PendingOrder() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: '#000000', fontSize: 22}}>Pending Order!</Text>
-      {/* <Button /> */}
-    </View>
-  );
-}
+import PendingOrder from '../screens/PendingOrder';
 
 const Tab = createBottomTabNavigator();
 

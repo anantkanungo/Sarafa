@@ -48,13 +48,13 @@ const Catagories = ({navigation}) => {
       <View style={{alignItems: 'center'}}>
         <Text style={Styles.headerText}>Earrings</Text>
       </View>
-      {/* Submit button */}
+      {/* button */}
       <View style={Styles.sbContainer}>
-        <TouchableOpacity style={Styles.loginButton} onPress={() => {}}>
-          <Text style={Styles.loginButtonText}>Sort</Text>
+        <TouchableOpacity style={Styles.button} onPress={() => {}}>
+          <Text style={Styles.buttonText}>Sort</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.loginButton} onPress={() => {}}>
-          <Text style={Styles.loginButtonText}>Filter</Text>
+        <TouchableOpacity style={Styles.button} onPress={() => {}}>
+          <Text style={Styles.buttonText}>Filter</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -85,6 +85,14 @@ const Catagories = ({navigation}) => {
         )}
         keyExtractor={item => item.id}
       />
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity style={Styles.button1} onPress={() => {}}>
+          <Text style={Styles.buttonText1}>Place Order</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -144,17 +152,32 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
-  loginButton: {
+  button: {
     backgroundColor: '#454545',
     // paddingVertical: 5,
     borderRadius: 5,
     // marginTop: 5,
-    width: 100,
+    width: '30%',
   },
-  loginButtonText: {
+  buttonText: {
     color: '#fff',
     alignSelf: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
+  },
+  button1: {
+    backgroundColor: '#454545',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    // marginTop: 10,
+    margin: 10,
+    width: 150,
+  },
+  buttonText1: {
+    color: '#fff',
+    alignSelf: 'center',
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });

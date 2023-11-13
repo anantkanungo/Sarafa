@@ -152,6 +152,7 @@ const PlaceOrder = ({navigation}) => {
             placeholderTextColor="#495057"
             onChangeText={text => setRecognizedText(text)}
             value={recognizedText}
+            multiline={true}
           />
           <View>
             <TouchableOpacity

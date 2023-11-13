@@ -42,7 +42,6 @@ export default StyleSheet.create({
   // Description & voiceButton
   input: {
     flex: 1,
-    height: 50,
     borderWidth: 1,
     padding: 10,
     fontSize: 22,
