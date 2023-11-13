@@ -9,8 +9,7 @@ const OrderShcema = new mongoose.Schema({
         default: 'ring'
     },
     image: {
-        data: Buffer,
-        contentType: String
+       type: String
     },
     description: {
         type: String,
