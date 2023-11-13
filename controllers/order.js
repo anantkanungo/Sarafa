@@ -1,8 +1,8 @@
 const AddOrder = require('../models/addOrder');
 
 const PlaceOrder = async(req, res)=>{
-    const {category, image,description,quantity, size, weight, tunch } = req.body;
-    const result = await AddOrder({category, image ,description ,quantity, size, weight, tunch});
+    const {category, description,quantity, size, weight, tunch } = req.body;
+    const result = await AddOrder({category, image ,description ,quantity, size, weight, tunch image: req.file.filename});
     const data = await result.save();
     if (data) {
         res.json({ message: "Order Placed...", success: true });
