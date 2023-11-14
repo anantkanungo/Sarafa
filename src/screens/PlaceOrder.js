@@ -8,44 +8,96 @@ import {
   ScrollView,
   Platform,
   PermissionsAndroid,
+  Modal,
+  Alert,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UploadImage from '../assets/UploadImage.png';
 // https://www.npmjs.com/package/@react-native-picker/picker
 // https://github.com/lawnstarter/react-native-picker-select/issues/402
 import {Picker} from '@react-native-picker/picker';
-// https://www.npmjs.com/package/react-native-document-picker
-import DocumentPicker from 'react-native-document-picker';
 import Voice from '@react-native-voice/voice';
 import Styles from './placeOrderStyles';
+import axios from 'axios';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const PlaceOrder = ({navigation}) => {
-  const [selectedJewelry, setSelectedJewelry] = useState();
-  const [selectedTunch, setSelectedTunch] = useState();
-  const [width, onChangeWidth] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [category, setCategory] = useState();
+  const [description, setRecognizedText] = useState('');
+  const [tunch, setTunch] = useState();
+  const [weight, onChangeWeight] = useState('');
   const [size, onChangeSize] = useState('');
   const [quantity, onChangeQuantity] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [isListening, setIsListening] = useState(false);
+  const [image, setImage] = useState(
+    'data:image/png;base64,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',
+  );
+
+  const submitData = () => {
+    const userData = {
+      // image: image,
+      category: category,
+      description: description,
+      tunch: tunch,
+      weight: weight,
+      size: size,
+      quantity: quantity,
+    };
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(userData));
+    axios
+      .post('http://139.59.58.151:8000/placeorder', {
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      .then(response => {
+        Alert.alert('Your order is Successful.');
+        console.warn(response.data);
+        console.warn(formData);
+      })
+      .catch(error => {
+        Alert.alert('Failed Network error try again.');
+        console.warn('error :', error);
+      });
+  };
 
   // UploadImage
-  const selectDoc = async () => {
-    try {
-      const doc = await DocumentPicker.pick();
-      console.log(doc);
-    } catch (error) {
-      // console.log(error);
-      if (DocumentPicker.isCancel(error)) {
-        console.log('User cancelled the upload', error);
-      } else {
-        console.log(error);
-      }
-    }
+  // camera function
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then(image => {
+      console.log(image);
+      setImage(image.path);
+      // this.bs.current.snapTo(1);
+    });
+  };
+
+  // Gallery function
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then(image => {
+      console.log(image);
+      setImage(image.path);
+      // this.bs.current.snapTo(1);
+    });
   };
 
   // Voice Recording
-  const [isListening, setIsListening] = useState(false);
-  const [recognizedText, setRecognizedText] = useState('');
 
   useEffect(() => {
     Voice.onSpeechStart = onSpeechStart;
@@ -118,17 +170,59 @@ const PlaceOrder = ({navigation}) => {
       <ScrollView>
         {/* UploadImage */}
         <View style={Styles.contain}>
-          <TouchableOpacity onPress={selectDoc}>
-            <Image style={Styles.image} source={UploadImage} />
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image
+              style={Styles.image}
+              source={{
+                uri: image,
+              }}
+            />
           </TouchableOpacity>
+        </View>
+        {/* Modal */}
+        <View style={Styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              // Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={Styles.centeredView}>
+              <View style={Styles.modalView}>
+                <Text style={Styles.modalText}>Upload Photo!</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Pressable
+                    style={[Styles.button, Styles.buttonClose]}
+                    onPress={choosePhotoFromLibrary}>
+                    <Text style={Styles.textStyle}>Gallery</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[Styles.button, Styles.buttonClose]}
+                    onPress={takePhotoFromCamera}>
+                    <Text style={Styles.textStyle}>Camera</Text>
+                  </Pressable>
+                </View>
+                <Pressable
+                  style={[Styles.button, Styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={Styles.textStyle}>Cancel</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          {/* <Pressable
+            style={[Styles.button, Styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}>
+            <Text style={Styles.textStyle}>Show Modal</Text>
+          </Pressable> */}
         </View>
         {/* jewelryPicker */}
         <View style={Styles.jewelryPicker}>
           <Picker
-            selectedValue={selectedJewelry}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedJewelry(itemValue)
-            }>
+            selectedValue={category}
+            onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
             <Picker.Item style={{color: '#000'}} label="Tikka" value="tikka" />
             <Picker.Item style={{color: '#000'}} label="Haar" value="haar" />
             <Picker.Item style={{color: '#000'}} label="MS" value="mS" />
@@ -151,7 +245,7 @@ const PlaceOrder = ({navigation}) => {
             placeholder="Description"
             placeholderTextColor="#495057"
             onChangeText={text => setRecognizedText(text)}
-            value={recognizedText}
+            value={description}
             multiline={true}
           />
           <View>
@@ -179,10 +273,8 @@ const PlaceOrder = ({navigation}) => {
             <Text style={Styles.tunchView1}>टंच :</Text>
             <View style={Styles.tunchView2}>
               <Picker
-                selectedValue={selectedTunch}
-                onValueChange={(itemValue, itemIndex) =>
-                  setSelectedTunch(itemValue)
-                }>
+                selectedValue={tunch}
+                onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
                 <Picker.Item style={{color: '#000'}} label="50" value="5" />
                 <Picker.Item style={{color: '#000'}} label="75" value="7" />
                 <Picker.Item style={{color: '#000'}} label="90" value="9" />
@@ -208,8 +300,8 @@ const PlaceOrder = ({navigation}) => {
             style={Styles.input1}
             placeholder="g"
             placeholderTextColor="#495057"
-            onChangeText={onChangeWidth}
-            value={width}
+            onChangeText={onChangeWeight}
+            value={weight}
           />
           <Text style={Styles.text}>Size :</Text>
           <TextInput
@@ -242,7 +334,7 @@ const PlaceOrder = ({navigation}) => {
         </View>
         {/* Submit button */}
         <View style={Styles.sbContainer}>
-          <TouchableOpacity style={Styles.loginButton} onPress={() => {}}>
+          <TouchableOpacity style={Styles.loginButton} onPress={submitData}>
             <Text style={Styles.loginButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>

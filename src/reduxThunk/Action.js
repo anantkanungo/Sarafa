@@ -46,7 +46,6 @@ export const customerLogin = (userId, password) => {
       .post('http://139.59.58.151:8000/userlogin', params, {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
         },
       })
       .then(async response => {

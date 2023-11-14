@@ -39,6 +39,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
   	<string>App wants to access image gallery</string>
+	<key>NSCameraUsageDescription</key>
+  	<string>App wants to access require photo library</string>
 	<key>NSMicrophoneUsageDescription</key>
   	<string>Description of why you require the use of the microphone</string>
   	<key>NSSpeechRecognitionUsageDescription</key>
