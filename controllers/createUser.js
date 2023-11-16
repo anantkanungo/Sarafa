@@ -1,12 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
-
 const User = require('../models/user');
-const Broker = require('../models/broker');
-const Customer = require('../models/customer');
-const Kariger = require('../models/kariger');
-const Workshop = require('../models/workshop');
-
 // Add User into db
 const CreateUser = async (req, res) => {
     const userExists = await User.findOne({ userId: req.body.userId });
