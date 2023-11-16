@@ -6,10 +6,10 @@ const OrderShcema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['ring', 'earring','bangle', 'chain', 'necklace', 'nosepin', 'pendants', 'mangalsutra', 'others'],
-        default: 'ring'
+        default: 'others'
     },
     image: {
-       type: String
+        type: String
     },
     description: {
         type: String,
@@ -30,6 +30,19 @@ const OrderShcema = new mongoose.Schema({
         type: Number,
         min: 1,
         max: 100
+    },
+    createdBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+       },
+    urgent:{
+        type: Boolean,
+        default: false
     }
 
 })
