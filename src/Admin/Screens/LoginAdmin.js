@@ -13,7 +13,7 @@ import {AuthFunction, customerLogin} from '../../reduxThunk/Action';
 // You can use your custom background image
 import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
 
-const LoginScreen = ({getCustomerDetails, props, navigation}) => {
+const LoginAdmin = ({getCustomerDetails, props, navigation}) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,7 +21,6 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
     getCustomerDetails(userId, password);
     setUserId('');
     setPassword('');
-    // navigation.navigate('BottomTab'); // Navigate to the home screen
   };
 
   return (
@@ -29,8 +28,8 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
       <Image style={styles.image} source={BackgroundImage} />
       <View style={styles.bottomView}>
         <View style={{marginBottom: 40}}>
-          <Text style={styles.loginText}>User Verification</Text>
-          <Text style={styles.loginText1}>Enter the register User Id </Text>
+          <Text style={styles.loginText}>Admin Verification</Text>
+          <Text style={styles.loginText1}>Enter the register Admin Id </Text>
         </View>
         <View style={styles.wrapper}>
           <View style={styles.inputView}>
@@ -38,7 +37,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               style={styles.input}
               onChangeText={e => setUserId(e)}
               // label="User"
-              placeholder="User Id"
+              placeholder="Admin Id"
               placeholderTextColor="#495057"
             />
           </View>
@@ -56,16 +55,9 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
           </View>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={handleAddDetail}>
+            // onPress={handleAddDetail}
+          >
             <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Text style={{color: '#fff', fontSize: 18}}>
-            Admin Login Screen :
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LoginAdmin')}>
-            <Text style={{color: '#2196F3', fontSize: 18}}> LogIn</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -73,20 +65,20 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loading: state.loading,
-    details: state.login.details,
-    error: state.error,
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     loading: state.loading,
+//     details: state.login.details,
+//     error: state.error,
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    AuthFunction,
-    getCustomerDetails: (userId, password) =>
-      dispatch(customerLogin(userId, password)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     AuthFunction,
+//     getCustomerDetails: (userId, password) =>
+//       dispatch(customerLogin(userId, password)),
+//   };
+// };
+export default LoginAdmin;
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginAdmin);

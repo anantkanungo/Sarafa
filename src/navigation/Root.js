@@ -7,6 +7,7 @@ import {authToken} from '../reduxThunk/Type';
 import {customerLogin} from '../reduxThunk/Action';
 import LoginScreen from '../User/screens/Loginsecreen';
 import StackNavigator from './StackNavigator';
+import LoginAdmin from '../Admin/Screens/LoginAdmin';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const Root = ({token}) => {
             headerShown: false,
           }}>
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="LoginAdmin" component={LoginAdmin} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
