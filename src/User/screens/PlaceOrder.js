@@ -39,7 +39,7 @@ const PlaceOrder = ({navigation}) => {
 
   const submitData = () => {
     const userData = {
-      image: image,
+      // image: image,
       category: category,
       description: description,
       tunch: tunch,
@@ -71,11 +71,22 @@ const PlaceOrder = ({navigation}) => {
         Alert.alert('Your order is Successful.');
         console.warn(response.data);
         console.warn(formData);
+        // clearAllStates();
       })
       .catch(error => {
         Alert.alert('Failed Network error try again.');
         console.warn('error :', error);
       });
+  };
+
+  const clearAllStates = () => {
+    setImage('');
+    setCategory('');
+    setRecognizedText('');
+    setTunch('');
+    onChangeWeight('');
+    onChangeSize('');
+    onChangeQuantity('');
   };
 
   // UploadImage
@@ -84,7 +95,7 @@ const PlaceOrder = ({navigation}) => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
-      cropping: true,
+      // cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
       console.log(image);
@@ -98,7 +109,7 @@ const PlaceOrder = ({navigation}) => {
     ImagePicker.openPicker({
       width: 300,
       height: 300,
-      cropping: true,
+      // cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
       console.log(image);
@@ -228,18 +239,42 @@ const PlaceOrder = ({navigation}) => {
           <Picker
             selectedValue={category}
             onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
-            <Picker.Item style={{color: '#000'}} label="Tikka" value="tikka" />
-            <Picker.Item style={{color: '#000'}} label="Haar" value="haar" />
-            <Picker.Item style={{color: '#000'}} label="MS" value="mS" />
+            <Picker.Item style={{color: '#000'}} label="Ring" value="ring" />
             <Picker.Item
               style={{color: '#000'}}
-              label="Latkan"
-              value="latkan"
+              label="Earring"
+              value="earring"
             />
             <Picker.Item
               style={{color: '#000'}}
-              label="Pendal"
-              value="pendal"
+              label="bangle"
+              value="bangle"
+            />
+            <Picker.Item style={{color: '#000'}} label="chain" value="chain" />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="necklace"
+              value="necklace"
+            />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="nosepin"
+              value="nosepin"
+            />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="pendants"
+              value="pendants"
+            />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="mangalsutra"
+              value="mangalsutra"
+            />
+            <Picker.Item
+              style={{color: '#000'}}
+              label="others"
+              value="others"
             />
           </Picker>
         </View>
@@ -285,7 +320,7 @@ const PlaceOrder = ({navigation}) => {
                 <Picker.Item style={{color: '#000'}} label="90" value="9" />
               </Picker>
             </View>
-            <Text style={Styles.tunchView3}>%</Text>
+            <Text style={Styles.tunchView1}>%</Text>
           </View>
           <View style={Styles.tunchView4}>
             <TouchableOpacity

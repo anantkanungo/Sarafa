@@ -46,7 +46,7 @@ const Root = ({token}) => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="StackNavigator"
           screenOptions={{
             headerShown: false,
           }}>

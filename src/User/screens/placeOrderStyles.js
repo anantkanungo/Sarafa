@@ -67,6 +67,7 @@ export default StyleSheet.create({
   tunchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     borderWidth: 1,
     flex: 1,
     marginTop: 15,
@@ -74,21 +75,18 @@ export default StyleSheet.create({
     color: '#000000',
   },
   tunchView1: {
-    fontSize: 22,
-    marginLeft: 10,
+    fontSize: 28,
+    marginHorizontal: 24,
     color: '#000000',
+    fontWeight: 'bold',
   },
   tunchView2: {
     borderWidth: 1,
     margin: 5,
-    flex: 1,
-    height: 40,
+    width: 100,
+    height: 36,
+    alignContent: 'center',
     justifyContent: 'center',
-    color: '#000000',
-  },
-  tunchView3: {
-    fontSize: 22,
-    margin: 10,
     color: '#000000',
   },
   tunchView4: {
