@@ -1,11 +1,13 @@
 const AddOrder = require('../models/addOrder');
 
 const PlaceOrder = async(req, res)=>{
-    const {category, description,quantity, size, weight, tunch } = req.body;
-    const result = await AddOrder({category, image ,description ,quantity, size, weight, tunch image: req.file.filename});
+    const {category,description,quantity, size, weight, tunch, urgent} = req.body;
+    const result = await AddOrder({category ,description ,quantity, size, weight, tunch, urgent, image: req.file.filename});
+    console.log("result", result);
     const data = await result.save();
+    console.log("data",data);
     if (data) {
-        res.json({ message: "Order Placed...", success: true });
+        res.json({result: data, message: "Order Placed...", success: true });
       }
       else {
         res.json({ message: "error", success: false });
@@ -23,6 +25,21 @@ const GetAllOrder = async(req, res)=>{
   }
 }
 
+const PendingOrders =async (req, res)=>{
+  // const id = req.body.uid;
+  let today = new Date();
+  let thirtyDaysAgo = new Date(new Date().setDate(today.getDate() - 30));
+  // const pendingOrders = await AddOrder.findById(id)
+  // .populate('createdBy')
+  // .exec();
+  const pendingOrders = await AddOrder.findById( ({createdAt: {$gte: thirtyDaysAgo }}));
+  if(pendingOrders){
+    res.json({result: pendingOrders , success: true})
+  }
+  else{
+    res.json({message: error, success: false})
+  }
+}
 
 
- module.exports = {PlaceOrder,GetAllOrder};
+ module.exports = {PlaceOrder,GetAllOrder, PendingOrders};
