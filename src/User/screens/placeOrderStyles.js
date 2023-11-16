@@ -36,7 +36,7 @@ export default StyleSheet.create({
   // jewelryPicker
   jewelryPicker: {
     borderWidth: 1,
-    marginVertical: 15,
+    marginBottom: 15,
     borderRadius: 5,
     color: '#000000',
   },
@@ -69,7 +69,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     flex: 1,
-    marginVertical: 15,
+    marginTop: 15,
     borderRadius: 5,
     color: '#000000',
   },
@@ -92,10 +92,10 @@ export default StyleSheet.create({
     color: '#000000',
   },
   tunchView4: {
-    justifyContent: 'space-evenly',
     marginLeft: 10,
   },
   tunchView5: {
+    marginTop: 16,
     borderWidth: 1,
     padding: 3,
     borderRadius: 5,
@@ -103,7 +103,6 @@ export default StyleSheet.create({
   },
   // weight & Size
   wsContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -117,6 +116,7 @@ export default StyleSheet.create({
     fontSize: 18,
     borderRadius: 5,
     color: '#000000',
+    borderColor: '#000',
   },
   // Switch
   switchContainer: {
@@ -171,10 +171,10 @@ export default StyleSheet.create({
     margin: 10,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: '#2196F3',
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#F194',
   },
   textStyle: {
     color: 'white',
@@ -186,5 +186,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22,
+    color: '#000',
   },
 });

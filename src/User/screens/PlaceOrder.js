@@ -13,7 +13,6 @@ import {
   Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import UploadImage from '../assets/UploadImage.png';
 // https://www.npmjs.com/package/@react-native-picker/picker
 // https://github.com/lawnstarter/react-native-picker-select/issues/402
 import {Picker} from '@react-native-picker/picker';
@@ -24,6 +23,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 const PlaceOrder = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
   const [category, setCategory] = useState();
   const [description, setRecognizedText] = useState('');
   const [tunch, setTunch] = useState();
@@ -39,7 +39,7 @@ const PlaceOrder = ({navigation}) => {
 
   const submitData = () => {
     const userData = {
-      // image: image,
+      image: image,
       category: category,
       description: description,
       tunch: tunch,
@@ -47,6 +47,16 @@ const PlaceOrder = ({navigation}) => {
       size: size,
       quantity: quantity,
     };
+
+    // Check if any value in userData is empty
+    // the userData object using a for...in loop.
+    for (let key in userData) {
+      if (!userData[key]) {
+        Alert.alert('Please fill in all fields.');
+        return;
+      }
+    }
+
     const formData = new FormData();
     formData.append('data', JSON.stringify(userData));
     axios
@@ -79,7 +89,7 @@ const PlaceOrder = ({navigation}) => {
     }).then(image => {
       console.log(image);
       setImage(image.path);
-      // this.bs.current.snapTo(1);
+      setModalVisible(false);
     });
   };
 
@@ -93,7 +103,7 @@ const PlaceOrder = ({navigation}) => {
     }).then(image => {
       console.log(image);
       setImage(image.path);
-      // this.bs.current.snapTo(1);
+      setModalVisible(false);
     });
   };
 
@@ -137,7 +147,7 @@ const PlaceOrder = ({navigation}) => {
   const startListing = async () => {
     setIsListening(true);
     try {
-      await Voice.start('en-US');
+      await Voice.start('hi-IN');
     } catch (error) {
       console.log('startListing - error:', error);
     }
@@ -194,12 +204,12 @@ const PlaceOrder = ({navigation}) => {
                 <Text style={Styles.modalText}>Upload Photo!</Text>
                 <View style={{flexDirection: 'row'}}>
                   <Pressable
-                    style={[Styles.button, Styles.buttonClose]}
+                    style={[Styles.button, Styles.buttonOpen]}
                     onPress={choosePhotoFromLibrary}>
                     <Text style={Styles.textStyle}>Gallery</Text>
                   </Pressable>
                   <Pressable
-                    style={[Styles.button, Styles.buttonClose]}
+                    style={[Styles.button, Styles.buttonOpen]}
                     onPress={takePhotoFromCamera}>
                     <Text style={Styles.textStyle}>Camera</Text>
                   </Pressable>
@@ -212,11 +222,6 @@ const PlaceOrder = ({navigation}) => {
               </View>
             </View>
           </Modal>
-          {/* <Pressable
-            style={[Styles.button, Styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}>
-            <Text style={Styles.textStyle}>Show Modal</Text>
-          </Pressable> */}
         </View>
         {/* jewelryPicker */}
         <View style={Styles.jewelryPicker}>
@@ -283,7 +288,9 @@ const PlaceOrder = ({navigation}) => {
             <Text style={Styles.tunchView3}>%</Text>
           </View>
           <View style={Styles.tunchView4}>
-            <TouchableOpacity style={Styles.tunchView5}>
+            <TouchableOpacity
+              style={Styles.tunchView5}
+              onPress={() => setModalVisible1(true)}>
               <Image
                 style={Styles.tinyLogo}
                 source={{
@@ -292,6 +299,38 @@ const PlaceOrder = ({navigation}) => {
               />
             </TouchableOpacity>
           </View>
+        </View>
+        {/* Tunch Modal */}
+        <View style={Styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible1}
+            onRequestClose={() => {
+              // Alert.alert('Modal has been closed.');
+              setModalVisible1(!modalVisible1);
+            }}>
+            <View style={Styles.centeredView}>
+              <View style={Styles.modalView}>
+                <Text style={Styles.modalText}>Enter टंच :</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <TextInput
+                    style={Styles.input1}
+                    placeholder=""
+                    onChangeText={setTunch}
+                    value={tunch}
+                    keyboardType="numeric"
+                    maxLength={2}
+                  />
+                  <Pressable
+                    style={[Styles.button, Styles.buttonOpen]}
+                    onPress={() => setModalVisible1(!modalVisible1)}>
+                    <Text style={Styles.textStyle}>Done</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </View>
         {/* weight & Size */}
         <View style={Styles.wsContainer}>
@@ -302,6 +341,8 @@ const PlaceOrder = ({navigation}) => {
             placeholderTextColor="#495057"
             onChangeText={onChangeWeight}
             value={weight}
+            maxLength={3}
+            keyboardType="numeric"
           />
           <Text style={Styles.text}>Size :</Text>
           <TextInput
@@ -309,6 +350,8 @@ const PlaceOrder = ({navigation}) => {
             placeholder=""
             onChangeText={onChangeSize}
             value={size}
+            maxLength={3}
+            keyboardType="numeric"
           />
         </View>
         <View style={Styles.wsContainer}>
@@ -318,6 +361,8 @@ const PlaceOrder = ({navigation}) => {
             placeholder=""
             onChangeText={onChangeQuantity}
             value={quantity}
+            maxLength={2}
+            keyboardType="numeric"
           />
         </View>
         {/* Switch */}

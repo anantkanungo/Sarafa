@@ -3,9 +3,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // https://github.com/oblador/react-native-vector-icons
 // fontawesome.com
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from '../screens/Homescreen';
-import PlaceOrder from '../screens/PlaceOrder';
-import PendingOrder from '../screens/PendingOrder';
+import HomeScreen from '../User/screens/Homescreen';
+import PlaceOrder from '../User/screens/PlaceOrder';
+import PendingOrder from '../User/screens/PendingOrder';
 
 const Tab = createBottomTabNavigator();
 

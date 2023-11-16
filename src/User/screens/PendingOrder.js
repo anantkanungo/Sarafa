@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import blankcheckbox from '../assets/tick.png';
+import Tick from '../../assets/tick.png';
 
 const PendingOrder = ({navigation}) => {
   return (
@@ -37,7 +37,7 @@ const PendingOrder = ({navigation}) => {
             RG/833/234
           </Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={blankcheckbox} style={Styles.tinyLogo2} />
+            <Image source={Tick} style={Styles.tinyLogo2} />
             <Text
               style={{
                 fontSize: 18,

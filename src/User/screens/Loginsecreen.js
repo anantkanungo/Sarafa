@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import styles from './loginStyles';
 import {connect} from 'react-redux';
-import {AuthFunction, customerLogin} from '../reduxThunk/Action';
+import {AuthFunction, customerLogin} from '../../reduxThunk/Action';
 // You can use your custom background image
-import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
+import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
 
 const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   const [userId, setUserId] = useState('');

@@ -75,6 +75,15 @@ export const customerLogin = (userId, password) => {
   };
 };
 
+export const customerLogout = () => dispatch => {
+  dispatch({
+    type: authToken,
+    payload: null,
+  });
+
+  AsyncStorage.removeItem('@AuthToken');
+};
+
 // http://139.59.58.151:8000/adminlogin
 // JSON Content
 // {

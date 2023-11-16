@@ -5,7 +5,7 @@ import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {authToken} from '../reduxThunk/Type';
 import {customerLogin} from '../reduxThunk/Action';
-import LoginScreen from '../screens/Loginsecreen';
+import LoginScreen from '../User/screens/Loginsecreen';
 import StackNavigator from './StackNavigator';
 
 const Stack = createNativeStackNavigator();
