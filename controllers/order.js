@@ -2,7 +2,7 @@ const AddOrder = require('../models/addOrder');
 
 const PlaceOrder = async(req, res)=>{
     const {category,description,quantity, size, weight, tunch, urgent} = req.body;
-    const result = await AddOrder({category ,description ,quantity, size, weight, tunch, urgent, image: req.file.filename});
+    const result = await AddOrder({category ,description ,quantity, size, weight, tunch, urgent, image: req.file});
     console.log("result", result);
     const data = await result.save();
     console.log("data",data);
