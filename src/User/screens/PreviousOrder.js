@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 
-const PendingOrder = ({navigation}) => {
+const PreviousOrder = ({navigation}) => {
   const data = [
     {
       id: 1,
@@ -60,7 +60,7 @@ const PendingOrder = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center'}}>
-        <Text style={styles.headerText}>Orders</Text>
+        <Text style={styles.headerText}>Previous Orders</Text>
       </View>
       <FlatList
         style={styles.list}
@@ -79,49 +79,18 @@ const PendingOrder = ({navigation}) => {
               <View style={styles.cardHeader}>
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={styles.orderContainer}>
-                  <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  />
                   <Text style={styles.order}>{item.order}</Text>
-                </View>
-                <View style={styles.orderContainer}>
-                  <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  />
-                  <Text style={styles.order}>{item.status}</Text>
-                </View>
-                <View style={styles.orderContainer}>
-                  <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  />
-                  <Text style={styles.order}>{item.done}</Text>
                 </View>
               </View>
             </View>
           );
         }}
       />
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          style={styles.button1}
-          onPress={() => navigation.navigate('PreviousOrder')}>
-          <Text style={styles.buttonText1}>Previous Orders</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
 
-export default PendingOrder;
+export default PreviousOrder;
 
 const styles = StyleSheet.create({
   container: {
@@ -179,15 +148,16 @@ const styles = StyleSheet.create({
     color: '#000',
     // color: '#808080',
   },
-  iconData: {
-    width: 15,
-    height: 15,
-    marginTop: 5,
-    marginRight: 5,
-  },
+  //   iconData: {
+  //     width: 15,
+  //     height: 15,
+  //     marginTop: 5,
+  //     marginRight: 5,
+  //   },
   orderContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 40,
+    justifyContent: 'center',
   },
   tinyLogo: {
     width: 40,
@@ -206,20 +176,5 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: 'bold',
     // marginBottom: 5,
-  },
-  button1: {
-    backgroundColor: '#454545',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    // margin: 10,
-    width: 200,
-  },
-  buttonText1: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
   },
 });

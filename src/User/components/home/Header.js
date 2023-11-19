@@ -30,12 +30,14 @@ const Header = ({customerLogout}) => {
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
             <FontAwesome5 name="sign-out-alt" size={30} color="#500" />
-            {/* <Text style={styles.logoutButtonText}>Logout</Text> */}
           </TouchableOpacity>
         </View>
-        <Text style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
-          Jeweler's name
-        </Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+            Jeweler's name
+          </Text>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -61,12 +63,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     justifyContent: 'space-between',
     paddingBottom: 32,
-    backgroundColor: '#000',
-    opacity: 100,
+    backgroundColor: '#7788',
+    opacity: 0.8,
   },
   logoutButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });

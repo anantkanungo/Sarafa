@@ -14,28 +14,30 @@ const BottomTab = () => {
     <Tab.Navigator
       initialRouteName="HomeScreen"
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: '#ffffff',
+        tabBarActiveTintColor: '#fff',
         tabBarInactiveTintColor: '#555555',
-        tabBarActiveBackgroundColor: '#8c8274',
-        tabBarInactiveBackgroundColor: '#abaaa8',
-        tabBarLabelStyle: {fontSize: 14},
+        tabBarActiveBackgroundColor: '#7788',
+        tabBarInactiveBackgroundColor: '#7788',
+        tabBarLabelStyle: {fontSize: 12},
         headerShown: false,
         tabBarIcon: ({focused, size, color}) => {
           let iconName;
-          if (route.name === 'HomeScreen') {
+          if (route.name === 'Home') {
             iconName = 'home';
-            // size = focused ? 25 : 20;
+            size = focused ? 20 : 20;
             // color = focused ? '#e91e63' : '#555'
           } else if (route.name === 'Place Order') {
             iconName = 'shopping-cart';
+            size = focused ? 20 : 20;
           } else if (route.name === 'Pending Order') {
             iconName = 'tasks';
+            size = focused ? 20 : 20;
             // iconName = 'clock-o';
           }
           return <FontAwesome5 name={iconName} size={size} color={color} />;
         },
       })}>
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Place Order" component={PlaceOrder} />
       <Tab.Screen name="Pending Order" component={PendingOrder} />
     </Tab.Navigator>

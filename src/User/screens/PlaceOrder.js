@@ -50,12 +50,12 @@ const PlaceOrder = ({navigation}) => {
 
     // Check if any value in userData is empty
     // the userData object using a for...in loop.
-    for (let key in userData) {
-      if (!userData[key]) {
-        Alert.alert('Please fill in all fields.');
-        return;
-      }
-    }
+    // for (let key in userData) {
+    //   if (!userData[key]) {
+    //     Alert.alert('Please fill in all fields.');
+    //     return;
+    //   }
+    // }
 
     const formData = new FormData();
     formData.append('data', JSON.stringify(userData));
@@ -71,7 +71,7 @@ const PlaceOrder = ({navigation}) => {
         Alert.alert('Your order is Successful.');
         console.warn(response.data);
         console.warn(formData);
-        // clearAllStates();
+        clearAllStates();
       })
       .catch(error => {
         Alert.alert('Failed Network error try again.');
@@ -80,7 +80,7 @@ const PlaceOrder = ({navigation}) => {
   };
 
   const clearAllStates = () => {
-    setImage('');
+    // setImage('');
     setCategory('');
     setRecognizedText('');
     setTunch('');
@@ -315,9 +315,15 @@ const PlaceOrder = ({navigation}) => {
               <Picker
                 selectedValue={tunch}
                 onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
-                <Picker.Item style={{color: '#000'}} label="50" value="5" />
-                <Picker.Item style={{color: '#000'}} label="75" value="7" />
-                <Picker.Item style={{color: '#000'}} label="90" value="9" />
+                <Picker.Item style={{color: '#000'}} label="50" value="50" />
+                <Picker.Item style={{color: '#000'}} label="75" value="75" />
+                <Picker.Item style={{color: '#000'}} label="90" value="90" />
+                <Picker.Item
+                  style={{color: '#000'}}
+                  label={tunch}
+                  value={tunch}
+                  onChangelable={setTunch}
+                />
               </Picker>
             </View>
             <Text style={Styles.tunchView1}>%</Text>

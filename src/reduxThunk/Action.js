@@ -71,6 +71,7 @@ export const customerLogin = (userId, password) => {
       .catch(err => {
         console.log(err);
         dispatch(customerLogin_Error(err));
+        Alert.alert('Login Failed', 'Network error Please retry');
       });
   };
 };
