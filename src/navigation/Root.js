@@ -8,11 +8,11 @@ import {customerLogin} from '../reduxThunk/Action';
 import LoginScreen from '../User/screens/Loginsecreen';
 import StackNavigator from './StackNavigator';
 import LoginAdmin from '../Admin/Screens/LoginAdmin';
+import AdminStackNavigator from './AdminStackNavigator';
 
 const Stack = createNativeStackNavigator();
 
 const Root = ({token}) => {
-  // const token = useSelector(state => state.login.details);
   const dispatch = useDispatch();
 
   const preLoad = async () => {
@@ -46,11 +46,15 @@ const Root = ({token}) => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
-          initialRouteName="StackNavigator"
+          // initialRouteName="AdminStackNavigator"
           screenOptions={{
             headerShown: false,
           }}>
           <Stack.Screen name="StackNavigator" component={StackNavigator} />
+          <Stack.Screen
+            name="AdminStackNavigator"
+            component={AdminStackNavigator}
+          />
         </Stack.Navigator>
       )}
     </>
