@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 150,
     width: null,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: '#7788',
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,

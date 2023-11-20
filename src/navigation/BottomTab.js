@@ -14,10 +14,10 @@ const BottomTab = () => {
     <Tab.Navigator
       initialRouteName="HomeScreen"
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '#555555',
-        tabBarActiveBackgroundColor: '#7788',
-        tabBarInactiveBackgroundColor: '#7788',
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveTintColor: '#555',
+        tabBarActiveBackgroundColor: '#fff',
+        tabBarInactiveBackgroundColor: '#fff',
         tabBarLabelStyle: {fontSize: 12},
         headerShown: false,
         tabBarIcon: ({focused, size, color}) => {

@@ -1,3 +1,49 @@
+// import React, {useState, useEffect} from 'react';
+// import {View, Text, FlatList} from 'react-native';
+// import axios from 'axios';
+
+// const fetchOrders = async () => {
+//   try {
+//     const response = await axios.get(
+//       'https://jsonplaceholder.typicode.com/todos',
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// const PendingOrders = () => {
+//   const [orders, setOrders] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const data = await fetchOrders();
+//       setOrders(data);
+//       setIsLoading(false);
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   return (
+//     <View>
+//       {isLoading ? (
+//         <Text>Loading...</Text>
+//       ) : (
+//         <FlatList
+//           data={orders}
+//           renderItem={({item}) => <Text key={item.id}>{item.title}</Text>}
+//           keyExtractor={item => item.id.toString()}
+//         />
+//       )}
+//     </View>
+//   );
+// };
+
+// export default PendingOrders;
+
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -223,3 +269,107 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+// // import React, {useState, useEffect} from 'react';
+// // import {
+// //  View,
+// //  Text,
+// //  StyleSheet,
+// //  FlatList,
+// //  Image,
+// //  TouchableOpacity,
+// // } from 'react-native';
+// // import axios from 'axios';
+
+// // const PendingOrder = ({navigation}) => {
+// //  const [posts, setPosts] = useState([]);
+
+// //  useEffect(() => {
+// //     fetchPosts();
+// //  }, []);
+
+// //  const fetchPosts = async () => {
+// //     try {
+// //       const response = await axios.get('https://your-api-url.com/orders');
+// //       setPosts(response.data);
+// //     } catch (error) {
+// //       console.error(error);
+// //     }
+// //  };
+
+// //  return (
+// //     <View style={styles.container}>
+// //       {/* header */}
+// //       <View style={styles.header_container}>
+// //         <TouchableOpacity onPress={() => navigation.goBack()}>
+// //           <Image
+// //             style={styles.tinyLogo}
+// //             source={{
+// //               uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
+// //             }}
+// //           />
+// //         </TouchableOpacity>
+// //       </View>
+// //       <View style={{alignItems: 'center'}}>
+// //         <Text style={styles.headerText}>Orders</Text>
+// //       </View>
+// //       <FlatList
+// //         style={styles.list}
+// //         data={posts}
+// //         keyExtractor={item => {
+// //           return item.id;
+// //         }}
+// //         ItemSeparatorComponent={() => {
+// //           return <View style={styles.separator} />;
+// //         }}
+// //         renderItem={post => {
+// //           const item = post.item;
+// //           return (
+// //             <View style={styles.card}>
+// //               <Image style={styles.cardImage} source={{uri: item.image}} />
+// //               <View style={styles.cardHeader}>
+// //                 <Text style={styles.title}>{item.title}</Text>
+// //                 <View style={styles.orderContainer}>
+// //                  <Image
+// //                     style={styles.iconData}
+// //                     source={{
+// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
+// //                     }}
+// //                  />
+// //                  <Text style={styles.order}>{item.order}</Text>
+// //                 </View>
+// //                 <View style={styles.orderContainer}>
+// //                  <Image
+// //                     style={styles.iconData}
+// //                     source={{
+// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
+// //                     }}
+// //                  />
+// //                  <Text style={styles.order}>{item.status}</Text>
+// //                 </View>
+// //                 <View style={styles.orderContainer}>
+// //                  <Image
+// //                     style={styles.iconData}
+// //                     source={{
+// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
+// //                     }}
+// //                  />
+// //                  <Text style={styles.order}>{item.done}</Text>
+// //                 </View>
+// //               </View>
+// //             </View>
+// //           );
+// //         }}
+// //       />
+// //       <View style={{alignItems: 'center'}}>
+// //         <TouchableOpacity
+// //           style={styles.button1}
+// //           onPress={() => navigation.navigate('PreviousOrder')}>
+// //           <Text style={styles.buttonText1}>Previous Orders</Text>
+// //         </TouchableOpacity>
+// //       </View>
+// //     </View>
+// //  );
+// // };
+
+// // export default PendingOrder;

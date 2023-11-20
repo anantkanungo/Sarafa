@@ -109,7 +109,7 @@ const PlaceOrder = ({navigation}) => {
     ImagePicker.openPicker({
       width: 300,
       height: 300,
-      // cropping: true,
+      cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
       console.log(image);
