@@ -38,7 +38,7 @@ const PlaceOrder = ({navigation}) => {
   );
 
   const submitData = () => {
-    const userData = {
+    const data = {
       // image: image,
       category: category,
       description: description,
@@ -47,18 +47,8 @@ const PlaceOrder = ({navigation}) => {
       size: size,
       quantity: quantity,
     };
-
-    // Check if any value in userData is empty
-    // the userData object using a for...in loop.
-    // for (let key in userData) {
-    //   if (!userData[key]) {
-    //     Alert.alert('Please fill in all fields.');
-    //     return;
-    //   }
-    // }
-
     const formData = new FormData();
-    formData.append('data', JSON.stringify(userData));
+    formData.append('data', JSON.stringify(data));
     axios
       .post('http://139.59.58.151:8000/placeorder', {
         data: formData,
@@ -71,13 +61,76 @@ const PlaceOrder = ({navigation}) => {
         Alert.alert('Your order is Successful.');
         console.warn(response.data);
         console.warn(formData);
-        clearAllStates();
       })
       .catch(error => {
         Alert.alert('Failed Network error try again.');
         console.warn('error :', error);
       });
   };
+
+  // const submitData = () => {
+  //   // const data = {
+  //   //   // image: image,
+  //   //   category: category,
+  //   //   description: description,
+  //   //   tunch: tunch,
+  //   //   weight: weight,
+  //   //   size: size,
+  //   //   quantity: quantity,
+  //   // };
+
+  //   const data = {
+  //     category: 'ring',
+  //     // image: '1700535903997-CRUD.png',
+  //     description: '5ring',
+  //     quantity: 5,
+  //     size: '5',
+  //     weight: '5',
+  //     tunch: 5,
+  //     urgent: false,
+  //   };
+  //   // Check if any value in userData is empty
+  //   // the userData object using a for...in loop.
+  //   // for (let key in userData) {
+  //   //   if (!userData[key]) {
+  //   //     Alert.alert('Please fill in all fields.');
+  //   //     return;
+  //   //   }
+  //   // }
+
+  //   const formData = new FormData();
+  //   formData.append('data', JSON.stringify(data));
+  //   // const api = 'http://139.59.58.151:8000/placeorder';
+  //   // axios({
+  //   //   url: api,
+  //   //   method: 'POST',
+  //   //   data: formData,
+  //   //   headers: {
+  //   //     Accept: 'application/json',
+  //   //     'Content-Type': 'multipart/form-data',
+  //   //   },
+  //   // })
+  //   // axios.post('http://139.59.58.151:8000/placeorder', formData)
+  //   axios
+  //     .post('http://139.59.58.151:8000/placeorder', {
+  //       data: formData,
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     })
+
+  //     .then(response => {
+  //       Alert.alert('Your order is Successful.');
+  //       console.warn(response.data);
+  //       console.warn(formData);
+  //       // clearAllStates();
+  //     })
+  //     .catch(error => {
+  //       Alert.alert('Failed Network error try again.');
+  //       console.warn('error :', error);
+  //     });
+  // };
 
   const clearAllStates = () => {
     // setImage('');
