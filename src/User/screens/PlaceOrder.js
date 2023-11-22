@@ -38,34 +38,29 @@ const PlaceOrder = ({navigation}) => {
   );
 
   const submitData = () => {
-    const data = {
-      // image: image,
-      category: category,
-      description: description,
-      tunch: tunch,
-      weight: weight,
-      size: size,
-      quantity: quantity,
+    const setData = {
+      name: new Date() + 'image.png',
+      type: 'image/png',
+      uri: image,
     };
+
     const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
+    formData.append('design', setData);
+    formData.append('category', category);
+    formData.append('description', description);
+    formData.append('tunch', tunch);
+    formData.append('weight', weight);
+    formData.append('size', size);
+    formData.append('quantity', quantity);
     axios
-      .post('http://139.59.58.151:8000/placeorder', {
-        data: formData,
+      .post('http://139.59.58.151:8000/placeorder', formData, {
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
         },
       })
-
-      .then(response => {
-        Alert.alert('Your order is Successful.');
-        console.warn(response.data);
-        console.warn(formData);
-      })
-      .catch(error => {
-        Alert.alert('Failed Network error try again.');
-        console.warn('error :', error);
-      });
+      .then(response => console.log(response.data))
+      .catch(error => console.error('Failed to upload image:', error));
   };
 
   // const submitData = () => {
@@ -148,13 +143,19 @@ const PlaceOrder = ({navigation}) => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
-      // cropping: true,
-      compressImageQuality: 0.7,
-    }).then(image => {
-      console.log(image);
-      setImage(image.path);
-      setModalVisible(false);
-    });
+      cropping: true,
+      includeBase64: true,
+      compressImageQuality: 0.5,
+    })
+      .then(image => {
+        console.log(image);
+        const imageData = `data:${image.mime};base64,${image.data}`;
+        setImage(imageData);
+        setModalVisible(false);
+      })
+      .catch(error => {
+        console.error('Failed to open camera:', error);
+      });
   };
 
   // Gallery function
@@ -163,10 +164,13 @@ const PlaceOrder = ({navigation}) => {
       width: 300,
       height: 300,
       cropping: true,
-      compressImageQuality: 0.7,
+      includeBase64: true,
+      compressImageQuality: 0.5,
     }).then(image => {
       console.log(image);
-      setImage(image.path);
+      const imageData = `data:${image.mime};base64,${image.data}`;
+      setImage(imageData);
+      // setImage(image.path);
       setModalVisible(false);
     });
   };
