@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Image,
@@ -20,13 +21,14 @@ import Voice from '@react-native-voice/voice';
 import Styles from './placeOrderStyles';
 import axios from 'axios';
 import ImagePicker from 'react-native-image-crop-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PlaceOrder = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [category, setCategory] = useState();
   const [description, setRecognizedText] = useState('');
-  const [tunch, setTunch] = useState();
+  const [tunch, setTunch] = useState('regular');
   const [weight, onChangeWeight] = useState('');
   const [size, onChangeSize] = useState('');
   const [quantity, onChangeQuantity] = useState('');
@@ -34,13 +36,6 @@ const PlaceOrder = ({navigation}) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isListening, setIsListening] = useState(false);
   const [image, setImage] = useState();
-
-  // Check if there are any images
-  // if (image.length === 0) {
-  //   // Show an alert or something similar
-  //   alert('Please add at least one image');
-  //   return;
-  // }
 
   // if (Array.isArray(image)) {
   //   // Loop through selectedImages and append each image to formData
@@ -59,235 +54,62 @@ const PlaceOrder = ({navigation}) => {
   //   formData.append('design', imgData);
   // }
 
-  // formData.append(
-  //   'design',
-  //   image.map((image, index) => ({
-  //     name: `image${index + 1}.jpg`,
-  //     uri: image,
-  //     type: 'image/jpeg',
-  //   })),
-  // );
-
-  // const submitData = async () => {
-  //   try {
-  //     // Check if any value in userData is empty
-  //     const data = {
-  //       category,
-  //       description,
-  //       tunch,
-  //       weight,
-  //       size,
-  //       quantity,
-  //     };
-  //     // the userData object using a for...in loop.
-  //     for (let key in data) {
-  //       if (!data[key]) {
-  //         Alert.alert('Please fill in all fields.');
-  //         return;
-  //       }
-  //     }
-
-  //     const formData = new FormData();
-  //     const imgData = {
-  //       name: new Date() + 'image.png',
-  //       type: 'image/png',
-  //       uri: Platform.OS === 'android' ? image : image.replace('file://', ''),
-  //       // uri: image,
-  //     };
-
-  //     formData.append('design', imgData);
-  //     formData.append('category', category);
-  //     formData.append('description', description);
-  //     formData.append('tunch', tunch);
-  //     formData.append('weight', weight);
-  //     formData.append('size', size);
-  //     formData.append('quantity', quantity);
-  //     formData.append('urgent', isEnabled);
-
-  //     await axios
-  //       .post('http://139.59.58.151:8000/placeorder', formData, {
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       })
-  //       .then(response => {
-  //         console.log('response', response);
-  //         Alert.alert('Your order is Successful.');
-  //         clearAllStates();
-  //       })
-  //       .catch(error => {
-  //         console.error('Failed to upload image:', error);
-  //       });
-  //   } catch (error) {
-  //     console.log('Error sending images to server: ', error);
-  //   }
-  // };
-
-  // const submitData = async () => {
-  //   try {
-  //     // Check if any value in userData is empty
-  //     const data = {
-  //       category,
-  //       description,
-  //       tunch,
-  //       weight,
-  //       size,
-  //       quantity,
-  //     };
-
-  //     // the userData object using a for...in loop.
-  //     for (let key in data) {
-  //       if (!data[key]) {
-  //         Alert.alert('Please fill in all fields.');
-  //         return;
-  //       }
-  //     }
-
-  //     const formData = new FormData();
-
-  //     // Append multiple images to the formData
-  //     for (let i = 0; i < image.length; i++) {
-  //       const imgData = {
-  //         name: new Date() + `image${i}.png`,
-  //         type: 'image/png',
-  //         uri:
-  //           Platform.OS === 'android'
-  //             ? image[i]
-  //             : image[i].replace('file://', ''),
-  //       };
-
-  //       formData.append(`design[${i}]`, imgData);
-  //     }
-
-  //     formData.append('category', category);
-  //     formData.append('description', description);
-  //     formData.append('tunch', tunch);
-  //     formData.append('weight', weight);
-  //     formData.append('size', size);
-  //     formData.append('quantity', quantity);
-  //     formData.append('urgent', isEnabled);
-
-  //     await axios
-  //       .post('http://139.59.58.151:8000/placeorder', formData, {
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       })
-  //       .then(response => {
-  //         console.log('response', response);
-  //         Alert.alert('Your order is Successful.');
-  //         clearAllStates();
-  //       })
-  //       .catch(error => {
-  //         console.error('Failed to upload images:', error);
-  //       });
-  //   } catch (error) {
-  //     console.log('Error sending images to server: ', error);
-  //   }
-  // };
-
-  // const submitData = async () => {
-  //   try {
-  //     // Check if any value in userData is empty
-  //     const data = {
-  //       category,
-  //       description,
-  //       tunch,
-  //       weight,
-  //       size,
-  //       quantity,
-  //     };
-  //     // the userData object using a for...in loop.
-  //     for (let key in data) {
-  //       if (!data[key]) {
-  //         Alert.alert('Please fill in all fields.');
-  //         return;
-  //       }
-  //     }
-
-  //     const formData = new FormData();
-
-  //     // Assuming 'image' is an array of image URIs
-  //     image.forEach((uri, index) => {
-  //       const imgData = {
-  //         name: `image_${index + 1}.png`,
-  //         type: 'image/png',
-  //         uri: Platform.OS === 'android' ? uri : uri.replace('file://', ''),
-  //       };
-  //       formData.append('design', imgData); // Use square brackets to send an array
-  //     });
-
-  //     formData.append('category', category);
-  //     formData.append('description', description);
-  //     formData.append('tunch', tunch);
-  //     formData.append('weight', weight);
-  //     formData.append('size', size);
-  //     formData.append('quantity', quantity);
-  //     formData.append('urgent', isEnabled);
-
-  //     await axios
-  //       .post('http://139.59.58.151:8000/placeorder', formData, {
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       })
-  //       .then(response => {
-  //         console.log('response', response);
-  //         Alert.alert('Your order is Successful.');
-  //         clearAllStates();
-  //       })
-  //       .catch(error => {
-  //         console.error('Failed to upload image:', error);
-  //       });
-  //   } catch (error) {
-  //     console.log('Error sending images to server: ', error);
-  //   }
-  // };
-
   const submitData = async () => {
     try {
       // Check if any value in userData is empty
       const data = {
+        image,
         category,
         description,
-        tunch,
         weight,
         size,
         quantity,
       };
-
-      // Check for empty values in data
+      const setData = {
+        name: new Date() + 'image.png',
+        type: 'image/png',
+        uri: image,
+      };
+      // the userData object using a for...in loop.
       for (let key in data) {
         if (!data[key]) {
           Alert.alert('Please fill in all fields.');
           return;
         }
       }
-
-      const formData = new FormData();
-
-      // Check if image is defined and an array
-      // if (image && Array.isArray(image)) {
-      //   // Append each image in the array
-      //   image.forEach((img, index) => {
-      //     const imgData = {
-      //       name: `image_${index + 1}.png`,
-      //       type: 'image/png',
-      //       uri: Platform.OS === 'android' ? img : img.replace('file://', ''),
-      //     };
-
-      //     formData.append('design', imgData);
-      //   });
-      // } else {
-      //   console.error('Image is not defined or not an array.');
+      // Check if there are any images
+      // if (image.length === 0) {
+      //   // Show an alert or something similar
+      //   Alert.alert('Please add at least one image');
       //   return;
       // }
+      const formData = new FormData();
+      if (Array.isArray(image) && image.length > 0) {
+        // Iterate through all selected images
+        image.forEach((selectedImage, index) => {
+          // Check if the selectedImage has the expected properties
+          if (selectedImage && selectedImage.data && selectedImage.mime) {
+            const imgData = {
+              name: new Date() + `image${index + 1}.png`,
+              type: 'image/png',
+              uri:
+                Platform.OS === 'android'
+                  ? selectedImage.path
+                  : selectedImage.path.replace('file://', ''),
+            };
+
+            formData.append('design', imgData);
+          } else {
+            console.error(
+              `Image ${index + 1} object is missing expected properties.`,
+            );
+          }
+        });
+      } else {
+        formData.append('design', setData);
+      }
 
       // Append other form data
-      formData.append('design', image);
       formData.append('category', category);
       formData.append('description', description);
       formData.append('tunch', tunch);
@@ -297,15 +119,17 @@ const PlaceOrder = ({navigation}) => {
       formData.append('urgent', isEnabled);
 
       // Make the API request
+      const token = await AsyncStorage.getItem('@AuthToken');
       await axios
         .post('http://139.59.58.151:8000/placeorder', formData, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         })
         .then(response => {
-          console.log('response', response.data);
+          console.log('Response:', response.data);
           Alert.alert('Your order is Successful.');
           clearAllStates();
         })
@@ -329,8 +153,9 @@ const PlaceOrder = ({navigation}) => {
 
   // UploadImage
   // camera function
-  const takePhotoFromCamera = async () => {
-    await ImagePicker.openCamera({
+  // camera function
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
       cropping: true,
@@ -349,65 +174,6 @@ const PlaceOrder = ({navigation}) => {
   };
 
   // Gallery function
-  // const choosePhotoFromLibrary = async () => {
-  //   await ImagePicker.openPicker({
-  //     width: 300,
-  //     height: 300,
-  //     compressImageQuality: 0.5,
-  //     multiple: true,
-  //     // cropping: cropit,
-  //     includeBase64: true,
-  //     includeExif: true,
-  //   })
-  //     .then(image => {
-  //       // console.log(image);
-  //       const imageData = `data:${image.mime};base64,${image.data}`;
-  //       setImage(imageData);
-  //       console.log(imageData);
-  //       // setImage(image.path);
-  //       // console.log(image.path);
-  //       // setImage(image);
-  //       setModalVisible(false);
-  //     })
-  //     .catch(error => {
-  //       console.error('Failed to open gallery:', error);
-  //     });
-  // };
-
-  // const choosePhotoFromLibrary = async () => {
-  //   try {
-  //     const images = await ImagePicker.openPicker({
-  //       width: 300,
-  //       height: 300,
-  //       compressImageQuality: 0.5,
-  //       multiple: true,
-  //       includeBase64: true,
-  //       includeExif: true,
-  //     });
-
-  //     if (Array.isArray(images) && images.length > 0) {
-  //       // Assuming you want to handle only the first selected image
-  //       const selectedImage = images[0];
-
-  //       // Check if the selectedImage has the expected properties
-  //       if (selectedImage && selectedImage.data && selectedImage.mime) {
-  //         const imageData = `data:${selectedImage.mime};base64,${selectedImage.data}`;
-  //         setImage(imageData);
-  //         console.log(imageData);
-  //         setModalVisible(false);
-  //       } else {
-  //         console.error(
-  //           'Selected image object is missing expected properties.',
-  //         );
-  //       }
-  //     } else {
-  //       console.error('No images selected.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to open gallery:', error);
-  //   }
-  // };
-
   const choosePhotoFromLibrary = async () => {
     try {
       const images = await ImagePicker.openPicker({
@@ -417,58 +183,10 @@ const PlaceOrder = ({navigation}) => {
         multiple: true,
         includeBase64: true,
         includeExif: true,
+        // cropping: cropit,
       });
-
-      if (Array.isArray(images) && images.length > 0) {
-        const formData = new FormData();
-
-        // Iterate through all selected images
-        images.forEach((selectedImage, index) => {
-          // Check if the selectedImage has the expected properties
-          if (selectedImage && selectedImage.data && selectedImage.mime) {
-            const imgData = {
-              name: new Date() + `image${index + 1}.png`,
-              type: 'image/png',
-              uri:
-                Platform.OS === 'android'
-                  ? selectedImage.path
-                  : selectedImage.path.replace('file://', ''),
-              // name: `image_${index + 1}.png`,
-              // type: selectedImage.mime,
-              // uri: selectedImage.data,
-            };
-
-            formData.append('design', imgData);
-          } else {
-            console.error(
-              `Image ${index + 1} object is missing expected properties.`,
-            );
-          }
-        });
-
-        // Append other form data if needed
-        // formData.append('category', category);
-        // formData.append('description', description);
-        // ... (other form data)
-
-        // Make the API request
-        await axios
-          .post('http://139.59.58.151:8000/placeorder', formData, {
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then(response => {
-            console.log('Response:', response);
-            setModalVisible(false);
-          })
-          .catch(error => {
-            console.error('Failed to upload images:', error);
-          });
-      } else {
-        console.error('No images selected.');
-      }
+      setImage(images);
+      setModalVisible(false);
     } catch (error) {
       console.error('Failed to open gallery:', error);
     }
@@ -595,6 +313,11 @@ const PlaceOrder = ({navigation}) => {
           <Picker
             selectedValue={category}
             onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
+            <Picker.Item
+              style={{color: '#000'}}
+              label="Select category"
+              value=""
+            />
             <Picker.Item style={{color: '#000'}} label="Ring" value="ring" />
             <Picker.Item
               style={{color: '#000'}}
@@ -603,28 +326,28 @@ const PlaceOrder = ({navigation}) => {
             />
             <Picker.Item
               style={{color: '#000'}}
-              label="bangle"
+              label="Bangle"
               value="bangle"
             />
             <Picker.Item style={{color: '#000'}} label="chain" value="chain" />
             <Picker.Item
               style={{color: '#000'}}
-              label="necklace"
+              label="Necklace"
               value="necklace"
             />
             <Picker.Item
               style={{color: '#000'}}
-              label="nosepin"
+              label="Nosepin"
               value="nosepin"
             />
             <Picker.Item
               style={{color: '#000'}}
-              label="pendants"
+              label="Pendants"
               value="pendants"
             />
             <Picker.Item
               style={{color: '#000'}}
-              label="mangalsutra"
+              label="Mangalsutra"
               value="mangalsutra"
             />
             <Picker.Item
@@ -671,20 +394,23 @@ const PlaceOrder = ({navigation}) => {
               <Picker
                 selectedValue={tunch}
                 onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
-                <Picker.Item style={{color: '#000'}} label="50" value="50" />
-                <Picker.Item style={{color: '#000'}} label="75" value="75" />
-                <Picker.Item style={{color: '#000'}} label="90" value="90" />
                 <Picker.Item
+                  style={{color: '#000'}}
+                  label="Regular"
+                  value="regular"
+                />
+                <Picker.Item style={{color: '#000'}} label="92" value="92" />
+                {/* <Picker.Item
                   style={{color: '#000'}}
                   label={tunch}
                   value={tunch}
                   onChangelable={setTunch}
-                />
+                /> */}
               </Picker>
             </View>
             <Text style={Styles.tunchView1}>%</Text>
           </View>
-          <View style={Styles.tunchView4}>
+          {/* <View style={Styles.tunchView4}>
             <TouchableOpacity
               style={Styles.tunchView5}
               onPress={() => setModalVisible1(true)}>
@@ -695,7 +421,7 @@ const PlaceOrder = ({navigation}) => {
                 }}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         {/* Tunch Modal */}
         <View style={Styles.centeredView}>

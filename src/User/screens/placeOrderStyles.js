@@ -83,7 +83,7 @@ export default StyleSheet.create({
   tunchView2: {
     borderWidth: 1,
     margin: 5,
-    width: 100,
+    width: 137,
     height: 36,
     alignContent: 'center',
     justifyContent: 'center',

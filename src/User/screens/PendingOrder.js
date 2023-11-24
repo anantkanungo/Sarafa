@@ -1,102 +1,68 @@
-// import React, {useState, useEffect} from 'react';
-// import {View, Text, FlatList} from 'react-native';
-// import axios from 'axios';
-
-// const fetchOrders = async () => {
-//   try {
-//     const response = await axios.get(
-//       'https://jsonplaceholder.typicode.com/todos',
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const PendingOrders = () => {
-//   const [orders, setOrders] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const data = await fetchOrders();
-//       setOrders(data);
-//       setIsLoading(false);
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <View>
-//       {isLoading ? (
-//         <Text>Loading...</Text>
-//       ) : (
-//         <FlatList
-//           data={orders}
-//           renderItem={({item}) => <Text key={item.id}>{item.title}</Text>}
-//           keyExtractor={item => item.id.toString()}
-//         />
-//       )}
-//     </View>
-//   );
-// };
-
-// export default PendingOrders;
-
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
+  Text,
+  FlatList,
   TouchableOpacity,
   Image,
-  FlatList,
+  StyleSheet,
 } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PendingOrder = ({navigation}) => {
-  const data = [
-    {
-      id: 1,
-      title: 'RG/833/234',
-      order: 'Order Confirmed',
-      status: 'Processing',
-      done: 'Completed',
-      image: 'https://m.media-amazon.com/images/I/71tg+iUHJ9L._AC_UY1100_.jpg',
-    },
-    {
-      id: 2,
-      title: 'Sit amet, consectetuer',
-      order: '2018-08-12 12:00 pm',
-      image: 'https://bootdey.com/image/400x200/7B68EE/000000',
-    },
-    {
-      id: 3,
-      title: 'Dipiscing elit. Aenean ',
-      order: '2017-08-05 12:21 pm',
-      image: 'https://bootdey.com/image/400x200/000080/000000',
-    },
-    {
-      id: 4,
-      title: 'Commodo ligula eget dolor.',
-      order: '2015-08-12 12:00 pm',
-      image: 'https://bootdey.com/image/400x200/48D1CC/000000',
-    },
-    {
-      id: 5,
-      title: 'Aenean massa. Cum sociis',
-      order: '2013-06-12 12:11 pm',
-      image: 'https://bootdey.com/image/400x200/9370DB/000000',
-    },
-  ];
+const fetchOrders = async () => {
+  try {
+    const token = await AsyncStorage.getItem('@AuthToken');
+    const response = await axios.get(
+      'http://139.59.58.151:8000/pendingorders',
+      {
+        headers: {
+          Accept: 'application/json',
+          // 'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.result;
+    // console.log(response.data.result.category);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  const [posts, setPosts] = useState(data);
+const PendingOrders = () => {
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchOrders();
+      setOrders(data);
+      setIsLoading(false);
+      console.log(orders);
+    };
+
+    fetchData();
+  }, []);
+
+  // return (
+  //   <View>
+  //     {isLoading ? (
+  //       <Text>Loading...</Text>
+  //     ) : (
+  //       <FlatList
+  //         data={orders}
+  //         renderItem={({item}) => <Text key={item.id}>{item.category}</Text>}
+  //         keyExtractor={item => item.id}
+  //       />
+  //     )}
+  //   </View>
+  // );
   return (
     <View style={styles.container}>
       {/* header */}
       <View style={styles.header_container}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity>
           <Image
             style={styles.tinyLogo}
             source={{
@@ -108,58 +74,61 @@ const PendingOrder = ({navigation}) => {
       <View style={{alignItems: 'center'}}>
         <Text style={styles.headerText}>Orders</Text>
       </View>
-      <FlatList
-        style={styles.list}
-        data={posts}
-        keyExtractor={item => {
-          return item.id;
-        }}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.separator} />;
-        }}
-        renderItem={post => {
-          const item = post.item;
-          return (
-            <View style={styles.card}>
-              <Image style={styles.cardImage} source={{uri: item.image}} />
-              <View style={styles.cardHeader}>
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.orderContainer}>
-                  <Image
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          style={styles.list}
+          data={orders}
+          keyExtractor={item => {
+            return item.id;
+          }}
+          ItemSeparatorComponent={() => {
+            return <View style={styles.separator} />;
+          }}
+          renderItem={orders => {
+            const item = orders.item;
+            return (
+              <View style={styles.card}>
+                {/* <Image style={styles.cardImage} source={{uri: item.image}} /> */}
+                <View style={styles.cardHeader}>
+                  <Text style={styles.title}>{item.category}</Text>
+                  <Text style={styles.order}>Quantity: {item.quantity}</Text>
+                  <View style={styles.orderContainer}>
+                    {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
-                  />
-                  <Text style={styles.order}>{item.order}</Text>
-                </View>
-                <View style={styles.orderContainer}>
-                  <Image
+                  /> */}
+                    {/* <Text style={styles.order}>{item.order}</Text> */}
+                  </View>
+                  <View style={styles.orderContainer}>
+                    {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
-                  />
-                  <Text style={styles.order}>{item.status}</Text>
-                </View>
-                <View style={styles.orderContainer}>
-                  <Image
+                  /> */}
+                    {/* <Text style={styles.order}>{item.status}</Text> */}
+                  </View>
+                  <View style={styles.orderContainer}>
+                    {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
-                  />
-                  <Text style={styles.order}>{item.done}</Text>
+                  /> */}
+                    {/* <Text style={styles.order}>{item.done}</Text> */}
+                  </View>
                 </View>
               </View>
-            </View>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      )}
       <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          style={styles.button1}
-          onPress={() => navigation.navigate('PreviousOrder')}>
+        <TouchableOpacity style={styles.button1}>
           <Text style={styles.buttonText1}>Previous Orders</Text>
         </TouchableOpacity>
       </View>
@@ -167,7 +136,7 @@ const PendingOrder = ({navigation}) => {
   );
 };
 
-export default PendingOrder;
+export default PendingOrders;
 
 const styles = StyleSheet.create({
   container: {
@@ -269,107 +238,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-// // import React, {useState, useEffect} from 'react';
-// // import {
-// //  View,
-// //  Text,
-// //  StyleSheet,
-// //  FlatList,
-// //  Image,
-// //  TouchableOpacity,
-// // } from 'react-native';
-// // import axios from 'axios';
-
-// // const PendingOrder = ({navigation}) => {
-// //  const [posts, setPosts] = useState([]);
-
-// //  useEffect(() => {
-// //     fetchPosts();
-// //  }, []);
-
-// //  const fetchPosts = async () => {
-// //     try {
-// //       const response = await axios.get('https://your-api-url.com/orders');
-// //       setPosts(response.data);
-// //     } catch (error) {
-// //       console.error(error);
-// //     }
-// //  };
-
-// //  return (
-// //     <View style={styles.container}>
-// //       {/* header */}
-// //       <View style={styles.header_container}>
-// //         <TouchableOpacity onPress={() => navigation.goBack()}>
-// //           <Image
-// //             style={styles.tinyLogo}
-// //             source={{
-// //               uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-// //             }}
-// //           />
-// //         </TouchableOpacity>
-// //       </View>
-// //       <View style={{alignItems: 'center'}}>
-// //         <Text style={styles.headerText}>Orders</Text>
-// //       </View>
-// //       <FlatList
-// //         style={styles.list}
-// //         data={posts}
-// //         keyExtractor={item => {
-// //           return item.id;
-// //         }}
-// //         ItemSeparatorComponent={() => {
-// //           return <View style={styles.separator} />;
-// //         }}
-// //         renderItem={post => {
-// //           const item = post.item;
-// //           return (
-// //             <View style={styles.card}>
-// //               <Image style={styles.cardImage} source={{uri: item.image}} />
-// //               <View style={styles.cardHeader}>
-// //                 <Text style={styles.title}>{item.title}</Text>
-// //                 <View style={styles.orderContainer}>
-// //                  <Image
-// //                     style={styles.iconData}
-// //                     source={{
-// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-// //                     }}
-// //                  />
-// //                  <Text style={styles.order}>{item.order}</Text>
-// //                 </View>
-// //                 <View style={styles.orderContainer}>
-// //                  <Image
-// //                     style={styles.iconData}
-// //                     source={{
-// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-// //                     }}
-// //                  />
-// //                  <Text style={styles.order}>{item.status}</Text>
-// //                 </View>
-// //                 <View style={styles.orderContainer}>
-// //                  <Image
-// //                     style={styles.iconData}
-// //                     source={{
-// //                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-// //                     }}
-// //                  />
-// //                  <Text style={styles.order}>{item.done}</Text>
-// //                 </View>
-// //               </View>
-// //             </View>
-// //           );
-// //         }}
-// //       />
-// //       <View style={{alignItems: 'center'}}>
-// //         <TouchableOpacity
-// //           style={styles.button1}
-// //           onPress={() => navigation.navigate('PreviousOrder')}>
-// //           <Text style={styles.buttonText1}>Previous Orders</Text>
-// //         </TouchableOpacity>
-// //       </View>
-// //     </View>
-// //  );
-// // };
-
-// // export default PendingOrder;
