@@ -8,6 +8,7 @@ export default StyleSheet.create({
   image: {
     height: 100,
     width: 100,
+    resizeMode: 'contain',
     borderRadius: 6,
   },
   tinyLogo: {
@@ -76,7 +77,7 @@ export default StyleSheet.create({
   },
   tunchView1: {
     fontSize: 28,
-    marginHorizontal: 24,
+    marginHorizontal: 14,
     color: '#000000',
     fontWeight: 'bold',
   },

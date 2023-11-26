@@ -3,12 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
+  FlatList,
+  Dimensions,
   TouchableOpacity,
   Image,
-  FlatList,
+  Modal,
+  ScrollView,
 } from 'react-native';
 
 const Catagories = ({navigation}) => {
+  const numColumns = 3;
   const data = [
     {
       id: 1,
@@ -56,13 +60,122 @@ const Catagories = ({navigation}) => {
       image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
     },
     {
-      id: 9,
+      id: 10,
       title: 'Product 10',
       image: 'https://bootdey.com/image/400x200/FA8072/000000',
     },
+    {id: 11, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
+    {id: 12, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
+    {id: 13, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
+    {id: 14, image: 'https://bootdey.com/img/Content/avatar/avatar4.png'},
+    {id: 15, image: 'https://bootdey.com/img/Content/avatar/avatar5.png'},
+    {id: 16, image: 'https://bootdey.com/img/Content/avatar/avatar6.png'},
+    {id: 17, image: 'https://bootdey.com/img/Content/avatar/avatar7.png'},
+    {id: 18, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
+    {id: 19, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
+    {id: 20, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
+    {id: 21, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
+    {id: 22, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
+    {id: 23, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
+    {id: 24, image: 'https://bootdey.com/img/Content/avatar/avatar4.png'},
+    {id: 25, image: 'https://bootdey.com/img/Content/avatar/avatar5.png'},
+    {id: 26, image: 'https://bootdey.com/img/Content/avatar/avatar6.png'},
+    {id: 27, image: 'https://bootdey.com/img/Content/avatar/avatar7.png'},
+    {id: 28, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
+    {id: 29, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
+    {id: 30, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
   ];
 
-  const [results, setResults] = useState(data);
+  const [options, setOptions] = useState(data);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [userSelected, setUserSelected] = useState({});
+  // a state to toggle the multi-select mode
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [multiSelectMode, setMultiSelectMode] = useState(false);
+
+  const selectItem = (user, isLongPress) => {
+    if (isLongPress) {
+      setMultiSelectMode(true);
+      toggleSelection(user);
+    } else {
+      if (multiSelectMode) {
+        toggleSelection(user);
+      } else {
+        setUserSelected(user);
+        setModalVisible(true);
+      }
+    }
+  };
+
+  const toggleSelection = user => {
+    const index = selectedItems.findIndex(item => item.id === user.id);
+
+    if (index === -1) {
+      // Item not in selection, add it
+      setSelectedItems([...selectedItems, user]);
+    } else {
+      // Item already in selection, remove it
+      const newSelection = [...selectedItems];
+      newSelection.splice(index, 1);
+      setSelectedItems(newSelection);
+    }
+  };
+
+  // selectItem = user => {
+  //   setUserSelected(user);
+  //   setModalVisible(true);
+  // };
+
+  const renderItem = ({item, index}) => {
+    if (item.empty === true) {
+      return <View style={[styles.item, styles.itemInvisible]} />;
+    }
+    var itemDimension = Dimensions.get('window').width / numColumns;
+    return (
+      <TouchableOpacity
+        style={[styles.item, {height: itemDimension}]}
+        onPress={() => selectItem(item, false)}
+        onLongPress={() => selectItem(item, true)}
+        activeOpacity={0.8}>
+        {/* <TouchableOpacity
+        style={[styles.item, {height: itemDimension}]}
+        onPress={() => selectItem(item)}> */}
+        <View style={styles.innerItem}>
+          <Image
+            style={{height: itemDimension - 2, width: itemDimension - 2}}
+            source={{uri: item.image}}
+          />
+          {multiSelectMode && selectedItems.includes(item) && (
+            <View style={styles.tickContainer}>
+              <Text style={styles.tick}>✓</Text>
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const formatRow = (data, numColumns) => {
+    const numberOfFullRows = Math.floor(data.length / numColumns);
+    let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+    while (
+      numberOfElementsLastRow !== numColumns &&
+      numberOfElementsLastRow !== 0
+    ) {
+      data.push({id: `blank-${numberOfElementsLastRow}`, empty: true});
+      numberOfElementsLastRow++;
+    }
+    return data;
+  };
+
+  const handleSubmit = () => {
+    // Perform the action with selectedItems
+    console.log('Selected Items:', selectedItems);
+
+    // Reset state
+    setSelectedItems([]);
+    setMultiSelectMode(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -80,6 +193,12 @@ const Catagories = ({navigation}) => {
       <View style={{alignItems: 'center'}}>
         <Text style={styles.headerText}>Earrings</Text>
       </View>
+      {multiSelectMode && selectedItems.length > 0 && (
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+      )}
+
       {/* button */}
       {/* <View style={styles.sbContainer}>
         <TouchableOpacity style={styles.button} onPress={() => {}}>
@@ -90,38 +209,61 @@ const Catagories = ({navigation}) => {
         </TouchableOpacity>
       </View> */}
       <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={results}
-        horizontal={false}
-        numColumns={2}
+        data={formatRow(options, numColumns)}
         keyExtractor={item => {
           return item.id;
         }}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.separator} />;
-        }}
-        renderItem={post => {
-          const item = post.item;
-          return (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => navigation.navigate('Order')}>
-              <View style={styles.imageContainer}>
-                <Image style={styles.cardImage} source={{uri: item.image}} />
-              </View>
-              <View style={styles.cardContent}>
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
+        renderItem={renderItem}
+        numColumns={numColumns}
       />
-      {/* <View style={{alignItems: 'center'}}>
-        <TouchableOpacity style={styles.button1} onPress={() => {}}>
-          <Text style={styles.buttonText1}>Place Order</Text>
-        </TouchableOpacity>
-      </View> */}
+
+      {
+        <Text style={styles.txt}>
+          {!multiSelectMode
+            ? 'Long press to select'
+            : selectedItems.length + ' item selected'}
+        </Text>
+      }
+
+      <Modal
+        animationType={'fade'}
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+        visible={modalVisible}>
+        <View style={styles.popupOverlay}>
+          <View style={styles.popup}>
+            <View style={styles.popupContent}>
+              <ScrollView contentContainerStyle={styles.modalInfo}>
+                <Image
+                  style={{width: 200, height: 200}}
+                  source={{uri: userSelected.image}}
+                />
+                <Text style={styles.title}>{userSelected.title}</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    color: '#555',
+                    marginTop: 10,
+                  }}>
+                  Description Lorem dolor sit amet, consectetuer adipiscing
+                  elit. Aenean commodo ligula..
+                </Text>
+              </ScrollView>
+            </View>
+            <View style={styles.popupButtons}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+                style={styles.btnClose}>
+                <Text style={styles.txtClose}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -131,58 +273,6 @@ export default Catagories;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 20,
-  },
-  list: {
-    paddingHorizontal: 10,
-  },
-  listContainer: {
-    alignItems: 'center',
-  },
-  separator: {
-    // marginTop: 10,
-  },
-  /******** card **************/
-  card: {
-    marginVertical: 8,
-    backgroundColor: 'white',
-    flexBasis: '45%',
-    marginHorizontal: 10,
-  },
-  cardContent: {
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#7788',
-    borderBottomLeftRadius: 5,
-    borderBottomEndRadius: 5,
-  },
-  cardImage: {
-    flex: 1,
-    height: 150,
-    width: null,
-    borderWidth: 2,
-    borderColor: '#7788',
-    borderTopRightRadius: 5,
-    borderTopLeftRadius: 5,
-  },
-  imageContainer: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.32,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  /******** card components **************/
-  title: {
-    fontSize: 18,
-    flex: 1,
-    color: '#000',
-    fontWeight: 'bold',
   },
   /* header */
   tinyLogo: {
@@ -235,5 +325,103 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  item: {
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  itemInvisible: {
+    backgroundColor: 'transparent',
+  },
+
+  /************ modals ************/
+  popup: {
+    backgroundColor: 'white',
+    marginTop: 80,
+    marginHorizontal: 20,
+    borderRadius: 7,
+  },
+  popupOverlay: {
+    backgroundColor: '#00000057',
+    flex: 1,
+    marginTop: 20,
+  },
+  popupContent: {
+    //alignItems: 'center',
+    margin: 5,
+    height: 250,
+  },
+  popupHeader: {
+    marginBottom: 45,
+  },
+  popupButtons: {
+    marginTop: 15,
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    justifyContent: 'center',
+  },
+  popupButton: {
+    flex: 1,
+    marginVertical: 16,
+  },
+  btnClose: {
+    flex: 1,
+    height: 40,
+    backgroundColor: '#20b2aa',
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalInfo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  txtClose: {
+    color: 'white',
+  },
+  title: {
+    fontSize: 18,
+    flex: 1,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  // Style Submit Button:
+  submitButton: {
+    backgroundColor: '#20b2aa',
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  submitButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  txt: {
+    textAlign: 'center',
+    padding: 2,
+  },
+  innerItem: {
+    flex: 1,
+    // backgroundColor: '#7e9e0b',
+  },
+  tickContainer: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    // backgroundColor: 'transparent',
+    backgroundColor: '#35A7FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+    borderRadius: 5,
+  },
+  tick: {
+    fontSize: 20,
+    color: '#fff',
   },
 });

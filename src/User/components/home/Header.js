@@ -29,7 +29,7 @@ const Header = ({customerLogout}) => {
             Hello, UserName
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
-            <FontAwesome5 name="sign-out-alt" size={30} color="#500" />
+            <FontAwesome5 name="sign-out-alt" size={30} color="#fff" />
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     overflow: 'hidden',
     paddingVertical: 20,
     paddingHorizontal: 30,
     justifyContent: 'space-between',
-    paddingBottom: 32,
+    paddingBottom: 22,
     backgroundColor: '#7788',
     opacity: 0.8,
   },

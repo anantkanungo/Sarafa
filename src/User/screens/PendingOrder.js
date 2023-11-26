@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import FastImage from 'react-native-fast-image';
 
 const fetchOrders = async () => {
   try {
@@ -18,13 +19,13 @@ const fetchOrders = async () => {
       {
         headers: {
           Accept: 'application/json',
-          // 'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       },
     );
+    // console.log(response);
+    console.log(response.data.result);
     return response.data.result;
-    // console.log(response.data.result.category);
   } catch (error) {
     console.log(error);
   }
@@ -36,10 +37,13 @@ const PendingOrders = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchOrders();
-      setOrders(data);
-      setIsLoading(false);
-      console.log(orders);
+      try {
+        const data = await fetchOrders();
+        setOrders(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchData();
@@ -58,6 +62,7 @@ const PendingOrders = () => {
   //     )}
   //   </View>
   // );
+
   return (
     <View style={styles.container}>
       {/* header */}
@@ -74,59 +79,77 @@ const PendingOrders = () => {
       <View style={{alignItems: 'center'}}>
         <Text style={styles.headerText}>Orders</Text>
       </View>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          style={styles.list}
-          data={orders}
-          keyExtractor={item => {
-            return item.id;
-          }}
-          ItemSeparatorComponent={() => {
-            return <View style={styles.separator} />;
-          }}
-          renderItem={orders => {
-            const item = orders.item;
-            return (
-              <View style={styles.card}>
-                {/* <Image style={styles.cardImage} source={{uri: item.image}} /> */}
-                <View style={styles.cardHeader}>
-                  <Text style={styles.title}>{item.category}</Text>
-                  <Text style={styles.order}>Quantity: {item.quantity}</Text>
-                  <View style={styles.orderContainer}>
-                    {/* <Image
+      <FlatList
+        style={styles.list}
+        data={orders}
+        keyExtractor={item => {
+          return item._id;
+        }}
+        ItemSeparatorComponent={() => {
+          return <View style={styles.separator} />;
+        }}
+        renderItem={orders => {
+          const item = orders.item;
+          console.log(item.image[0]);
+
+          return (
+            <View style={styles.card} key={item.id}>
+              <Image
+                style={styles.cardImage}
+                source={{
+                  uri: `data:image/${item.format};base64,${item.image[0]}`,
+                }}
+              />
+              {/* <FastImage
+                  style={styles.cardImage}
+                  source={{
+                    uri: `data:image/${item.format};base64,${item.image[0]}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                /> */}
+              <View style={styles.cardHeader}>
+                <Text style={styles.title}>{item.category}</Text>
+                <Text style={styles.order}>
+                  Description: {item.description}
+                </Text>
+                <Text style={styles.order}>Tunch: {item.tunch}</Text>
+                <Text style={styles.order}>Weight: {item.weight}</Text>
+                <Text style={styles.order}>Size: {item.size}</Text>
+                <Text style={styles.order}>Quantity: {item.quantity}</Text>
+                <Text style={styles.order}>Status: {item.statusIs}</Text>
+                <View style={styles.orderContainer}>
+                  {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
                   /> */}
-                    {/* <Text style={styles.order}>{item.order}</Text> */}
-                  </View>
-                  <View style={styles.orderContainer}>
-                    {/* <Image
+                  {/* <Text style={styles.order}>{item.order}</Text> */}
+                </View>
+                <View style={styles.orderContainer}>
+                  {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
                   /> */}
-                    {/* <Text style={styles.order}>{item.status}</Text> */}
-                  </View>
-                  <View style={styles.orderContainer}>
-                    {/* <Image
+                  {/* <Text style={styles.order}>{item.status}</Text> */}
+                </View>
+                <View style={styles.orderContainer}>
+                  {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
                   /> */}
-                    {/* <Text style={styles.order}>{item.done}</Text> */}
-                  </View>
+                  {/* <Text style={styles.order}>{item.done}</Text> */}
                 </View>
               </View>
-            );
-          }}
-        />
-      )}
+            </View>
+          );
+        }}
+      />
       <View style={{alignItems: 'center'}}>
         <TouchableOpacity style={styles.button1}>
           <Text style={styles.buttonText1}>Previous Orders</Text>
@@ -175,6 +198,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     height: 100,
     width: 100,
+    // resizeMode: 'contain',
     // width: null,
     borderWidth: 1,
     borderColor: '#000000',
@@ -186,6 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     color: '#000',
+    textTransform: 'capitalize',
   },
   order: {
     fontSize: 13,
@@ -202,7 +227,7 @@ const styles = StyleSheet.create({
   },
   orderContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   tinyLogo: {
     width: 40,

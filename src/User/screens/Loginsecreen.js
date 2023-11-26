@@ -38,6 +38,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               style={styles.input}
               onChangeText={e => setUserId(e)}
               // label="User"
+              autoCapitalize="none"
               placeholder="User Id"
               placeholderTextColor="#495057"
             />
