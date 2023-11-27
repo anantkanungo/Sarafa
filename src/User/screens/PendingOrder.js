@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 
 const fetchOrders = async () => {
   try {
@@ -83,31 +83,26 @@ const PendingOrders = () => {
         style={styles.list}
         data={orders}
         keyExtractor={item => {
-          return item._id;
+          return item._id.toString();
         }}
         ItemSeparatorComponent={() => {
           return <View style={styles.separator} />;
         }}
         renderItem={orders => {
           const item = orders.item;
-          console.log(item.image[0]);
-
+          // console.log(item.image[0]);
           return (
-            <View style={styles.card} key={item.id}>
-              <Image
-                style={styles.cardImage}
+            <View style={styles.card} key={item._id}>
+              <FastImage
+                style={{width: 100, height: 100}}
                 source={{
-                  uri: `data:image/${item.format};base64,${item.image[0]}`,
+                  uri: item.image[0],
+                  priority: FastImage.priority.high,
                 }}
+                resizeMode={FastImage.resizeMode.contain}
+                onLoad={() => console.log('Image loaded successfully')}
+                onError={error => console.error('Image load error:', error)}
               />
-              {/* <FastImage
-                  style={styles.cardImage}
-                  source={{
-                    uri: `data:image/${item.format};base64,${item.image[0]}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                /> */}
               <View style={styles.cardHeader}>
                 <Text style={styles.title}>{item.category}</Text>
                 <Text style={styles.order}>
@@ -126,24 +121,6 @@ const PendingOrders = () => {
                     }}
                   /> */}
                   {/* <Text style={styles.order}>{item.order}</Text> */}
-                </View>
-                <View style={styles.orderContainer}>
-                  {/* <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  /> */}
-                  {/* <Text style={styles.order}>{item.status}</Text> */}
-                </View>
-                <View style={styles.orderContainer}>
-                  {/* <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  /> */}
-                  {/* <Text style={styles.order}>{item.done}</Text> */}
                 </View>
               </View>
             </View>
