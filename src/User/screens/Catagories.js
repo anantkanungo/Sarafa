@@ -9,10 +9,20 @@ import {
   Image,
   Modal,
   ScrollView,
+  LayoutAnimation,
 } from 'react-native';
+import Checkmark from '../../assets/icons8-checkmark-48.png';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Catagories = ({navigation}) => {
-  const numColumns = 3;
+  // const numColumns = 3;
+  const [numColumns, setNumColumns] = useState(3);
+
+  const setColumnCount = val => {
+    LayoutAnimation.easeInEaseOut();
+    setNumColumns(val);
+  };
+
   const data = [
     {
       id: 1,
@@ -92,14 +102,16 @@ const Catagories = ({navigation}) => {
   // a state to toggle the multi-select mode
   const [selectedItems, setSelectedItems] = useState([]);
   const [multiSelectMode, setMultiSelectMode] = useState(false);
+  const [clearButtonVisible, setClearButtonVisible] = useState(false);
 
   const selectItem = (user, isLongPress) => {
     if (isLongPress) {
       setMultiSelectMode(true);
       toggleSelection(user);
     } else {
-      if (multiSelectMode) {
+      if (multiSelectMode || clearButtonVisible) {
         toggleSelection(user);
+        setClearButtonVisible(true);
       } else {
         setUserSelected(user);
         setModalVisible(true);
@@ -147,7 +159,8 @@ const Catagories = ({navigation}) => {
           />
           {multiSelectMode && selectedItems.includes(item) && (
             <View style={styles.tickContainer}>
-              <Text style={styles.tick}>✓</Text>
+              {/* <Text style={styles.tick}>✓</Text> */}
+              <Image style={styles.tick} source={Checkmark} />
             </View>
           )}
         </View>
@@ -175,6 +188,7 @@ const Catagories = ({navigation}) => {
     // Reset state
     setSelectedItems([]);
     setMultiSelectMode(false);
+    setClearButtonVisible(false);
   };
 
   return (
@@ -189,15 +203,50 @@ const Catagories = ({navigation}) => {
             }}
           />
         </TouchableOpacity>
-      </View>
-      <View style={{alignItems: 'center'}}>
+
         <Text style={styles.headerText}>Earrings</Text>
       </View>
-      {multiSelectMode && selectedItems.length > 0 && (
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
-      )}
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: 10,
+          marginVertical: 5,
+        }}>
+        {clearButtonVisible && (
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={styles.clearButton}
+              onPress={() => {
+                setSelectedItems([]);
+                setMultiSelectMode(false);
+                setClearButtonVisible(false);
+              }}>
+              <FontAwesome5 name={'times'} size={20} color={'#000'} />
+            </TouchableOpacity>
+
+            <Text
+              style={[
+                styles.txt,
+                {
+                  fontWeight: 'bold',
+                  color: '#000',
+                  marginLeft: 30,
+                },
+              ]}>
+              {!multiSelectMode
+                ? 'Long press to select'
+                : selectedItems.length + ' item selected'}
+            </Text>
+          </View>
+        )}
+        {multiSelectMode && selectedItems.length > 0 && (
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       {/* button */}
       {/* <View style={styles.sbContainer}>
@@ -208,22 +257,45 @@ const Catagories = ({navigation}) => {
           <Text style={styles.buttonText}>Filter</Text>
         </TouchableOpacity>
       </View> */}
-      <FlatList
+      {/* <FlatList
         data={formatRow(options, numColumns)}
         keyExtractor={item => {
           return item.id;
         }}
         renderItem={renderItem}
         numColumns={numColumns}
+      /> */}
+      <FlatList
+        key={numColumns} // Add key prop here
+        data={formatRow(options, numColumns)}
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
+        numColumns={numColumns}
       />
 
       {
         <Text style={styles.txt}>
-          {!multiSelectMode
-            ? 'Long press to select'
-            : selectedItems.length + ' item selected'}
+          {
+            !multiSelectMode
+              ? 'Long press to select'
+              : 'Click Submit to confirm order'
+            // : selectedItems.length + ' item selected'
+          }
         </Text>
       }
+
+      <TouchableOpacity
+        style={styles.button3}
+        onPress={() => setColumnCount(numColumns - 1)}
+        disabled={numColumns <= 1}>
+        <FontAwesome5 name={'minus'} size={20} color={'#fff'} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button2}
+        onPress={() => setColumnCount(numColumns + 1)}
+        disabled={numColumns >= 10}>
+        <FontAwesome5 name={'plus'} size={20} color={'#fff'} />
+      </TouchableOpacity>
 
       <Modal
         animationType={'fade'}
@@ -285,13 +357,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginLeft: 10,
+    marginHorizontal: 10,
   },
   headerText: {
-    fontSize: 24,
+    // marginRight: 23,
+    fontSize: 20,
     color: '#000000',
     fontWeight: 'bold',
-    marginBottom: 6,
   },
   button1: {
     backgroundColor: '#454545',
@@ -301,12 +373,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     width: 150,
-  },
-  buttonText1: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
   },
   sbContainer: {
     // alignContent: 'center',
@@ -319,6 +385,30 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // marginTop: 5,
     width: '30%',
+  },
+  button2: {
+    width: 35,
+    height: 35,
+    borderRadius: 30,
+    backgroundColor: '#454545',
+    position: 'absolute',
+    top: '50%',
+    right: 20,
+    elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button3: {
+    width: 35,
+    height: 35,
+    borderRadius: 30,
+    backgroundColor: '#454545',
+    position: 'absolute',
+    top: '40%',
+    right: 20,
+    elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
@@ -351,7 +441,7 @@ const styles = StyleSheet.create({
   popupContent: {
     //alignItems: 'center',
     margin: 5,
-    height: 250,
+    height: 350,
   },
   popupHeader: {
     marginBottom: 45,
@@ -374,6 +464,7 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 7,
   },
   modalInfo: {
     alignItems: 'center',
@@ -390,16 +481,23 @@ const styles = StyleSheet.create({
   },
   // Style Submit Button:
   submitButton: {
-    backgroundColor: '#20b2aa',
-    paddingVertical: 10,
+    // backgroundColor: '#20b2aa',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
   },
   submitButtonText: {
-    color: 'white',
+    color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  clearButton: {
+    // backgroundColor: '#454545',
+    // paddingVertical: 5,
+    // paddingHorizontal: 15,
+    // borderRadius: 5,
+    // marginTop: 5,
+    // marginBottom: 10,
+    marginLeft: 10,
   },
   txt: {
     textAlign: 'center',
@@ -413,15 +511,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     right: 5,
-    // backgroundColor: 'transparent',
-    backgroundColor: '#35A7FF',
+    backgroundColor: 'transparent',
+    // backgroundColor: '#35A7FF',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
     borderRadius: 5,
   },
   tick: {
-    fontSize: 20,
-    color: '#fff',
+    // fontSize: 20,
+    // color: '#fff',
+    width: 30,
+    height: 30,
   },
 });

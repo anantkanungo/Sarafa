@@ -111,7 +111,7 @@ export default StyleSheet.create({
     margin: 8,
     borderWidth: 1,
     padding: 10,
-    width: 70,
+    width: 75,
     fontSize: 18,
     borderRadius: 5,
     color: '#000000',

@@ -481,7 +481,7 @@ const PlaceOrder = ({navigation}) => {
             placeholderTextColor="#495057"
             onChangeText={onChangeWeight}
             value={weight}
-            maxLength={3}
+            maxLength={6}
             keyboardType="numeric"
           />
           <Text style={Styles.text}>Size :</Text>
@@ -490,7 +490,7 @@ const PlaceOrder = ({navigation}) => {
             placeholder=""
             onChangeText={onChangeSize}
             value={size}
-            maxLength={3}
+            maxLength={6}
             keyboardType="numeric"
           />
         </View>
