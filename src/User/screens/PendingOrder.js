@@ -1,15 +1,13 @@
-import {View, Text} from 'react-native';
 import React from 'react';
-// import Page from '../components/recording/Recorder';
-// import Recorder from '../components/recording/Recorder.js';
-// import Player from '../components/recording/Player';
-import RecorderPlayerComponent from '../components/recording/Test.js';
+import Test3 from '../components/camera/Test3';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import PinchTest from '../components/PinchTest';
 
 const PendingOrder = () => {
   return (
-    <View>
-      <RecorderPlayerComponent />
-    </View>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <PinchTest />
+    </GestureHandlerRootView>
   );
 };
 
@@ -112,7 +110,7 @@ export default PendingOrder;
 //           return (
 //             <View style={styles.card} key={item._id}>
 //               <FastImage
-//                 style={{width: 100, height: 100}}
+//                 style={styles.cardImage}
 //                 source={{
 //                   uri: item.image[0],
 //                   // uri: `data:image/jpeg;base64,${item.image}`,
@@ -191,11 +189,9 @@ export default PendingOrder;
 //     paddingHorizontal: 16,
 //   },
 //   cardImage: {
-//     // flex: 1,
-//     height: 100,
-//     width: 100,
-//     // resizeMode: 'contain',
-//     // width: null,
+//     flex: 1,
+//     height: 'auto',
+//     resizeMode: 'contain',
 //     borderWidth: 1,
 //     borderColor: '#000000',
 //     borderRadius: 5,
@@ -226,7 +222,7 @@ export default PendingOrder;
 //     // marginBottom: 10,
 //   },
 //   tinyLogo: {
-//     width: 40,
+//     width: 25,
 //     height: 40,
 //     resizeMode: 'contain',
 //   },

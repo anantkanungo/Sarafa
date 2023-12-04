@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Button} from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
-import Permissions from 'react-native-permissions';
+// import Permissions from 'react-native-permissions';
 
 const RecorderPlayerComponent = () => {
   const [recorderPlayer, setRecorderPlayer] = useState(
@@ -12,20 +12,10 @@ const RecorderPlayerComponent = () => {
 
   const startRecording = async () => {
     try {
-      const result = await Permissions.requestMultiple([
-        'microphone',
-        'storage',
-      ]);
-      if (
-        result.microphone === 'authorized' &&
-        result.storage === 'authorized'
-      ) {
-        const path = RNFetchBlob.fs.dirs.DocumentDir + '/test.mp3';
-        await recorderPlayer.startRecorder(path);
-        setAudioPath(path);
-      } else {
-        console.log('Permission denied');
-      }
+      const path = RNFetchBlob.fs.dirs.DocumentDir + '/test.mp3';
+      const result = await recorderPlayer.startRecorder(path);
+      setAudioPath(path);
+      console.log(result);
     } catch (error) {
       console.error(error);
     }

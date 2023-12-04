@@ -12,7 +12,7 @@ export default StyleSheet.create({
     borderRadius: 6,
   },
   tinyLogo: {
-    width: 40,
+    width: 25,
     height: 40,
     resizeMode: 'contain',
   },

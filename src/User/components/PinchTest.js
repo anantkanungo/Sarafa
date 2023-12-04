@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,14 +13,26 @@ import {
 } from 'react-native';
 import Checkmark from '../../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {PinchGestureHandler, State} from 'react-native-gesture-handler';
 
 const Catagories = ({navigation}) => {
   // const numColumns = 3;
   const [numColumns, setNumColumns] = useState(3);
+  const scaleRef = useRef(1);
 
   const setColumnCount = val => {
     LayoutAnimation.easeInEaseOut();
     setNumColumns(val);
+  };
+
+  const onPinchGestureEvent = event => {
+    // Use the scale value from the pinch gesture to dynamically change numColumns
+    const nextScale = Math.max(
+      2,
+      Math.min(10, scaleRef.current * event.nativeEvent.scale),
+    );
+    scaleRef.current = nextScale;
+    setColumnCount(Math.round(nextScale));
   };
 
   const data = [
@@ -265,13 +277,23 @@ const Catagories = ({navigation}) => {
         renderItem={renderItem}
         numColumns={numColumns}
       /> */}
-      <FlatList
-        key={numColumns} // Add key prop here
-        data={formatRow(options, numColumns)}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        numColumns={numColumns}
-      />
+      {/* Add PinchGestureHandler */}
+      <PinchGestureHandler
+        onGestureEvent={onPinchGestureEvent}
+        onHandlerStateChange={({nativeEvent}) => {
+          if (nativeEvent.state === State.END) {
+            // Save the scale value for future reference
+            scaleRef.current *= nativeEvent.scale;
+          }
+        }}>
+        <FlatList
+          key={numColumns} // Add key prop here
+          data={formatRow(options, numColumns)}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+          numColumns={numColumns}
+        />
+      </PinchGestureHandler>
 
       {
         <Text style={styles.txt}>
