@@ -38,6 +38,7 @@ const PlaceOrder = ({navigation}) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isListening, setIsListening] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [cameraPhotos, setCameraPhotos] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
   const [recorderPlayer, setRecorderPlayer] = useState(
     new AudioRecorderPlayer(),
@@ -52,15 +53,9 @@ const PlaceOrder = ({navigation}) => {
       // Check if any value in userData is empty
       const data = {
         category,
-        description,
         weight,
         size,
         quantity,
-      };
-      const setData = {
-        name: new Date() + 'image.png' || 'image.jpg' || 'image.jpeg',
-        type: 'image/png' || 'image/jpg' || 'image/jpeg',
-        uri: photos,
       };
       // the userData object using a for...in loop.
       for (let key in data) {
@@ -69,30 +64,21 @@ const PlaceOrder = ({navigation}) => {
           return;
         }
       }
-      // Check if there are any images
-      // if (image.length === 0) {
-      //   // Show an alert or something similar
-      //   alert('Please add at least one image');
-      //   return;
-      // }
+
       const formData = new FormData();
+
+      // Append photos from Gallery
       if (Array.isArray(photos) && photos.length > 0) {
-        // Iterate through all selected images
         photos.forEach((selectedImage, index) => {
-          // Check if the selectedImage has the expected properties
           if (selectedImage && selectedImage.data && selectedImage.mime) {
             const imgData = {
-              name:
-                new Date() + `image${index + 1}.png` ||
-                `image${index + 1}.jpg` ||
-                `image${index + 1}.jpeg`,
-              type: 'image/png' || 'image/jpg' || 'image/jpeg',
+              name: new Date() + `image${index + 1}.png`,
+              type: 'image/png',
               uri:
                 Platform.OS === 'android'
                   ? selectedImage.path
                   : selectedImage.path.replace('file://', ''),
             };
-
             formData.append('image', imgData);
           } else {
             console.error(
@@ -101,11 +87,53 @@ const PlaceOrder = ({navigation}) => {
           }
         });
       } else {
-        formData.append('image', setData);
+        const imgData = {
+          name: new Date() + 'image.png',
+          type: 'image/png',
+          uri: photos.path,
+        };
+        formData.append('image', imgData);
       }
 
+      // Append cameraPhotos
+      if (Array.isArray(cameraPhotos) && cameraPhotos.length > 0) {
+        cameraPhotos.forEach((selectedImage, index) => {
+          if (selectedImage && selectedImage.data && selectedImage.mime) {
+            const imgData = {
+              name: new Date() + `image${index + 1}.png`,
+              type: 'image/png',
+              uri:
+                Platform.OS === 'android'
+                  ? selectedImage.path
+                  : selectedImage.path.replace('file://', ''),
+            };
+            formData.append('image', imgData);
+          } else {
+            console.error(
+              `Image ${index + 1} object is missing expected properties.`,
+            );
+          }
+        });
+      } else {
+        const imgData = {
+          name: new Date() + 'image.png',
+          type: 'image/png',
+          uri: cameraPhotos.path,
+        };
+        formData.append('image', imgData);
+      }
+
+      // Get the audio file data using rn-fetch-blob
+      const audioData = await RNFetchBlob.fs.readFile(audioPath, 'base64');
+
+      // Append the audio file to the FormData
+      formData.append('audio', {
+        uri: `data:audio/mp3;base64,${audioData}`,
+        type: 'audio/mp3',
+        name: 'test.mp3',
+      });
+
       // Append other form data
-      formData.append('audio', audioPath);
       formData.append('category', category);
       formData.append('description', description);
       formData.append('tunch', tunch);
@@ -139,6 +167,7 @@ const PlaceOrder = ({navigation}) => {
 
   const clearAllStates = () => {
     setSelectedImages([]);
+    setCameraPhotos([]);
     setCategory('');
     setRecognizedText('');
     setTunch('');
@@ -161,9 +190,8 @@ const PlaceOrder = ({navigation}) => {
       .then(image => {
         console.log(image);
         const imageData = `data:${image.mime};base64,${image.data}`;
-        setPhotos([...photos, imageData]);
+        setCameraPhotos(prevPhotos => [...prevPhotos, imageData]);
         // setPhotos(imageData);
-        console.log('Image:', photos);
         setModalVisible(false);
       })
       .catch(error => {
@@ -188,7 +216,6 @@ const PlaceOrder = ({navigation}) => {
       setModalVisible(false);
       if (Array.isArray(images) && images.length > 0) {
         setSelectedImages(images.map(img => ({uri: img.path})));
-        // ... your other code ...
       }
     } catch (error) {
       console.error('Failed to open gallery:', error);
@@ -252,6 +279,13 @@ const PlaceOrder = ({navigation}) => {
                 style={{width: 100, height: 100}}
               />
             ))}
+            {cameraPhotos.map((photo, index) => (
+              <Image
+                key={index}
+                source={{uri: photo}}
+                style={{width: 100, height: 100}}
+              />
+            ))}
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Image
                 style={Styles.image}
@@ -300,46 +334,55 @@ const PlaceOrder = ({navigation}) => {
         <View style={Styles.jewelryPicker}>
           <Picker
             selectedValue={category}
-            onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
+            onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+            style={{color: '#000', backgroundColor: '#fff'}}>
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Select category"
               value=""
             />
-            <Picker.Item style={{color: '#000'}} label="Ring" value="ring" />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
+              label="Ring"
+              value="ring"
+            />
+            <Picker.Item
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Earring"
               value="earring"
             />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Bangle"
               value="bangle"
             />
-            <Picker.Item style={{color: '#000'}} label="Chain" value="chain" />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
+              label="Chain"
+              value="chain"
+            />
+            <Picker.Item
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Necklace"
               value="necklace"
             />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Nosepin"
               value="nosepin"
             />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Pendants"
               value="pendants"
             />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="Mangalsutra"
               value="mangalsutra"
             />
             <Picker.Item
-              style={{color: '#000'}}
+              style={{color: '#000', backgroundColor: '#fff'}}
               label="others"
               value="others"
             />
@@ -413,11 +456,15 @@ const PlaceOrder = ({navigation}) => {
                 selectedValue={tunch}
                 onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
                 <Picker.Item
-                  style={{color: '#000'}}
+                  style={{color: '#000', backgroundColor: '#fff'}}
                   label="Regular"
                   value="regular"
                 />
-                <Picker.Item style={{color: '#000'}} label="92" value="92" />
+                <Picker.Item
+                  style={{color: '#000', backgroundColor: '#fff'}}
+                  label="92"
+                  value="92"
+                />
                 <Picker.Item
                   style={{color: '#000'}}
                   label={tunch}

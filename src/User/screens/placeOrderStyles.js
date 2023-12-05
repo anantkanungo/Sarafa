@@ -38,7 +38,7 @@ export default StyleSheet.create({
   jewelryPicker: {
     borderWidth: 1,
     marginBottom: 15,
-    borderRadius: 5,
+    // borderRadius: 5,
     color: '#000000',
   },
   // Description & voiceButton
