@@ -96,7 +96,7 @@ const PendingOrders = ({navigation}) => {
             const item = orders.item;
             // console.log(item.image[0]);
             return (
-              <TouchableOpacity onPress={() => handleCardPress(item)}>
+              <TouchableOpacity>
                 <View style={styles.card} key={item._id}>
                   <FastImage
                     style={styles.cardImage}

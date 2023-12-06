@@ -152,14 +152,20 @@ const PlaceOrder = ({navigation}) => {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
+          timeout: 5000,
         })
         .then(response => {
-          console.log('Response:', response.data);
+          console.log('Response status:', response.status);
+          console.log('Response data:', response.data);
           Alert.alert('Your order is Successful.');
           clearAllStates();
         })
         .catch(error => {
-          console.error('Failed to upload:', error);
+          console.error('Failed to upload:', error.message);
+          console.error('Response status:', error.status);
+          console.error('Response data:', error.data);
+          Alert.alert('Failed to upload.', error.message);
+          clearAllStates();
         });
     } catch (error) {
       console.log('Error sending  to server: ', error);
@@ -195,11 +201,8 @@ const PlaceOrder = ({navigation}) => {
           path: image.path,
           mime: image.mime,
         };
-        // const imageData = `data:${image.mime},base64:${image.data}`;
-        // const imageData = [image.data];
         if (!cameraPhotos.some(photo => photo.data === image.data)) {
           setCameraPhotos(prevPhotos => [...prevPhotos, imageData]);
-          // setPhotos(imageData);
         }
         setModalVisible(false);
       })
@@ -290,13 +293,13 @@ const PlaceOrder = ({navigation}) => {
                 style={{width: 100, height: 100}}
               />
             ))}
-            {/* {cameraPhotos.map((photo, index) => (
+            {cameraPhotos.map((photo, index) => (
               <Image
                 key={index}
-                source={{uri: photo}}
+                source={{uri: photo.path}}
                 style={{width: 100, height: 100}}
               />
-            ))} */}
+            ))}
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Image
                 style={Styles.image}
@@ -354,17 +357,17 @@ const PlaceOrder = ({navigation}) => {
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Ring 'अँगूठी'"
+              label="Ring 'रिंग'"
               value="ring"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Earring 'कान की बाली'"
+              label="Earring 'इयररिंग '"
               value="earring"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Bangle 'चूड़ी'"
+              label="Bangle 'बैंगगल'"
               value="bangle"
             />
             <Picker.Item
@@ -374,12 +377,12 @@ const PlaceOrder = ({navigation}) => {
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Necklace 'गले का हार'"
+              label="Necklace 'नेकलेस'"
               value="necklace"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Nosepin 'नोसपिन'"
+              label="Nosepin 'नोज पिन'"
               value="nosepin"
             />
             <Picker.Item
