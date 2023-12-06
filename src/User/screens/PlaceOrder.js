@@ -44,6 +44,7 @@ const PlaceOrder = ({navigation}) => {
     new AudioRecorderPlayer(),
   );
   const [audioPath, setAudioPath] = useState('');
+  const [audio, setAudio] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playButtonVisible, setPlayButtonVisible] = useState(false);
@@ -52,10 +53,10 @@ const PlaceOrder = ({navigation}) => {
     try {
       // Check if any value in userData is empty
       const data = {
-        category,
-        weight,
-        size,
-        quantity,
+        // category,
+        // weight,
+        // size,
+        // quantity,
       };
       // the userData object using a for...in loop.
       for (let key in data) {
@@ -72,8 +73,11 @@ const PlaceOrder = ({navigation}) => {
         photos.forEach((selectedImage, index) => {
           if (selectedImage && selectedImage.data && selectedImage.mime) {
             const imgData = {
-              name: new Date() + `image${index + 1}.png`,
-              type: 'image/png',
+              name:
+                new Date() + `image${index + 1}.png` ||
+                `image${index + 1}.jpeg` ||
+                `image${index + 1}.jpg`,
+              type: 'image/png' || 'image/jpeg' || 'image/jpg',
               uri:
                 Platform.OS === 'android'
                   ? selectedImage.path
@@ -88,50 +92,47 @@ const PlaceOrder = ({navigation}) => {
         });
       } else {
         const imgData = {
-          name: new Date() + 'image.png',
-          type: 'image/png',
+          name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
+          type: 'image/png' || 'image/jpeg' || 'image/jpg',
           uri: photos.path,
         };
         formData.append('image', imgData);
       }
 
       // Append cameraPhotos
+      console.log('cameraPhotos: ', cameraPhotos);
       if (Array.isArray(cameraPhotos) && cameraPhotos.length > 0) {
-        cameraPhotos.forEach((selectedImage, index) => {
-          if (selectedImage && selectedImage.data && selectedImage.mime) {
-            const imgData = {
-              name: new Date() + `image${index + 1}.png`,
-              type: 'image/png',
-              uri:
-                Platform.OS === 'android'
-                  ? selectedImage.path
-                  : selectedImage.path.replace('file://', ''),
-            };
-            formData.append('image', imgData);
-          } else {
-            console.error(
-              `Image ${index + 1} object is missing expected properties.`,
-            );
-          }
+        cameraPhotos.forEach((item, index) => {
+          formData.append('image', {
+            name:
+              new Date() + `image${index + 1}.jpg` ||
+              `image${index + 1}.jpeg` ||
+              `image${index + 1}.png`,
+            type: 'image/jpeg' || 'image/jpg' || 'image/png',
+            uri:
+              Platform.OS === 'android'
+                ? item.path
+                : item.path.replace('file://', ''),
+          });
         });
       } else {
         const imgData = {
-          name: new Date() + 'image.png',
-          type: 'image/png',
+          name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
+          type: 'image/png' || 'image/jpeg' || 'image/jpg',
           uri: cameraPhotos.path,
         };
         formData.append('image', imgData);
       }
 
-      // Get the audio file data using rn-fetch-blob
-      const audioData = await RNFetchBlob.fs.readFile(audioPath, 'base64');
+      console.log('audio: ', audio);
 
       // Append the audio file to the FormData
-      formData.append('audio', {
-        uri: `data:audio/mp3;base64,${audioData}`,
-        type: 'audio/mp3',
-        name: 'test.mp3',
-      });
+      const audioFile = {
+        uri: Platform.OS === 'android' ? audio : audio.replace('file://', ''),
+        type: 'audio/mp3', // or 'audio/mpeg', depending on the actual MIME type of your audio file
+        name: `${new Date().toISOString()}-audio.mp3`, // or use a UUID for a unique name
+      };
+      formData.append('audio', audioFile);
 
       // Append other form data
       formData.append('category', category);
@@ -158,10 +159,10 @@ const PlaceOrder = ({navigation}) => {
           clearAllStates();
         })
         .catch(error => {
-          console.error('Failed to upload images:', error);
+          console.error('Failed to upload:', error);
         });
     } catch (error) {
-      console.log('Error sending images to server: ', error);
+      console.log('Error sending  to server: ', error);
     }
   };
 
@@ -188,10 +189,18 @@ const PlaceOrder = ({navigation}) => {
       compressImageQuality: 0.5,
     })
       .then(image => {
-        console.log(image);
-        const imageData = `data:${image.mime};base64,${image.data}`;
-        setCameraPhotos(prevPhotos => [...prevPhotos, imageData]);
-        // setPhotos(imageData);
+        console.log('image', image);
+        const imageData = {
+          data: image.data,
+          path: image.path,
+          mime: image.mime,
+        };
+        // const imageData = `data:${image.mime},base64:${image.data}`;
+        // const imageData = [image.data];
+        if (!cameraPhotos.some(photo => photo.data === image.data)) {
+          setCameraPhotos(prevPhotos => [...prevPhotos, imageData]);
+          // setPhotos(imageData);
+        }
         setModalVisible(false);
       })
       .catch(error => {
@@ -229,7 +238,9 @@ const PlaceOrder = ({navigation}) => {
       const result = await recorderPlayer.startRecorder(path);
       setIsRecording(true);
       setAudioPath(path);
+      setAudio(result);
       console.log(result);
+      console.log('Audio Path: ', path);
     } catch (error) {
       console.error(error);
     }
@@ -279,13 +290,13 @@ const PlaceOrder = ({navigation}) => {
                 style={{width: 100, height: 100}}
               />
             ))}
-            {cameraPhotos.map((photo, index) => (
+            {/* {cameraPhotos.map((photo, index) => (
               <Image
                 key={index}
                 source={{uri: photo}}
                 style={{width: 100, height: 100}}
               />
-            ))}
+            ))} */}
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Image
                 style={Styles.image}
@@ -343,42 +354,42 @@ const PlaceOrder = ({navigation}) => {
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Ring"
+              label="Ring 'अँगूठी'"
               value="ring"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Earring"
+              label="Earring 'कान की बाली'"
               value="earring"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Bangle"
+              label="Bangle 'चूड़ी'"
               value="bangle"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Chain"
+              label="Chain 'चेन'"
               value="chain"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Necklace"
+              label="Necklace 'गले का हार'"
               value="necklace"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Nosepin"
+              label="Nosepin 'नोसपिन'"
               value="nosepin"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Pendants"
+              label="Pendants 'पेंडेंट'"
               value="pendants"
             />
             <Picker.Item
               style={{color: '#000', backgroundColor: '#fff'}}
-              label="Mangalsutra"
+              label="Mangalsutra 'मंगलसूत्र'"
               value="mangalsutra"
             />
             <Picker.Item

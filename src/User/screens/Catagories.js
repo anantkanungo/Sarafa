@@ -11,7 +11,7 @@ import {
   ScrollView,
   LayoutAnimation,
 } from 'react-native';
-import Checkmark from '../../assets/icons8-checkmark-48.png';
+import Check from '../../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {
   PinchGestureHandler,
@@ -20,7 +20,6 @@ import {
 } from 'react-native-gesture-handler';
 
 const Catagories = ({navigation}) => {
-  // const numColumns = 3;
   const [numColumns, setNumColumns] = useState(3);
   const scaleRef = useRef(1);
 
@@ -32,7 +31,7 @@ const Catagories = ({navigation}) => {
   const onPinchGestureEvent = event => {
     // Use the scale value from the pinch gesture to dynamically change numColumns
     const nextScale = Math.max(
-      2,
+      1,
       Math.min(10, scaleRef.current / event.nativeEvent.scale),
     );
     scaleRef.current = nextScale;
@@ -176,7 +175,7 @@ const Catagories = ({navigation}) => {
           {multiSelectMode && selectedItems.includes(item) && (
             <View style={styles.tickContainer}>
               {/* <Text style={styles.tick}>✓</Text> */}
-              <Image style={styles.tick} source={Checkmark} />
+              <Image style={styles.tick} source={Check} />
             </View>
           )}
         </View>
@@ -326,13 +325,13 @@ const Catagories = ({navigation}) => {
         style={styles.button3}
         onPress={() => setColumnCount(numColumns - 1)}
         disabled={numColumns <= 1}>
-        <FontAwesome5 name={'minus'} size={20} color={'#fff'} />
+        <FontAwesome5 name={'plus'} size={20} color={'#fff'} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button2}
         onPress={() => setColumnCount(numColumns + 1)}
         disabled={numColumns >= 10}>
-        <FontAwesome5 name={'plus'} size={20} color={'#fff'} />
+        <FontAwesome5 name={'minus'} size={20} color={'#fff'} />
       </TouchableOpacity>
 
       <Modal

@@ -1,13 +1,3 @@
-// import {View, Text} from 'react-native';
-// import React from 'react';
-// import CameraTest from '../components/camera/CameraTest';
-
-// const PlaceOrder = () => {
-//   return <CameraTest />;
-// };
-
-// export default PlaceOrder;
-
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -17,6 +7,8 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  Modal,
+  Button,
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,6 +37,8 @@ const fetchOrders = async () => {
 const PendingOrders = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,19 +54,14 @@ const PendingOrders = ({navigation}) => {
     fetchData();
   }, []);
 
-  // return (
-  //   <View>
-  //     {isLoading ? (
-  //       <Text>Loading...</Text>
-  //     ) : (
-  //       <FlatList
-  //         data={orders}
-  //         renderItem={({item}) => <Text key={item.id}>{item.category}</Text>}
-  //         keyExtractor={item => item.id}
-  //       />
-  //     )}
-  //   </View>
-  // );
+  const handleCardPress = order => {
+    setSelectedOrder(order);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -92,16 +81,7 @@ const PendingOrders = ({navigation}) => {
         <Text style={styles.headerText}>Orders</Text>
       </View> */}
       {isLoading ? (
-        <ActivityIndicator
-          //visibility of Overlay Loading Spinner
-          visible={isLoading}
-          //Text with the Spinner
-          textContent={'Loading...'}
-          //Text style of the Spinner Text
-          textStyle={{
-            color: '#FFF',
-          }}
-        />
+        <ActivityIndicator visible={isLoading} />
       ) : (
         <FlatList
           style={styles.list}
@@ -116,39 +96,41 @@ const PendingOrders = ({navigation}) => {
             const item = orders.item;
             // console.log(item.image[0]);
             return (
-              <View style={styles.card} key={item._id}>
-                <FastImage
-                  style={styles.cardImage}
-                  source={{
-                    uri: item.image[0],
-                    // uri: `data:image/jpeg;base64,${item.image}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  onLoad={() => console.log('Image loaded successfully')}
-                  onError={error => console.error('Image load error:', error)}
-                />
-                <View style={styles.cardHeader}>
-                  <Text style={styles.title}>{item.category}</Text>
-                  <Text style={styles.order}>
-                    Description: {item.description}
-                  </Text>
-                  <Text style={styles.order}>Tunch: {item.tunch}</Text>
-                  <Text style={styles.order}>Weight: {item.weight}</Text>
-                  <Text style={styles.order}>Size: {item.size}</Text>
-                  <Text style={styles.order}>Quantity: {item.quantity}</Text>
-                  <Text style={styles.order}>Status: {item.statusIs}</Text>
-                  <View style={styles.orderContainer}>
-                    {/* <Image
+              <TouchableOpacity onPress={() => handleCardPress(item)}>
+                <View style={styles.card} key={item._id}>
+                  <FastImage
+                    style={styles.cardImage}
+                    source={{
+                      uri: item.image[0],
+                      // uri: `data:image/jpeg;base64,${item.image}`,
+                      priority: FastImage.priority.high,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                    onLoad={() => console.log('Image loaded successfully')}
+                    onError={error => console.error('Image load error:', error)}
+                  />
+                  <View style={styles.cardHeader}>
+                    <Text style={styles.title}>{item.category}</Text>
+                    <Text style={styles.order}>
+                      Description: {item.description}
+                    </Text>
+                    <Text style={styles.order}>Tunch: {item.tunch}</Text>
+                    <Text style={styles.order}>Weight: {item.weight}</Text>
+                    <Text style={styles.order}>Size: {item.size}</Text>
+                    <Text style={styles.order}>Quantity: {item.quantity}</Text>
+                    <Text style={styles.order}>Status: {item.statusIs}</Text>
+                    <View style={styles.orderContainer}>
+                      {/* <Image
                     style={styles.iconData}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
                     }}
                   /> */}
-                    {/* <Text style={styles.order}>{item.order}</Text> */}
+                      {/* <Text style={styles.order}>{item.order}</Text> */}
+                    </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
@@ -158,6 +140,19 @@ const PendingOrders = ({navigation}) => {
           <Text style={styles.buttonText1}>Previous Orders</Text>
         </TouchableOpacity>
       </View> */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={closeModal}>
+        <View style={{marginTop: 22}}>
+          <View>
+            <Text>Order Details</Text>
+            <Text>Title: {selectedOrder?.category}</Text>
+            <Button title="Close" onPress={closeModal} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
