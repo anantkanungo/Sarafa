@@ -90,13 +90,6 @@ const PlaceOrder = ({navigation}) => {
             );
           }
         });
-      } else {
-        const imgGallery = {
-          name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
-          type: 'image/png' || 'image/jpeg' || 'image/jpg',
-          uri: gallery.path,
-        };
-        formData.append('galleryImage', imgGallery);
       }
 
       // Append camera
@@ -116,13 +109,6 @@ const PlaceOrder = ({navigation}) => {
           };
           formData.append('cameraImage', imgCamera);
         });
-      } else {
-        const imgCamera = {
-          name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
-          type: 'image/png' || 'image/jpeg' || 'image/jpg',
-          uri: camera.path,
-        };
-        formData.append('cameraImage', imgCamera);
       }
 
       // console.log('audio: ', audio);

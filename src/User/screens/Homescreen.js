@@ -13,7 +13,7 @@ const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <Text>Welcome, User Id: {userId}</Text>
+      {/* <Text>Welcome, User Id: {userId}</Text> */}
       <View style={{alignItems: 'center'}}>
         <Text style={styles.headerText}>Catalog</Text>
       </View>
