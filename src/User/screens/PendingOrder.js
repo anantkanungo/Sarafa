@@ -43,8 +43,9 @@ const PendingOrders = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchOrders();
-        setOrders(data);
+        const reversedData = response.data.reverse();
+        setOrders(reversedData);
+        const response = await fetchOrders();
         setIsLoading(false);
       } catch (error) {
         console.error(error);

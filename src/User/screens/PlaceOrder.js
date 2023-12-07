@@ -37,9 +37,9 @@ const PlaceOrder = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isListening, setIsListening] = useState(false);
-  const [photos, setPhotos] = useState([]);
-  const [cameraPhotos, setCameraPhotos] = useState([]);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [camera, setCamera] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [selectedGallery, setSelectedGallery] = useState([]);
   const [recorderPlayer, setRecorderPlayer] = useState(
     new AudioRecorderPlayer(),
   );
@@ -68,11 +68,11 @@ const PlaceOrder = ({navigation}) => {
 
       const formData = new FormData();
 
-      // Append photos from Gallery
-      if (Array.isArray(photos) && photos.length > 0) {
-        photos.forEach((selectedImage, index) => {
+      // Append gallery from Gallery
+      if (Array.isArray(gallery) && gallery.length > 0) {
+        gallery.forEach((selectedImage, index) => {
           if (selectedImage && selectedImage.data && selectedImage.mime) {
-            const imgData = {
+            const imgGallery = {
               name:
                 new Date() + `image${index + 1}.png` ||
                 `image${index + 1}.jpeg` ||
@@ -83,7 +83,7 @@ const PlaceOrder = ({navigation}) => {
                   ? selectedImage.path
                   : selectedImage.path.replace('file://', ''),
             };
-            formData.append('image', imgData);
+            formData.append('galleryImage', imgGallery);
           } else {
             console.error(
               `Image ${index + 1} object is missing expected properties.`,
@@ -91,19 +91,19 @@ const PlaceOrder = ({navigation}) => {
           }
         });
       } else {
-        const imgData = {
+        const imgGallery = {
           name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
           type: 'image/png' || 'image/jpeg' || 'image/jpg',
-          uri: photos.path,
+          uri: gallery.path,
         };
-        formData.append('image', imgData);
+        formData.append('galleryImage', imgGallery);
       }
 
-      // Append cameraPhotos
-      console.log('cameraPhotos: ', cameraPhotos);
-      if (Array.isArray(cameraPhotos) && cameraPhotos.length > 0) {
-        cameraPhotos.forEach((item, index) => {
-          formData.append('image', {
+      // Append camera
+      // console.log('camera: ', camera);
+      if (Array.isArray(camera) && camera.length > 0) {
+        camera.forEach((item, index) => {
+          const imgCamera = {
             name:
               new Date() + `image${index + 1}.jpg` ||
               `image${index + 1}.jpeg` ||
@@ -113,18 +113,19 @@ const PlaceOrder = ({navigation}) => {
               Platform.OS === 'android'
                 ? item.path
                 : item.path.replace('file://', ''),
-          });
+          };
+          formData.append('cameraImage', imgCamera);
         });
       } else {
-        const imgData = {
+        const imgCamera = {
           name: new Date() + 'image.png' || 'image.jpeg' || 'image.jpg',
           type: 'image/png' || 'image/jpeg' || 'image/jpg',
-          uri: cameraPhotos.path,
+          uri: camera.path,
         };
-        formData.append('image', imgData);
+        formData.append('cameraImage', imgCamera);
       }
 
-      console.log('audio: ', audio);
+      // console.log('audio: ', audio);
 
       // Append the audio file to the FormData
       const audioFile = {
@@ -155,16 +156,15 @@ const PlaceOrder = ({navigation}) => {
           timeout: 5000,
         })
         .then(response => {
+          console.log('Response:', response);
           console.log('Response status:', response.status);
           console.log('Response data:', response.data);
           Alert.alert('Your order is Successful.');
           clearAllStates();
         })
         .catch(error => {
-          console.error('Failed to upload:', error.message);
-          console.error('Response status:', error.status);
-          console.error('Response data:', error.data);
-          Alert.alert('Failed to upload.', error.message);
+          console.error('Failed to upload error message:', error.message);
+          console.error('Failed to upload error:', error);
           clearAllStates();
         });
     } catch (error) {
@@ -173,8 +173,9 @@ const PlaceOrder = ({navigation}) => {
   };
 
   const clearAllStates = () => {
-    setSelectedImages([]);
-    setCameraPhotos([]);
+    setGallery([]);
+    setSelectedGallery([]);
+    setCamera([]);
     setCategory('');
     setRecognizedText('');
     setTunch('');
@@ -201,8 +202,8 @@ const PlaceOrder = ({navigation}) => {
           path: image.path,
           mime: image.mime,
         };
-        if (!cameraPhotos.some(photo => photo.data === image.data)) {
-          setCameraPhotos(prevPhotos => [...prevPhotos, imageData]);
+        if (!camera.some(photo => photo.data === image.data)) {
+          setCamera(prevPhotos => [...prevPhotos, imageData]);
         }
         setModalVisible(false);
       })
@@ -223,11 +224,11 @@ const PlaceOrder = ({navigation}) => {
         includeExif: true,
         // cropping: cropit,
       });
-      setPhotos(images);
+      setGallery(images);
       console.log('Gallery: ', images);
       setModalVisible(false);
       if (Array.isArray(images) && images.length > 0) {
-        setSelectedImages(images.map(img => ({uri: img.path})));
+        setSelectedGallery(images.map(img => ({uri: img.path})));
       }
     } catch (error) {
       console.error('Failed to open gallery:', error);
@@ -286,14 +287,14 @@ const PlaceOrder = ({navigation}) => {
         {/* UploadImage */}
         <View style={Styles.contain}>
           <ScrollView horizontal={true}>
-            {selectedImages.map((img, index) => (
+            {selectedGallery.map((img, index) => (
               <Image
                 key={index}
                 source={img}
                 style={{width: 100, height: 100}}
               />
             ))}
-            {cameraPhotos.map((photo, index) => (
+            {camera.map((photo, index) => (
               <Image
                 key={index}
                 source={{uri: photo.path}}
