@@ -120,9 +120,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexBasis: '45%',
     marginHorizontal: 10,
-    borderWidth: 2,
-    borderRadius: 4,
-    borderColor: '#7788',
+    // borderWidth: 2,
+    borderRadius: 3,
+    // borderColor: '#7788',
+    elevation: 5, // Android
   },
   cardContent: {
     paddingVertical: 4,
@@ -152,9 +153,11 @@ const styles = StyleSheet.create({
   },
   /******** card components **************/
   title: {
+    fontFamily: 'Cochin',
     fontSize: 18,
     flex: 1,
     color: '#000',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 });

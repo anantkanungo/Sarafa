@@ -5,10 +5,11 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  StyleSheet,
   ActivityIndicator,
   Modal,
+  TextInput,
 } from 'react-native';
+import styles from './orderStyles';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
@@ -28,14 +29,14 @@ const fetchOrders = async () => {
       },
     );
     // console.log(response);
-    console.log(response.data.result);
+    // console.log(response.data.result);
     return response.data.result;
   } catch (error) {
     console.log(error);
   }
 };
 
-const PendingOrders = ({navigation}) => {
+const OrderScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -56,7 +57,33 @@ const PendingOrders = ({navigation}) => {
     };
 
     fetchData();
-  }, []);
+  }, [orders]);
+
+  // // Function to fetch orders and update state
+  // const fetchAndSetOrders = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const data = await fetchOrders();
+  //     setOrders(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // Initial data fetch
+  //   fetchAndSetOrders();
+
+  //   // Set up interval for auto-refresh every 5 minutes (adjust as needed)
+  //   const refreshInterval = setInterval(() => {
+  //     fetchAndSetOrders();
+  //   }, 5 * 60 * 1000); // 5 minutes in milliseconds
+
+  //   // Cleanup interval on component unmount
+  //   return () => clearInterval(refreshInterval);
+  // }, []);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -78,7 +105,7 @@ const PendingOrders = ({navigation}) => {
       url = url[0];
     }
 
-    console.log('Audio URL:', url);
+    // console.log('Audio URL:', url);
     const result = await audioPlayer.startPlayer(url);
     setIsPlaying(true);
     console.log(result);
@@ -133,6 +160,8 @@ const PendingOrders = ({navigation}) => {
           renderItem={orders => {
             const item = orders.item;
             // console.log(item.image[0]);
+            // let Date = item.updatedAt;
+            // console.log(Date);
             return (
               <TouchableOpacity onPress={() => handleCardPress(item)}>
                 <View style={styles.card} key={item._id}>
@@ -143,40 +172,38 @@ const PendingOrders = ({navigation}) => {
                       priority: FastImage.priority.high,
                     }}
                     resizeMode={FastImage.resizeMode.contain}
-                    onLoad={() => console.log('Image loaded successfully')}
-                    onError={error => console.error('Image load error:', error)}
                   />
                   <View style={styles.cardHeader}>
                     <Text style={styles.title}>{item.category}</Text>
-                    <Text style={styles.order}>
-                      Description: {item.description}
-                    </Text>
                     <Text style={styles.order}>Tunch: {item.tunch}</Text>
                     <Text style={styles.order}>Weight: {item.weight}</Text>
                     <Text style={styles.order}>Size: {item.size}</Text>
                     <Text style={styles.order}>Quantity: {item.quantity}</Text>
                     <Text style={styles.order}>Status: {item.statusIs}</Text>
-                    <View style={styles.orderContainer}>
-                      {/* <Image
-                    style={styles.iconData}
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828644.png',
-                    }}
-                  /> */}
-                      {/* <Text style={styles.order}>{item.order}</Text> */}
-                    </View>
                   </View>
+                  <View
+                    style={[
+                      {
+                        backgroundColor:
+                          item.statusIs === 'pending'
+                            ? '#A0785A'
+                            : item.statusIs === 'processing'
+                            ? '#aecbfa'
+                            : item.statusIs === 'completed'
+                            ? '#ccff90'
+                            : item.statusIs === 'rejected'
+                            ? '#f28b82'
+                            : '#ffffff',
+                      },
+                      styles.color,
+                    ]}
+                  />
                 </View>
               </TouchableOpacity>
             );
           }}
         />
       )}
-      {/* <View style={{alignItems: 'center'}}>
-        <TouchableOpacity style={styles.button1}>
-          <Text style={styles.buttonText1}>Previous Orders</Text>
-        </TouchableOpacity>
-      </View> */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -186,12 +213,23 @@ const PendingOrders = ({navigation}) => {
           <View style={styles.popup}>
             <View style={styles.popupContent}>
               <View contentContainerStyle={styles.modalInfo}>
-                <Text style={styles.titleModal}>Order Details</Text>
-                <TouchableOpacity
-                  style={{position: 'absolute', right: 10, top: 10}}
-                  onPress={closeModal}>
-                  <FontAwesome5 name={'times'} size={30} color={'#000'} />
-                </TouchableOpacity>
+                <View style={styles.orderContainer}>
+                  <Text style={styles.titleModal}>Order Details</Text>
+                  <TouchableOpacity
+                    style={{
+                      padding: 6,
+                      borderWidth: 2,
+                      borderColor: '#000',
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      alignItems: 'center',
+                    }}
+                    onPress={closeModal}>
+                    <FontAwesome5 name={'times'} size={20} color={'#000'} />
+                  </TouchableOpacity>
+                </View>
+
                 <FlatList
                   data={selectedOrder?.image} // Assuming selectedOrder.images is an array of image URIs
                   keyExtractor={(item, index) => index.toString()}
@@ -205,28 +243,33 @@ const PendingOrders = ({navigation}) => {
                 />
                 <View style={{flexDirection: 'row', margin: 10}}>
                   <Text style={styles.titleModal}>Audio: </Text>
-                  <TouchableOpacity
-                    onPress={isPlaying ? stopAudio : startAudio}
-                    style={styles.voiceButton}>
-                    {isPlaying ? (
-                      <Image
-                        source={{
-                          uri: 'https://cdn-icons-png.flaticon.com/128/709/709714.png',
-                        }}
-                        style={styles.tinyLogo}
-                      />
-                    ) : (
-                      <Image
-                        source={{
-                          uri: 'https://cdn-icons-png.flaticon.com/128/109/109197.png',
-                        }}
-                        style={styles.tinyLogo}
-                      />
-                    )}
-                  </TouchableOpacity>
+                  {Array.isArray(audioURL) && audioURL.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={isPlaying ? stopAudio : startAudio}
+                      style={styles.voiceButton}>
+                      {isPlaying ? (
+                        <Image
+                          source={{
+                            uri: 'https://cdn-icons-png.flaticon.com/128/709/709714.png',
+                          }}
+                          style={styles.tinyLogo}
+                        />
+                      ) : (
+                        <Image
+                          source={{
+                            uri: 'https://cdn-icons-png.flaticon.com/128/109/109197.png',
+                          }}
+                          style={styles.tinyLogo}
+                        />
+                      )}
+                    </TouchableOpacity>
+                  ) : (
+                    <Text style={styles.titleModal}>No Audio Available</Text>
+                  )}
                 </View>
                 <View style={{flexDirection: 'row'}}>
-                  <View style={{borderWidth: 1, flex: 1}}>
+                  <View style={{borderWidth: 1, paddingHorizontal: 10}}>
+                    <Text style={styles.orderModal}>Date: </Text>
                     <Text style={styles.orderModal}>Category:</Text>
                     <Text style={styles.orderModal}>Description:</Text>
                     <Text style={styles.orderModal}>Tunch:</Text>
@@ -235,7 +278,12 @@ const PendingOrders = ({navigation}) => {
                     <Text style={styles.orderModal}>Quantity:</Text>
                     <Text style={styles.orderModal}>Status:</Text>
                   </View>
-                  <View style={{borderWidth: 1, flex: 1}}>
+                  <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.orderModal}>
+                        {new Date(selectedOrder?.updatedAt).toLocaleString()}
+                      </Text>
+                    </View>
                     <Text
                       style={[
                         styles.orderModal,
@@ -272,147 +320,4 @@ const PendingOrders = ({navigation}) => {
   );
 };
 
-export default PendingOrders;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // marginTop: 20,
-  },
-  list: {
-    paddingHorizontal: 17,
-    backgroundColor: '#E6E6E6',
-  },
-  separator: {
-    marginTop: 10,
-  },
-  /******** card **************/
-  card: {
-    shadowColor: '#00000021',
-    shadowOffset: {
-      width: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    marginVertical: 8,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    // alignContent: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
-    padding: 10,
-  },
-  cardHeader: {
-    paddingVertical: 7,
-    paddingHorizontal: 16,
-  },
-  cardImage: {
-    flex: 1,
-    height: 'auto',
-    resizeMode: 'contain',
-    borderWidth: 1,
-    borderColor: '#000000',
-    borderRadius: 5,
-  },
-  /******** card components **************/
-  title: {
-    fontSize: 18,
-    flex: 1,
-    fontWeight: 'bold',
-    color: '#000',
-    textTransform: 'capitalize',
-  },
-  order: {
-    fontSize: 13,
-    marginTop: 5,
-    fontWeight: 'bold',
-    color: '#000',
-    // color: '#808080',
-  },
-  iconData: {
-    width: 15,
-    height: 15,
-    marginTop: 5,
-    marginRight: 5,
-  },
-  orderContainer: {
-    flexDirection: 'row',
-    // marginBottom: 10,
-  },
-  tinyLogo: {
-    width: 25,
-    height: 40,
-    resizeMode: 'contain',
-  },
-  // header
-  header_container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginHorizontal: 10,
-  },
-  headerText: {
-    fontSize: 24,
-    color: '#000000',
-    fontWeight: 'bold',
-    // marginBottom: 5,
-  },
-  button1: {
-    backgroundColor: '#454545',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    // margin: 10,
-    width: 200,
-  },
-  buttonText1: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  /************ modals ************/
-  popupOverlay: {
-    backgroundColor: '#00000057',
-    flex: 1,
-    marginTop: 20,
-  },
-  popup: {
-    backgroundColor: 'white',
-    marginTop: 80,
-    marginHorizontal: 20,
-    borderRadius: 7,
-  },
-  popupContent: {
-    //alignItems: 'center',
-    margin: 5,
-    height: 'auto',
-  },
-  modalInfo: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleModal: {
-    fontSize: 18,
-    color: '#000',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-  },
-  voiceButton: {
-    marginLeft: 10,
-    fontSize: 24,
-    borderWidth: 1,
-    padding: 3.5,
-    borderRadius: 5,
-    color: '#000000',
-  },
-  orderModal: {
-    fontSize: 16,
-    marginTop: 5,
-    fontWeight: 'bold',
-    color: '#fff',
-    backgroundColor: '#555',
-  },
-});
+export default OrderScreen;

@@ -4,7 +4,7 @@ import Root from './src/navigation/Root';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
-import gstore from './src/reduxThunk/Store';
+import {gstore} from './src/reduxThunk/Store';
 // https://github.com/crazycodeboy/react-native-splash-screen
 // import SplashScreen from 'react-native-splash-screen';
 

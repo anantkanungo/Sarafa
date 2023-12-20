@@ -9,9 +9,9 @@ import React from 'react';
 import BackgroundImage from '../../../assets/IMG_HEADER.jpg';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
-import {customerLogout} from '../../../reduxThunk/Action';
+import {customerLogout} from '../../../reduxThunk/action/authAction';
 
-const Header = ({customerLogout}) => {
+const Header = ({customerLogout, details}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -26,7 +26,7 @@ const Header = ({customerLogout}) => {
               fontWeight: 'bold',
               marginBottom: 10,
             }}>
-            Hello, UserName
+            Hello, {details?.username}
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
             <FontAwesome5 name="sign-out-alt" size={30} color="#fff" />
@@ -43,11 +43,19 @@ const Header = ({customerLogout}) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
 const mapDispatchToProps = {
   customerLogout,
 };
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 const styles = StyleSheet.create({
   container: {

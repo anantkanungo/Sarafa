@@ -4,16 +4,12 @@ import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 // import Spinner from 'react-native-loading-spinner-overlay';
 import Header from '../components/home/Header.js';
 import Catalogs from '../components/home/Catalogs.js';
-import {useSelector} from 'react-redux';
 
 const HomeScreen = ({navigation}) => {
-  const userDetails = useSelector(state => state.userDetails);
-  const userId = userDetails ? userDetails.id : null;
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      {/* <Text>Welcome, User Id: {userId}</Text> */}
       <View style={{alignItems: 'center'}}>
         <Text style={styles.headerText}>Catalog</Text>
       </View>
@@ -25,6 +21,7 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#e1d2c4',
   },
   headerText: {
     fontSize: 24,

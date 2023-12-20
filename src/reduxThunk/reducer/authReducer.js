@@ -3,7 +3,7 @@ import {
   customerLoginError,
   customerLoginSuccess,
   customerLoginRequest,
-} from './Type';
+} from '../Type';
 
 const loginInitialState = {
   loading: false,

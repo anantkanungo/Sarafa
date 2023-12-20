@@ -24,6 +24,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const PlaceOrder = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,11 +50,23 @@ const PlaceOrder = ({navigation}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playButtonVisible, setPlayButtonVisible] = useState(false);
 
+  const submitAlert = () => {
+    Alert.alert(
+      'Submit Order',
+      'Are you sure you want to submit this order?',
+      [
+        {text: 'Submit', onPress: submitData},
+        {text: 'Cancel', onPress: clearAllStates},
+      ],
+      {cancelable: true},
+    );
+  };
+
   const submitData = async () => {
     try {
       // Check if any value in userData is empty
       const data = {
-        // category,
+        category,
         // weight,
         // size,
         // quantity,
@@ -114,12 +127,14 @@ const PlaceOrder = ({navigation}) => {
       // console.log('audio: ', audio);
 
       // Append the audio file to the FormData
-      const audioFile = {
-        uri: Platform.OS === 'android' ? audio : audio.replace('file://', ''),
-        type: 'audio/mp3', // or 'audio/mpeg', depending on the actual MIME type of your audio file
-        name: `${new Date().toISOString()}-audio.mp3`, // or use a UUID for a unique name
-      };
-      formData.append('audio', audioFile);
+      if (Array.isArray(audio) && audio.length > 0) {
+        const audioFile = {
+          uri: Platform.OS === 'android' ? audio : audio.replace('file://', ''),
+          type: 'audio/mp3', // or 'audio/mpeg', depending on the actual MIME type of your audio file
+          name: `${new Date().toISOString()}-audio.mp3`, // or use a UUID for a unique name
+        };
+        formData.append('audio', audioFile);
+      }
 
       // Append other form data
       formData.append('category', category);
@@ -161,14 +176,17 @@ const PlaceOrder = ({navigation}) => {
   const clearAllStates = () => {
     setGallery([]);
     setSelectedGallery([]);
+    setRecognizedText('');
     setCamera([]);
     setCategory('');
-    setRecognizedText('');
-    setTunch('');
+    setAudio([]);
+    setAudioPath([]);
+    setTunch('regular');
     onChangeWeight('');
     onChangeSize('');
     onChangeQuantity('');
     setPlayButtonVisible(false);
+    setIsEnabled(false);
   };
 
   // UploadImage
@@ -253,6 +271,12 @@ const PlaceOrder = ({navigation}) => {
     const result = await recorderPlayer.stopPlayer();
     setIsPlaying(false);
     console.log(result);
+  };
+
+  const deleteRecording = () => {
+    setAudio([]);
+    setAudioPath([]);
+    setPlayButtonVisible(false);
   };
 
   return (
@@ -400,7 +424,12 @@ const PlaceOrder = ({navigation}) => {
             multiline={true}
           />
           {playButtonVisible && (
-            <View>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                style={[Styles.voiceButton, {paddingTop: 10}]}
+                onPress={deleteRecording}>
+                <FontAwesome5 name={'trash'} size={25} color={'#ff3636'} />
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={isPlaying ? stopPlayback : startPlayback}
                 style={Styles.voiceButton}>
@@ -530,8 +559,8 @@ const PlaceOrder = ({navigation}) => {
             placeholderTextColor="#495057"
             onChangeText={onChangeWeight}
             value={weight}
-            maxLength={6}
-            keyboardType="numeric"
+            maxLength={8}
+            keyboardType="default"
           />
           <Text style={Styles.text}>Size :</Text>
           <TextInput
@@ -539,8 +568,8 @@ const PlaceOrder = ({navigation}) => {
             placeholder=""
             onChangeText={onChangeSize}
             value={size}
-            maxLength={6}
-            keyboardType="numeric"
+            maxLength={8}
+            keyboardType="default"
           />
         </View>
         <View style={Styles.wsContainer}>
@@ -551,7 +580,7 @@ const PlaceOrder = ({navigation}) => {
             onChangeText={onChangeQuantity}
             value={quantity}
             maxLength={2}
-            keyboardType="numeric"
+            keyboardType="default"
           />
         </View>
         {/* Switch */}
@@ -568,7 +597,7 @@ const PlaceOrder = ({navigation}) => {
         </View>
         {/* Submit button */}
         <View style={Styles.sbContainer}>
-          <TouchableOpacity style={Styles.loginButton} onPress={submitData}>
+          <TouchableOpacity style={Styles.loginButton} onPress={submitAlert}>
             <Text style={Styles.loginButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,5 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   FlatList,
@@ -10,7 +9,9 @@ import {
   Modal,
   ScrollView,
   LayoutAnimation,
+  TextInput,
 } from 'react-native';
+import styles from './CatagorieStyles';
 import Check from '../../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {
@@ -18,6 +19,9 @@ import {
   State,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart, removeFromCart} from '../../reduxThunk/action/orderAction';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 const Catagories = ({navigation}) => {
   const [numColumns, setNumColumns] = useState(3);
@@ -41,74 +45,164 @@ const Catagories = ({navigation}) => {
   const data = [
     {
       id: 1,
-      title: 'ER/223/532',
+      category: 'ring',
       image: 'https://m.media-amazon.com/images/I/71tg+iUHJ9L._AC_UY1100_.jpg',
+      weight: '2.5',
+      size: '2',
+      quantity: '1',
     },
     {
       id: 2,
-      title: 'Product 2',
+      category: 'earring',
       image: 'https://bootdey.com/image/400x200/87CEEB/000000',
+      weight: '3.5',
+      size: '3',
+      quantity: '1',
     },
     {
       id: 3,
-      title: 'Product 3',
+      category: 'bangle',
       image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
+      weight: '1',
+      size: '1',
+      quantity: '1',
     },
     {
       id: 4,
-      title: 'Product 4',
+      category: 'chain',
       image: 'https://bootdey.com/image/400x200/4682B4/000000',
+      weight: '1.5',
+      size: '1',
+      quantity: '1',
     },
     {
       id: 5,
-      title: 'Product 5',
+      category: 'necklace',
       image: 'https://bootdey.com/image/400x200/40E0D0/000000',
+      weight: '4.5',
+      size: '4',
+      quantity: '1',
     },
     {
       id: 6,
-      title: 'Product 6',
+      category: 'nosepin',
       image: 'https://bootdey.com/image/400x200/008080/000000',
+      weight: '5.5',
+      size: '5',
+      quantity: '1',
     },
     {
       id: 7,
-      title: 'Product 7',
+      category: 'pendants',
       image: 'https://bootdey.com/image/400x200/FF6347/000000',
+      weight: '7.5',
+      size: '7',
+      quantity: '1',
     },
     {
       id: 8,
-      title: 'Product 8',
+      category: 'mangalsutra',
       image: 'https://bootdey.com/image/400x200/4169E1/000000',
+      weight: '8',
+      size: '8',
+      quantity: '1',
     },
     {
       id: 9,
-      title: 'Product 9',
+      category: 'others',
       image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
+      weight: '9',
+      size: '9',
+      quantity: '1',
     },
     {
       id: 10,
-      title: 'Product 10',
+      category: 'mangalsutra',
       image: 'https://bootdey.com/image/400x200/FA8072/000000',
+      weight: '10',
+      size: '10',
+      quantity: '1',
     },
-    {id: 11, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
-    {id: 12, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
-    {id: 13, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
-    {id: 14, image: 'https://bootdey.com/img/Content/avatar/avatar4.png'},
-    {id: 15, image: 'https://bootdey.com/img/Content/avatar/avatar5.png'},
-    {id: 16, image: 'https://bootdey.com/img/Content/avatar/avatar6.png'},
-    {id: 17, image: 'https://bootdey.com/img/Content/avatar/avatar7.png'},
-    {id: 18, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
-    {id: 19, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
-    {id: 20, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
-    {id: 21, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
-    {id: 22, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
-    {id: 23, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
-    {id: 24, image: 'https://bootdey.com/img/Content/avatar/avatar4.png'},
-    {id: 25, image: 'https://bootdey.com/img/Content/avatar/avatar5.png'},
-    {id: 26, image: 'https://bootdey.com/img/Content/avatar/avatar6.png'},
-    {id: 27, image: 'https://bootdey.com/img/Content/avatar/avatar7.png'},
-    {id: 28, image: 'https://bootdey.com/img/Content/avatar/avatar1.png'},
-    {id: 29, image: 'https://bootdey.com/img/Content/avatar/avatar2.png'},
-    {id: 30, image: 'https://bootdey.com/img/Content/avatar/avatar3.png'},
+    {
+      id: 11,
+      category: 'ring',
+      image: 'https://bootdey.com/img/Content/avatar/avatar2.png',
+      weight: '2.5',
+      size: '2',
+      quantity: '1',
+    },
+    {
+      id: 12,
+      category: 'pendants',
+      image: 'https://bootdey.com/image/400x200/87CEEB/000000',
+      weight: '2',
+      size: '2',
+      quantity: '1',
+    },
+    {
+      id: 13,
+      category: 'pendants',
+      image: 'https://bootdey.com/img/Content/avatar/avatar3.png',
+      weight: '1',
+      size: '1',
+      quantity: '1',
+    },
+    {
+      id: 14,
+      category: 'nosepin',
+      image: 'https://bootdey.com/image/400x200/4682B4/000000',
+      weight: '4',
+      size: '4',
+      quantity: '1',
+    },
+    {
+      id: 15,
+      category: 'necklace',
+      image: 'https://bootdey.com/img/Content/avatar/avatar4.png',
+      weight: '5',
+      size: '5',
+      quantity: '1',
+    },
+    {
+      id: 16,
+      category: 'earring',
+      image: 'https://bootdey.com/image/400x200/008080/000000',
+      weight: '6',
+      size: '6',
+      quantity: '1',
+    },
+    {
+      id: 17,
+      category: 'bangle',
+      image: 'https://bootdey.com/img/Content/avatar/avatar5.png',
+      weight: '7',
+      size: '7',
+      quantity: '1',
+    },
+    {
+      id: 18,
+      category: 'chain',
+      image: 'https://bootdey.com/image/400x200/4169E1/000000',
+      weight: '8',
+      size: '8',
+      quantity: '1',
+    },
+    {
+      id: 19,
+      category: 'others',
+      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
+      weight: '9',
+      size: '9',
+      quantity: '1',
+    },
+    {
+      id: 20,
+      category: 'mangalsutra',
+      image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
+      weight: '10',
+      size: '10',
+      quantity: '1',
+    },
   ];
 
   const [options, setOptions] = useState(data);
@@ -118,6 +212,72 @@ const Catagories = ({navigation}) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [multiSelectMode, setMultiSelectMode] = useState(false);
   const [clearButtonVisible, setClearButtonVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [weightFilter, setWeightFilter] = useState(null);
+  const [weightInput, setWeightInput] = useState('');
+  const [filterVisible, setFilterVisible] = useState(false);
+
+  const clearFilter = () => {
+    setWeightFilter(null);
+    setOptions(data);
+  };
+
+  // Function to filter options by weight
+  const filterOptionsByWeight = weight => {
+    setWeightFilter(weight);
+    const filteredOptions = data.filter(
+      item => parseFloat(item.weight) === parseFloat(weight),
+    );
+    setOptions(filteredOptions);
+  };
+
+  // UI component to set weight filter
+  const renderWeightFilter = () => (
+    <View style={styles.sbContainer}>
+      <Text style={[styles.buttonText, {color: '#000'}]}>
+        Filter by Weight:
+      </Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setWeightInput}
+        value={weightInput}
+        placeholder="Enter weight"
+        placeholderTextColor={'#000'}
+        keyboardType="numeric"
+        maxLength={5}
+      />
+      <TouchableOpacity
+        onPress={() => {
+          if (filterVisible) {
+            clearFilter();
+            setFilterVisible(false);
+            setWeightInput('');
+          } else {
+            filterOptionsByWeight(weightInput);
+            setFilterVisible(true);
+          }
+        }}
+        style={styles.button}>
+        <Text style={styles.buttonText}>
+          {filterVisible ? 'Clear' : 'Filter'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const navigateToPreviousItem = () => {
+    if (currentIndex > 0) {
+      setUserSelected(options[currentIndex - 1]);
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const navigateToNextItem = () => {
+    if (currentIndex < options.length - 1) {
+      setUserSelected(options[currentIndex + 1]);
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
 
   const selectItem = (user, isLongPress) => {
     if (isLongPress) {
@@ -197,14 +357,45 @@ const Catagories = ({navigation}) => {
   };
 
   const handleSubmit = () => {
-    // Perform the action with selectedItems
-    console.log('Selected Items:', selectedItems);
+    // Filter out selected items that are already in the cart
+    const itemsToAdd = selectedItems.filter(item => {
+      return !cartItems.find(cartItem => cartItem.id === item.id);
+    });
+
+    // Dispatch addToCart action for each selected item that is not already in the cart
+    itemsToAdd.forEach(item => {
+      dispatch(addToCart(item));
+    });
 
     // Reset state
     setSelectedItems([]);
     setMultiSelectMode(false);
     setClearButtonVisible(false);
   };
+
+  const [isAdded, setIsAdded] = useState(false);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(state => state.cart);
+
+  const handleAddToCart = userSelected => {
+    dispatch(addToCart(userSelected));
+  };
+
+  const handleRemoveFromCart = userSelected => {
+    // console.warn(userSelected);
+    dispatch(removeFromCart(userSelected.id));
+  };
+
+  useEffect(() => {
+    let result = cartItems.filter(element => {
+      return element.id === userSelected.id;
+    });
+    if (result.length) {
+      setIsAdded(true);
+    } else {
+      setIsAdded(false);
+    }
+  }, [cartItems, userSelected]);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -221,7 +412,8 @@ const Catagories = ({navigation}) => {
 
         <Text style={styles.headerText}>Earrings</Text>
       </View>
-
+      {/* Filter */}
+      {renderWeightFilter()}
       <View
         style={{
           flexDirection: 'row',
@@ -257,29 +449,11 @@ const Catagories = ({navigation}) => {
           </View>
         )}
         {multiSelectMode && selectedItems.length > 0 && (
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Submit</Text>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Add to Cart</Text>
           </TouchableOpacity>
         )}
       </View>
-
-      {/* button */}
-      {/* <View style={styles.sbContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Sort</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Filter</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <FlatList
-        data={formatRow(options, numColumns)}
-        keyExtractor={item => {
-          return item.id;
-        }}
-        renderItem={renderItem}
-        numColumns={numColumns}
-      /> */}
       <PinchGestureHandler
         onGestureEvent={onPinchGestureEvent}
         onHandlerStateChange={({nativeEvent}) => {
@@ -289,25 +463,13 @@ const Catagories = ({navigation}) => {
           }
         }}
         simultaneousHandlers={['pinchX', 'pinchY']}>
-        <PinchGestureHandler
-          onGestureEvent={onPinchGestureEvent}
-          onHandlerStateChange={({nativeEvent}) => {
-            if (nativeEvent.state === State.END) {
-              // Save the scale value for future reference
-              scaleRef.current /= nativeEvent.scale;
-            }
-          }}
-          simultaneousHandlers={['pinchX', 'pinchY']}
-          minPointers={2} // Require two fingers for pinch gestures
-        >
-          <FlatList
-            key={numColumns} // Add key prop here
-            data={formatRow(options, numColumns)}
-            keyExtractor={item => item.id}
-            renderItem={renderItem}
-            numColumns={numColumns}
-          />
-        </PinchGestureHandler>
+        <FlatList
+          key={numColumns}
+          data={formatRow(options, numColumns)}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+          numColumns={numColumns}
+        />
       </PinchGestureHandler>
 
       {
@@ -339,226 +501,75 @@ const Catagories = ({navigation}) => {
         transparent={true}
         onRequestClose={() => setModalVisible(false)}
         visible={modalVisible}>
-        <View style={styles.popupOverlay}>
+        <GestureRecognizer
+          onSwipeLeft={navigateToNextItem}
+          onSwipeRight={navigateToPreviousItem}
+          config={{velocityThreshold: 0.3, directionalOffsetThreshold: 80}}
+          style={styles.popupOverlay}>
           <View style={styles.popup}>
             <View style={styles.popupContent}>
-              <ScrollView contentContainerStyle={styles.modalInfo}>
+              <View contentContainerStyle={styles.modalInfo}>
+                <TouchableOpacity
+                  onPress={navigateToNextItem}
+                  style={[styles.btn, {right: 10}]}>
+                  <Image
+                    style={styles.tinyLogo}
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/271/271228.png',
+                    }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={navigateToPreviousItem}
+                  style={[styles.btn, {left: 10}]}>
+                  <Image
+                    style={styles.tinyLogo}
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/271/271220.png',
+                    }}
+                  />
+                </TouchableOpacity>
                 <Image
-                  style={{width: 200, height: 200}}
+                  style={{width: 'auto', height: 300, resizeMode: 'contain'}}
                   source={{uri: userSelected.image}}
                 />
-                <Text style={styles.title}>{userSelected.title}</Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    color: '#555',
-                    marginTop: 10,
-                  }}>
+                <Text style={styles.category}>{userSelected.category}</Text>
+                <Text style={styles.textModal}>
+                  Weight: {userSelected.weight}
+                </Text>
+                <Text style={styles.textModal}>
                   Description Lorem dolor sit amet, consectetuer adipiscing
                   elit. Aenean commodo ligula..
                 </Text>
-              </ScrollView>
-            </View>
-            <View style={styles.popupButtons}>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(false);
-                }}
-                style={styles.btnClose}>
-                <Text style={styles.txtClose}>Close</Text>
-              </TouchableOpacity>
+              </View>
+              <View style={styles.popupButtons}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (isAdded) {
+                      handleRemoveFromCart(userSelected);
+                    } else {
+                      handleAddToCart(userSelected);
+                    }
+                  }}
+                  style={styles.btnClose}>
+                  <Text style={styles.txtClose}>
+                    {isAdded ? 'Remove from Cart' : 'Add to Cart'}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                  style={styles.btnClose}>
+                  <Text style={styles.txtClose}>Close</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </GestureRecognizer>
       </Modal>
     </GestureHandlerRootView>
   );
 };
 
 export default Catagories;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  /* header */
-  tinyLogo: {
-    width: 25,
-    height: 40,
-    resizeMode: 'contain',
-  },
-  // header
-  header_container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginHorizontal: 10,
-  },
-  headerText: {
-    // marginRight: 23,
-    fontSize: 20,
-    color: '#000000',
-    fontWeight: 'bold',
-  },
-  button1: {
-    backgroundColor: '#454545',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginTop: 5,
-    marginBottom: 10,
-    width: 150,
-  },
-  sbContainer: {
-    // alignContent: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  button: {
-    backgroundColor: '#454545',
-    // paddingVertical: 5,
-    borderRadius: 5,
-    // marginTop: 5,
-    width: '30%',
-  },
-  button2: {
-    width: 35,
-    height: 35,
-    borderRadius: 30,
-    backgroundColor: '#454545',
-    position: 'absolute',
-    top: '50%',
-    right: 20,
-    elevation: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button3: {
-    width: 35,
-    height: 35,
-    borderRadius: 30,
-    backgroundColor: '#454545',
-    position: 'absolute',
-    top: '40%',
-    right: 20,
-    elevation: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  item: {
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  itemInvisible: {
-    backgroundColor: 'transparent',
-  },
-
-  /************ modals ************/
-  popup: {
-    backgroundColor: 'white',
-    marginTop: 80,
-    marginHorizontal: 20,
-    borderRadius: 7,
-  },
-  popupOverlay: {
-    backgroundColor: '#00000057',
-    flex: 1,
-    marginTop: 20,
-  },
-  popupContent: {
-    //alignItems: 'center',
-    margin: 5,
-    height: 350,
-  },
-  popupHeader: {
-    marginBottom: 45,
-  },
-  popupButtons: {
-    marginTop: 15,
-    flexDirection: 'row',
-    borderTopWidth: 1,
-    borderColor: '#eee',
-    justifyContent: 'center',
-  },
-  popupButton: {
-    flex: 1,
-    marginVertical: 16,
-  },
-  btnClose: {
-    flex: 1,
-    height: 40,
-    backgroundColor: '#20b2aa',
-    padding: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-  },
-  modalInfo: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  txtClose: {
-    color: 'white',
-  },
-  title: {
-    fontSize: 18,
-    flex: 1,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  // Style Submit Button:
-  submitButton: {
-    // backgroundColor: '#20b2aa',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitButtonText: {
-    color: '#000',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  clearButton: {
-    // backgroundColor: '#454545',
-    // paddingVertical: 5,
-    // paddingHorizontal: 15,
-    // borderRadius: 5,
-    // marginTop: 5,
-    // marginBottom: 10,
-    marginLeft: 10,
-  },
-  txt: {
-    textAlign: 'center',
-    padding: 2,
-  },
-  innerItem: {
-    flex: 1,
-    // backgroundColor: '#7e9e0b',
-  },
-  tickContainer: {
-    position: 'absolute',
-    top: 5,
-    right: 5,
-    backgroundColor: 'transparent',
-    // backgroundColor: '#35A7FF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-    borderRadius: 5,
-  },
-  tick: {
-    // fontSize: 20,
-    // color: '#fff',
-    width: 30,
-    height: 30,
-  },
-});
