@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 20,
   },
   list: {
     paddingHorizontal: 17,
@@ -43,8 +42,8 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     // alignContent: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
+    // borderWidth: 1,
+    // borderColor: '#000',
     borderRadius: 5,
     padding: 10,
   },

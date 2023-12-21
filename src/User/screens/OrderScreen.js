@@ -147,62 +147,70 @@ const OrderScreen = ({navigation}) => {
       </View> */}
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
-      ) : (
-        <FlatList
-          style={styles.list}
-          data={orders}
-          keyExtractor={item => {
-            return item._id.toString();
-          }}
-          ItemSeparatorComponent={() => {
-            return <View style={styles.separator} />;
-          }}
-          renderItem={orders => {
-            const item = orders.item;
-            // console.log(item.image[0]);
-            // let Date = item.updatedAt;
-            // console.log(Date);
-            return (
-              <TouchableOpacity onPress={() => handleCardPress(item)}>
-                <View style={styles.card} key={item._id}>
-                  <FastImage
-                    style={styles.cardImage}
-                    source={{
-                      uri: item.image[0],
-                      priority: FastImage.priority.high,
-                    }}
-                    resizeMode={FastImage.resizeMode.contain}
-                  />
-                  <View style={styles.cardHeader}>
-                    <Text style={styles.title}>{item.category}</Text>
-                    <Text style={styles.order}>Tunch: {item.tunch}</Text>
-                    <Text style={styles.order}>Weight: {item.weight}</Text>
-                    <Text style={styles.order}>Size: {item.size}</Text>
-                    <Text style={styles.order}>Quantity: {item.quantity}</Text>
-                    <Text style={styles.order}>Status: {item.statusIs}</Text>
+      ) : orders.length > 0 ? (
+        <>
+          <FlatList
+            style={styles.list}
+            data={orders}
+            keyExtractor={item => {
+              return item._id.toString();
+            }}
+            ItemSeparatorComponent={() => {
+              return <View style={styles.separator} />;
+            }}
+            renderItem={orders => {
+              const item = orders.item;
+              // console.log(item.image[0]);
+              // let Date = item.updatedAt;
+              // console.log(Date);
+              return (
+                <TouchableOpacity onPress={() => handleCardPress(item)}>
+                  <View style={styles.card} key={item._id}>
+                    <FastImage
+                      style={styles.cardImage}
+                      source={{
+                        uri: item.image[0],
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
+                    <View style={styles.cardHeader}>
+                      <Text style={styles.title}>{item.category}</Text>
+                      <Text style={styles.order}>Tunch: {item.tunch}</Text>
+                      <Text style={styles.order}>Weight: {item.weight}</Text>
+                      <Text style={styles.order}>Size: {item.size}</Text>
+                      <Text style={styles.order}>
+                        Quantity: {item.quantity}
+                      </Text>
+                      <Text style={styles.order}>Status: {item.statusIs}</Text>
+                    </View>
+                    <View
+                      style={[
+                        {
+                          backgroundColor:
+                            item.statusIs === 'pending'
+                              ? '#A0785A'
+                              : item.statusIs === 'processing'
+                              ? '#aecbfa'
+                              : item.statusIs === 'completed'
+                              ? '#ccff90'
+                              : item.statusIs === 'rejected'
+                              ? '#f28b82'
+                              : '#ffffff',
+                        },
+                        styles.color,
+                      ]}
+                    />
                   </View>
-                  <View
-                    style={[
-                      {
-                        backgroundColor:
-                          item.statusIs === 'pending'
-                            ? '#A0785A'
-                            : item.statusIs === 'processing'
-                            ? '#aecbfa'
-                            : item.statusIs === 'completed'
-                            ? '#ccff90'
-                            : item.statusIs === 'rejected'
-                            ? '#f28b82'
-                            : '#ffffff',
-                      },
-                      styles.color,
-                    ]}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </>
+      ) : (
+        <Text style={{textAlign: 'center', color: '#000', fontSize: 22}}>
+          Your Orders is empty!
+        </Text>
       )}
       <Modal
         animationType="fade"

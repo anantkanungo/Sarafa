@@ -172,7 +172,7 @@ export default StyleSheet.create({
     top: '75%',
     borderWidth: 1,
     borderColor: '#454545',
-    padding: 10,
+    padding: 5,
     borderRadius: 5,
   },
   category: {
