@@ -142,13 +142,13 @@ export default StyleSheet.create({
     // backgroundColor: '#555',
   },
   input: {
-    margin: 1,
     borderWidth: 1,
-    paddingHorizontal: 5,
-    padding: 0,
-    borderRadius: 5,
+    margin: 5,
+    width: 137,
+    height: 36,
+    alignContent: 'center',
+    justifyContent: 'center',
     color: '#000000',
-    borderColor: '#000',
   },
   sbContainer: {
     alignItems: 'center',
@@ -157,7 +157,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
   },
   button: {
     backgroundColor: '#454545',

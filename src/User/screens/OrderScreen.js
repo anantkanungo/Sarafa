@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {Picker} from '@react-native-picker/picker';
 
 const fetchOrders = async () => {
   try {
@@ -44,20 +45,104 @@ const OrderScreen = ({navigation}) => {
   const [audioPlayer, setAudioPlayer] = useState();
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [statusInput, setStatusInput] = useState('pending');
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
+
+  const clearFilter = () => {
+    // setOrders(originalOrders);
+    setFilterActive(false);
+  };
+
+  // Function to filter options by status
+  const filterOptionsByStatus = statusIs => {
+    const filteredOptions = orders.filter(item => item.statusIs === statusIs);
+    setOrders(filteredOptions);
+    setFilterActive(true);
+  };
+
+  // UI component to set status filter
+  const renderStatusFilter = () => (
+    <View style={styles.sbContainer}>
+      <Text style={[styles.buttonText, {color: '#000'}]}>
+        Filter by Status:
+      </Text>
+      {/* <TextInput
+        style={styles.input}
+        onChangeText={setStatusInput}
+        value={statusInput}
+        placeholder="Enter status"
+        placeholderTextColor={'#000'}
+        keyboardType="default"
+        maxLength={15}
+        textTransform="lowercase"
+      /> */}
+      <View style={styles.input}>
+        <Picker
+          selectedValue={statusInput}
+          onValueChange={(itemValue, itemIndex) => setStatusInput(itemValue)}>
+          <Picker.Item
+            style={{color: '#000', backgroundColor: '#fff'}}
+            label="Pending"
+            value="pending"
+          />
+          <Picker.Item
+            style={{color: '#000', backgroundColor: '#fff'}}
+            label="Processing"
+            value="processing"
+          />
+          <Picker.Item
+            style={{color: '#000', backgroundColor: '#fff'}}
+            label="Completed"
+            value="completed"
+          />
+          <Picker.Item
+            style={{color: '#000', backgroundColor: '#fff'}}
+            label="Rejected"
+            value="rejected"
+          />
+        </Picker>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          if (filterVisible) {
+            clearFilter();
+            setFilterVisible(false);
+            setStatusInput('');
+          } else {
+            filterOptionsByStatus(statusInput);
+            setFilterVisible(true);
+          }
+        }}
+        style={styles.button}>
+        <Text style={styles.buttonText}>
+          {filterVisible ? 'Clear' : 'Filter'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchOrders();
-        setOrders(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (!filterActive) {
+      const fetchData = async () => {
+        try {
+          const data = await fetchOrders();
+          setOrders(data);
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-    fetchData();
-  }, [orders]);
+      fetchData();
+
+      const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+
+      return () => {
+        clearInterval(intervalId); // Clear the interval when the component unmounts
+      };
+    }
+  }, [filterActive]);
 
   // // Function to fetch orders and update state
   // const fetchAndSetOrders = async () => {
@@ -142,9 +227,8 @@ const OrderScreen = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>Orders</Text>
       </View>
-      {/* <View style={{alignItems: 'center'}}>
-        <Text style={styles.headerText}>Orders</Text>
-      </View> */}
+      {/* Filter */}
+      {renderStatusFilter()}
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
       ) : orders.length > 0 ? (
@@ -189,9 +273,9 @@ const OrderScreen = ({navigation}) => {
                         {
                           backgroundColor:
                             item.statusIs === 'pending'
-                              ? '#A0785A'
-                              : item.statusIs === 'processing'
                               ? '#aecbfa'
+                              : item.statusIs === 'processing'
+                              ? '#FFBF00'
                               : item.statusIs === 'completed'
                               ? '#ccff90'
                               : item.statusIs === 'rejected'
