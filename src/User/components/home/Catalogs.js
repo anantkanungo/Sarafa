@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   /******** card components **************/
   title: {
-    fontFamily: 'Cochin',
+    fontFamily: 'Gilroy-Regular',
     fontSize: 18,
     flex: 1,
     color: '#000',

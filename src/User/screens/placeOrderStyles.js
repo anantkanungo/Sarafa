@@ -21,6 +21,7 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 22,
+    fontFamily: 'Gilroy-Regular',
     color: '#000000',
   },
   // header
@@ -47,12 +48,14 @@ export default StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     fontSize: 22,
+    fontFamily: 'Gilroy-Regular',
     borderRadius: 5,
     color: '#000000',
   },
   voiceButton: {
     marginLeft: 10,
     fontSize: 24,
+    fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
     padding: 3.5,
     borderRadius: 5,
@@ -63,6 +66,7 @@ export default StyleSheet.create({
     margin: 5,
     color: '#000000',
     marginHorizontal: 8,
+    fontFamily: 'Gilroy-Regular',
   },
   // Tunch
   tunchContainer: {
@@ -79,7 +83,7 @@ export default StyleSheet.create({
     fontSize: 28,
     marginHorizontal: 14,
     color: '#000000',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
   tunchView2: {
     borderWidth: 1,
@@ -116,6 +120,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     color: '#000000',
     borderColor: '#000',
+    fontFamily: 'Gilroy-Regular',
   },
   // Switch
   switchContainer: {
@@ -129,9 +134,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#454545',
+    backgroundColor: '#000',
     paddingVertical: 10,
-    borderRadius: 8,
     marginTop: 10,
     width: 130,
   },
@@ -139,7 +143,7 @@ export default StyleSheet.create({
     color: '#fff',
     alignSelf: 'center',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
   // Modal
   centeredView: {
@@ -177,14 +181,19 @@ export default StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     fontSize: 22,
     color: '#000',
+  },
+  pikerLabel: {
+    color: '#000', 
+    backgroundColor: '#fff',
+    fontFamily: 'OverpassMono-Regular',
   },
 });

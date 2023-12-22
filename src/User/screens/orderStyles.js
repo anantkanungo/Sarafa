@@ -44,14 +44,14 @@ export default StyleSheet.create({
   title: {
     fontSize: 18,
     flex: 1,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     textTransform: 'capitalize',
   },
   order: {
     fontSize: 13,
     marginTop: 5,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     // color: '#808080',
   },
@@ -81,7 +81,7 @@ export default StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    fontWeight: 'bold',
+    fontFamily: 'Cirka-Variable',
     // marginBottom: 5,
   },
   button1: {
@@ -97,7 +97,7 @@ export default StyleSheet.create({
     color: '#fff',
     alignSelf: 'center',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
   /************ modals ************/
   popupOverlay: {
@@ -123,12 +123,13 @@ export default StyleSheet.create({
   titleModal: {
     fontSize: 18,
     color: '#000',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     alignSelf: 'center',
   },
   voiceButton: {
     marginLeft: 10,
     fontSize: 24,
+    fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
     padding: 3.5,
     borderRadius: 5,
@@ -137,7 +138,7 @@ export default StyleSheet.create({
   orderModal: {
     fontSize: 16,
     marginTop: 5,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     // backgroundColor: '#555',
   },

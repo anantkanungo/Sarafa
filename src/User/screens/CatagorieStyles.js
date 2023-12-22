@@ -21,7 +21,7 @@ export default StyleSheet.create({
     // marginRight: 23,
     fontSize: 20,
     color: '#000000',
-    fontWeight: 'bold',
+    fontFamily: 'Cirka-Variable',
   },
   button1: {
     backgroundColor: '#454545',
@@ -69,9 +69,7 @@ export default StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    // alignSelf: 'center',
-    // fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
   item: {
     backgroundColor: '#ffffff',
@@ -136,7 +134,7 @@ export default StyleSheet.create({
     fontSize: 18,
     flex: 1,
     color: '#000',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
   clearButton: {
     marginLeft: 10,
@@ -177,14 +175,14 @@ export default StyleSheet.create({
   },
   category: {
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     fontSize: 22,
   },
   textModal: {
     textAlign: 'center',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     marginTop: 10,
     color: '#000',
   },

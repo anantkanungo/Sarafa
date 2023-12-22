@@ -220,9 +220,7 @@ const OrderScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-            }}
+            src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>Orders</Text>
@@ -309,16 +307,15 @@ const OrderScreen = ({navigation}) => {
                   <Text style={styles.titleModal}>Order Details</Text>
                   <TouchableOpacity
                     style={{
-                      padding: 6,
-                      borderWidth: 2,
-                      borderColor: '#000',
                       height: 40,
                       width: 40,
-                      borderRadius: 20,
                       alignItems: 'center',
                     }}
                     onPress={closeModal}>
-                    <FontAwesome5 name={'times'} size={20} color={'#000'} />
+                    <Image
+                      src="https://img.icons8.com/material-outlined/24/cancel--v1.png"
+                      style={{height: 40, width: 40, color: '#000'}}
+                    />
                   </TouchableOpacity>
                 </View>
 

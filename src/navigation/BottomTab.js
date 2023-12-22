@@ -8,7 +8,7 @@ import PlaceOrder from '../User/screens/PlaceOrder';
 import OrderScreen from '../User/screens/OrderScreen';
 import CartScreen from '../User/screens/CartScreen';
 import {useSelector} from 'react-redux';
-import {Text} from 'react-native';
+import {Image} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,30 +23,42 @@ const BottomTab = () => {
     <Tab.Navigator
       initialRouteName="HomeScreen"
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: '#000',
+        tabBarActiveTintColor: '#E78C37',
         tabBarInactiveTintColor: '#555',
         tabBarActiveBackgroundColor: '#fff',
         tabBarInactiveBackgroundColor: '#fff',
         tabBarLabelStyle: {fontSize: 12},
         headerShown: false,
         tabBarIcon: ({focused, size, color}) => {
-          let iconName;
+          let imageUri;
           if (route.name === 'Home') {
-            iconName = 'home';
+            imageUri = focused
+              ? 'https://img.icons8.com/material-outlined/24/shop.png'
+              : 'https://img.icons8.com/material-outlined/24/shop.png';
             size = focused ? 20 : 20;
-            // color = focused ? '#e91e63' : '#555'
+            // color = focused ? '#E78C37' : '#555';
           } else if (route.name === 'My Cart') {
-            iconName = 'shopping-cart';
+            imageUri = focused
+              ? 'https://img.icons8.com/material-outlined/24/000000/shopping-bag--v1.png'
+              : 'https://img.icons8.com/material-outlined/24/000000/shopping-bag--v1.png';
             size = focused ? 20 : 20;
           } else if (route.name === 'Place Order') {
-            iconName = 'shopping-bag';
+            imageUri = focused
+              ? 'https://img.icons8.com/material-outlined/24/shopaholic.png'
+              : 'https://img.icons8.com/material-outlined/24/shopaholic.png';
             size = focused ? 20 : 20;
           } else if (route.name === 'My Orders') {
-            iconName = 'tasks';
+            imageUri = focused
+              ? 'https://img.icons8.com/material-outlined/24/check.png'
+              : 'https://img.icons8.com/material-outlined/24/check.png';
             size = focused ? 20 : 20;
-            // iconName = 'clock-o';
           }
-          return <FontAwesome5 name={iconName} size={size} color={color} />;
+          return (
+            <Image
+              source={{uri: imageUri}}
+              style={{width: size, height: size, tintColor: color}}
+            />
+          );
         },
       })}>
       <Tab.Screen name="Home" component={HomeScreen} />

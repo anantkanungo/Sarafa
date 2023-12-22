@@ -286,9 +286,7 @@ const PlaceOrder = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={Styles.tinyLogo}
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-            }}
+            src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
         </TouchableOpacity>
       </View>
@@ -360,54 +358,54 @@ const PlaceOrder = ({navigation}) => {
           <Picker
             selectedValue={category}
             onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
-            style={{color: '#000', backgroundColor: '#fff'}}>
+            style={Styles.pikerLabel}>
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Select category"
               value=""
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Ring 'रिंग'"
               value="ring"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Earring 'इयररिंग '"
               value="earring"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
-              label="Bangle 'बैंगगल'"
+              style={Styles.pikerLabel}
+              label="Bangle 'बैंगल'"
               value="bangle"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Chain 'चेन'"
               value="chain"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Necklace 'नेकलेस'"
               value="necklace"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Nosepin 'नोज पिन'"
               value="nosepin"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Pendants 'पेंडेंट'"
               value="pendants"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="Mangalsutra 'मंगलसूत्र'"
               value="mangalsutra"
             />
             <Picker.Item
-              style={{color: '#000', backgroundColor: '#fff'}}
+              style={Styles.pikerLabel}
               label="others"
               value="others"
             />
@@ -486,15 +484,11 @@ const PlaceOrder = ({navigation}) => {
                 selectedValue={tunch}
                 onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
                 <Picker.Item
-                  style={{color: '#000', backgroundColor: '#fff'}}
+                  style={Styles.pikerLabel}
                   label="Regular"
                   value="regular"
                 />
-                <Picker.Item
-                  style={{color: '#000', backgroundColor: '#fff'}}
-                  label="92"
-                  value="92"
-                />
+                <Picker.Item style={Styles.pikerLabel} label="92" value="92" />
                 <Picker.Item
                   style={{color: '#000'}}
                   label={tunch}

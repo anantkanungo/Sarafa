@@ -4,6 +4,7 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React from 'react';
 import BackgroundImage from '../../../assets/IMG_HEADER.jpg';
@@ -23,17 +24,26 @@ const Header = ({customerLogout, details}) => {
             style={{
               fontSize: 18,
               color: 'white',
-              fontWeight: 'bold',
               marginBottom: 10,
+              fontFamily: 'Cirka-Variable',
             }}>
             Hello, {details?.username}
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
-            <FontAwesome5 name="sign-out-alt" size={30} color="#fff" />
+            {/* <FontAwesome5 name="sign-out-alt" size={30} color="#fff" /> */}
+            <Image
+              src="https://img.icons8.com/material-outlined/exit.png"
+              style={{width: 30, height: 30, tintColor: '#fff'}}
+            />
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+          <Text
+            style={{
+              fontSize: 24,
+              color: 'white',
+              fontFamily: 'Cirka-Variable',
+            }}>
             Jeweler's name
           </Text>
           <Text style={styles.logoutButtonText}>Logout</Text>
@@ -76,7 +86,8 @@ const styles = StyleSheet.create({
   },
   logoutButtonText: {
     color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: 11,
+    // fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
   },
 });

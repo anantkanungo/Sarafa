@@ -36,7 +36,7 @@ const Root = ({token, navigation}) => {
 
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

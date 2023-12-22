@@ -101,16 +101,14 @@ const CartScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-            }}
+            src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
         </TouchableOpacity>
       </View>
       {cartItems.length > 0 ? (
         <>
           <FlatList
-            style={styles.list}
+            style={[styles.list, {backgroundColor: '#e1d2c4'}]}
             data={cartItems}
             keyExtractor={item => item.id.toString()}
             ItemSeparatorComponent={() => {
@@ -121,7 +119,10 @@ const CartScreen = ({navigation}) => {
                 <TouchableOpacity
                   onPress={() => handleRemoveFromCart(item)}
                   style={styles.voiceButton}>
-                  <FontAwesome5 name={'trash'} size={25} color={'#000'} />
+                  <Image
+                    src="https://img.icons8.com/material-outlined/24/trash--v1.png"
+                    style={{width: 25, height: 25, tintColor: '#000'}}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -129,7 +130,11 @@ const CartScreen = ({navigation}) => {
                     setSelectedItemId(item.id);
                   }}
                   style={[styles.voiceButton, {top: '50%'}]}>
-                  <FontAwesome5 name={'pen'} size={25} color={'#000'} />
+                  {/* <FontAwesome5 name={'pen'} size={25} color={'#000'} /> */}
+                  <Image
+                    src="https://img.icons8.com/material-outlined/edit.png" 
+                    style={{width: 25, height: 25}}
+                  />
                 </TouchableOpacity>
                 <Image style={styles.cardImage} source={{uri: item.image}} />
                 <View style={styles.cardHeader}>
@@ -141,7 +146,7 @@ const CartScreen = ({navigation}) => {
               </View>
             )}
           />
-          <View style={{height: 40}} />
+          {/* <View style={{height: 40, opacity: 1}} /> */}
           {/* Place Order button */}
           <TouchableOpacity
             style={styles.button1}
@@ -193,6 +198,7 @@ const CartScreen = ({navigation}) => {
               <View style={{flexDirection: 'row'}}>
                 <Button
                   title="Submit"
+                  color={'#000'}
                   onPress={() => {
                     handleEditItem();
                     setModalVisible(!modalVisible);
