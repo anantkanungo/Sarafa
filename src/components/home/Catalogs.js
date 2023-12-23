@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,94 +6,102 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
+import axios from 'axios';
+
+const fetchCatalog = async () => {
+  try {
+    const response = await axios.get(
+      'http://139.59.58.151:8000/getallcatalog',
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+    // console.log(response);
+    // console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const Catalogs = ({navigation}) => {
-  const data = [
-    {
-      id: 1,
-      title: 'Ring',
-      image: 'https://m.media-amazon.com/images/I/71tg+iUHJ9L._AC_UY1100_.jpg',
-    },
-    {
-      id: 2,
-      title: 'Product 2',
-      image: 'https://bootdey.com/image/400x200/87CEEB/000000',
-    },
-    {
-      id: 3,
-      title: 'Product 3',
-      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
-    },
-    {
-      id: 4,
-      title: 'Product 4',
-      image: 'https://bootdey.com/image/400x200/4682B4/000000',
-    },
-    {
-      id: 5,
-      title: 'Product 5',
-      image: 'https://bootdey.com/image/400x200/40E0D0/000000',
-    },
-    {
-      id: 6,
-      title: 'Product 6',
-      image: 'https://bootdey.com/image/400x200/008080/000000',
-    },
-    {
-      id: 7,
-      title: 'Product 7',
-      image: 'https://bootdey.com/image/400x200/FF6347/000000',
-    },
-    {
-      id: 8,
-      title: 'Product 8',
-      image: 'https://bootdey.com/image/400x200/4169E1/000000',
-    },
-    {
-      id: 9,
-      title: 'Product 9',
-      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
-    },
-    {
-      id: 9,
-      title: 'Product 10',
-      image: 'https://bootdey.com/image/400x200/FA8072/000000',
-    },
-  ];
+  const [catalog, setCatalog] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [results, setResults] = useState(data);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchCatalog();
+        setCatalog(data);
+        // console.log('Data: ', data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={results}
-        horizontal={false}
-        numColumns={2}
-        keyExtractor={item => {
-          return item.id;
-        }}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.separator} />;
-        }}
-        renderItem={post => {
-          const item = post.item;
-          return (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => navigation.navigate('Catagories')}>
-              <View style={styles.imageContainer}>
-                <Image style={styles.cardImage} source={{uri: item.image}} />
-              </View>
-              <View style={styles.cardContent}>
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      {isLoading ? (
+        <ActivityIndicator visible={isLoading} />
+      ) : catalog.length > 0 ? (
+        <>
+          <FlatList
+            style={styles.list}
+            contentContainerStyle={styles.listContainer}
+            data={catalog}
+            horizontal={false}
+            numColumns={2}
+            keyExtractor={item => {
+              return item._id.toString();
+            }}
+            ItemSeparatorComponent={() => {
+              return <View style={styles.separator} />;
+            }}
+            renderItem={catalog => {
+              const item = catalog.item;
+              return (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => navigation.navigate('Catagories')}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      style={styles.cardImage}
+                      source={{uri: item.image[0]}}
+                    />
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.title}>{item.category}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </>
+      ) : (
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000',
+            fontSize: 22,
+            fontFamily: 'Gilroy-Regular',
+          }}>
+          Your Orders is empty!
+        </Text>
+      )}
     </View>
   );
 };

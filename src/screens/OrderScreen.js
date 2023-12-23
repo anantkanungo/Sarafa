@@ -243,7 +243,13 @@ const OrderScreen = ({navigation}) => {
           />
         </>
       ) : (
-        <Text style={{textAlign: 'center', color: '#000', fontSize: 22}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000',
+            fontSize: 22,
+            fontFamily: 'Gilroy-Regular',
+          }}>
           Your Orders is empty!
         </Text>
       )}
