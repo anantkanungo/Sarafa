@@ -24,7 +24,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+const GilroyText = ({label, ...props}) => (
+  <Text style={{fontFamily: 'Gilroy-Regular', ...Styles.pikerLabel}} {...props}>
+    {label}
+  </Text>
+);
 
 const PlaceOrder = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -289,6 +294,7 @@ const PlaceOrder = ({navigation}) => {
             src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
         </TouchableOpacity>
+        <Text style={Styles.headerText}>Place Order</Text>
       </View>
 
       <ScrollView>
@@ -309,14 +315,15 @@ const PlaceOrder = ({navigation}) => {
                 style={{width: 100, height: 100}}
               />
             ))}
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Pressable
+              style={[Styles.button, Styles.buttonOpen]}
+              onPress={() => setModalVisible(true)}>
               <Image
-                style={Styles.image}
-                source={{
-                  uri: 'data:image/png;base64,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',
-                }}
+                style={[Styles.tinyLogo, {alignSelf: 'center'}]}
+                src="https://img.icons8.com/material-outlined/add-image.png"
               />
-            </TouchableOpacity>
+              <Text style={Styles.textStyle}>Upload Photo</Text>
+            </Pressable>
           </ScrollView>
         </View>
         {/* Modal */}
@@ -336,11 +343,19 @@ const PlaceOrder = ({navigation}) => {
                   <Pressable
                     style={[Styles.button, Styles.buttonOpen]}
                     onPress={choosePhotoFromLibrary}>
+                    <Image
+                      style={[Styles.tinyLogo, {alignSelf: 'center'}]}
+                      src="https://img.icons8.com/material-outlined/image-gallery.png"
+                    />
                     <Text style={Styles.textStyle}>Gallery</Text>
                   </Pressable>
                   <Pressable
                     style={[Styles.button, Styles.buttonOpen]}
                     onPress={takePhotoFromCamera}>
+                    <Image
+                      style={[Styles.tinyLogo, {alignSelf: 'center'}]}
+                      src="https://img.icons8.com/material-outlined/compact-camera--v2.png"
+                    />
                     <Text style={Styles.textStyle}>Camera</Text>
                   </Pressable>
                 </View>
@@ -358,53 +373,55 @@ const PlaceOrder = ({navigation}) => {
           <Picker
             selectedValue={category}
             onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
-            style={Styles.pikerLabel}>
-            <Picker.Item
+            dropdownIconColor="#000"
+            itemStyle={Styles.pikerLabel}>
+            <GilroyText
               style={Styles.pikerLabel}
               label="Select category"
               value=""
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Ring 'रिंग'"
               value="ring"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Earring 'इयररिंग '"
               value="earring"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
-              label="Bangle 'बैंगल'"
-              value="bangle"
+              label="Bracelet 'ब्रेसलेट '"
+              value="bracelet"
             />
-            <Picker.Item
+
+            <GilroyText
               style={Styles.pikerLabel}
               label="Chain 'चेन'"
               value="chain"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Necklace 'नेकलेस'"
               value="necklace"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Nosepin 'नोज पिन'"
               value="nosepin"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Pendants 'पेंडेंट'"
               value="pendants"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="Mangalsutra 'मंगलसूत्र'"
               value="mangalsutra"
             />
-            <Picker.Item
+            <GilroyText
               style={Styles.pikerLabel}
               label="others"
               value="others"
@@ -426,7 +443,10 @@ const PlaceOrder = ({navigation}) => {
               <TouchableOpacity
                 style={[Styles.voiceButton, {paddingTop: 10}]}
                 onPress={deleteRecording}>
-                <FontAwesome5 name={'trash'} size={25} color={'#ff3636'} />
+                <Image
+                  src="https://img.icons8.com/material-outlined/24/trash--v1.png"
+                  style={{width: 25, height: 25, tintColor: '#000'}}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={isPlaying ? stopPlayback : startPlayback}
@@ -482,14 +502,16 @@ const PlaceOrder = ({navigation}) => {
             <View style={Styles.tunchView2}>
               <Picker
                 selectedValue={tunch}
-                onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}>
-                <Picker.Item
+                onValueChange={(itemValue, itemIndex) => setTunch(itemValue)}
+                dropdownIconColor="#000"
+                itemStyle={Styles.pikerLabel}>
+                <GilroyText
                   style={Styles.pikerLabel}
                   label="Regular"
                   value="regular"
                 />
-                <Picker.Item style={Styles.pikerLabel} label="92" value="92" />
-                <Picker.Item
+                <GilroyText style={Styles.pikerLabel} label="92" value="92" />
+                <GilroyText
                   style={{color: '#000'}}
                   label={tunch}
                   value={tunch}

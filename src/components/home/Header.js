@@ -7,10 +7,9 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import BackgroundImage from '../../../assets/IMG_HEADER.jpg';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import BackgroundImage from '../../assets/IMG_HEADER.jpg';
 import {connect} from 'react-redux';
-import {customerLogout} from '../../../reduxThunk/action/authAction';
+import {customerLogout} from '../../reduxThunk/action/authAction';
 
 const Header = ({customerLogout, details}) => {
   return (
@@ -30,7 +29,6 @@ const Header = ({customerLogout, details}) => {
             Hello, {details?.username}
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
-            {/* <FontAwesome5 name="sign-out-alt" size={30} color="#fff" /> */}
             <Image
               src="https://img.icons8.com/material-outlined/exit.png"
               style={{width: 30, height: 30, tintColor: '#fff'}}

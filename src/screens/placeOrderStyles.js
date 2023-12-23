@@ -3,13 +3,6 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 10,
-  },
-  image: {
-    height: 100,
-    width: 100,
-    resizeMode: 'contain',
-    borderRadius: 6,
   },
   tinyLogo: {
     width: 25,
@@ -18,6 +11,7 @@ export default StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
+    marginHorizontal: 10,
   },
   text: {
     fontSize: 22,
@@ -26,9 +20,15 @@ export default StyleSheet.create({
   },
   // header
   header_container: {
+    marginHorizontal: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  headerText: {
+    fontSize: 24,
+    color: '#000000',
+    fontFamily: 'Cirka-Variable',
   },
   // UploadImage
   contain: {
@@ -39,8 +39,11 @@ export default StyleSheet.create({
   jewelryPicker: {
     borderWidth: 1,
     marginBottom: 15,
-    // borderRadius: 5,
     color: '#000000',
+    marginHorizontal: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Gilroy-Regular',
   },
   // Description & voiceButton
   input: {
@@ -49,7 +52,6 @@ export default StyleSheet.create({
     padding: 10,
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    borderRadius: 5,
     color: '#000000',
   },
   voiceButton: {
@@ -58,7 +60,6 @@ export default StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
     padding: 3.5,
-    borderRadius: 5,
     color: '#000000',
   },
   voiceButtonText: {
@@ -76,7 +77,6 @@ export default StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     marginTop: 15,
-    borderRadius: 5,
     color: '#000000',
   },
   tunchView1: {
@@ -93,6 +93,7 @@ export default StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     color: '#000000',
+    fontFamily: 'Gilroy-Regular',
   },
   tunchView4: {
     marginLeft: 10,
@@ -101,7 +102,6 @@ export default StyleSheet.create({
     marginTop: 16,
     borderWidth: 1,
     padding: 3,
-    borderRadius: 5,
     color: '#000000',
   },
   // weight & Size
@@ -117,7 +117,6 @@ export default StyleSheet.create({
     padding: 10,
     width: 75,
     fontSize: 18,
-    borderRadius: 5,
     color: '#000000',
     borderColor: '#000',
     fontFamily: 'Gilroy-Regular',
@@ -155,7 +154,6 @@ export default StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
     padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
@@ -168,32 +166,40 @@ export default StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
     padding: 10,
     elevation: 2,
     margin: 10,
   },
   buttonOpen: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#000',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 5,
   },
   buttonClose: {
-    backgroundColor: '#F194',
+    backgroundColor: 'red',
   },
   textStyle: {
-    color: 'white',
+    color: '#000',
     fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
     fontSize: 22,
     color: '#000',
   },
   pikerLabel: {
-    color: '#000', 
+    color: '#000',
     backgroundColor: '#fff',
-    fontFamily: 'OverpassMono-Regular',
+    fontFamily: 'Gilroy-Regular',
   },
 });

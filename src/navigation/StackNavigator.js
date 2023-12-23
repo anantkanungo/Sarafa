@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTab from './BottomTab';
-import Catagories from '../User/screens/Catagories';
-import PreviousOrder from '../User/screens/PreviousOrder';
+import Catagories from '../screens/Catagories';
+import PreviousOrder from '../screens/PreviousOrder';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,5 +1,5 @@
 // https://www.npmjs.com/package/react-native-screenshot-prevent
-import React, {useEffect} from 'react';
+import React from 'react';
 import Root from './src/navigation/Root';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -9,9 +9,6 @@ import {gstore} from './src/reduxThunk/Store';
 // import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
-  useEffect(() => {
-    // SplashScreen.hide();
-  }, []);
 
   return (
     <Provider store={gstore}>

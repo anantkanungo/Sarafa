@@ -14,12 +14,11 @@ export default StyleSheet.create({
     width: '85%',
   },
   input: {
-    height: 60,
+    // height: 60,
     flex: 1,
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
-    marginLeft: -25,
     color: '#000000',
   },
   bottomView: {
@@ -38,6 +37,7 @@ export default StyleSheet.create({
   },
   loginText: {
     fontSize: 34,
+    fontFamily: 'Gilroy-Regular',
     marginTop: 12,
     marginBottom: 4,
     color: 'white',
@@ -45,14 +45,15 @@ export default StyleSheet.create({
   },
   loginText1: {
     fontSize: 24,
+    fontFamily: 'Gilroy-Regular',
     marginTop: 12,
     marginBottom: 4,
     color: 'white',
     textAlign: 'center',
   },
   inputView: {
-    height: 50,
-    borderRadius: 10,
+    // height: 50,
+    padding: 0,
     backgroundColor: '#f1f3f6',
     marginTop: 10,
     marginBottom: 10,
@@ -63,13 +64,12 @@ export default StyleSheet.create({
   loginButton: {
     backgroundColor: '#454545',
     paddingVertical: 10,
-    borderRadius: 8,
     marginTop: 10,
   },
   loginButtonText: {
     color: '#fff',
     alignSelf: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Gilroy-Regular',
   },
 });

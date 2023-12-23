@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-  ScrollView,
   LayoutAnimation,
   TextInput,
 } from 'react-native';
 import styles from './CatagorieStyles';
-import Check from '../../assets/icons8-checkmark-48.png';
+import Check from '../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {
   PinchGestureHandler,
@@ -20,7 +19,7 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCart, removeFromCart} from '../../reduxThunk/action/orderAction';
+import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 const Catagories = ({navigation}) => {
@@ -435,7 +434,6 @@ const Catagories = ({navigation}) => {
               style={[
                 styles.txt,
                 {
-                  fontWeight: 'bold',
                   color: '#000',
                   marginLeft: 30,
                 },
@@ -511,7 +509,7 @@ const Catagories = ({navigation}) => {
                   onPress={navigateToNextItem}
                   style={[styles.btn, {right: 10}]}>
                   <Image
-                    style={styles.tinyLogo}
+                    style={[{tintColor: '#fff'}, styles.tinyLogo]}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/271/271228.png',
                     }}
@@ -521,7 +519,7 @@ const Catagories = ({navigation}) => {
                   onPress={navigateToPreviousItem}
                   style={[styles.btn, {left: 10}]}>
                   <Image
-                    style={styles.tinyLogo}
+                    style={[{tintColor: '#fff'}, styles.tinyLogo]}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/271/271220.png',
                     }}

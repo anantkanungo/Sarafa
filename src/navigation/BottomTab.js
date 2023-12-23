@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-// https://github.com/oblador/react-native-vector-icons
-// fontawesome.com
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from '../User/screens/Homescreen';
-import PlaceOrder from '../User/screens/PlaceOrder';
-import OrderScreen from '../User/screens/OrderScreen';
-import CartScreen from '../User/screens/CartScreen';
+import HomeScreen from '../screens/Homescreen';
+import PlaceOrder from '../screens/PlaceOrder';
+import OrderScreen from '../screens/OrderScreen';
+import CartScreen from '../screens/CartScreen';
 import {useSelector} from 'react-redux';
 import {Image} from 'react-native';
 

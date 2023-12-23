@@ -5,15 +5,13 @@ import {connect, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {authToken} from '../reduxThunk/Type';
 import {customerLogin} from '../reduxThunk/action/authAction';
-import LoginScreen from '../User/screens/Loginsecreen';
+import LoginScreen from '../screens/Loginsecreen';
 import StackNavigator from './StackNavigator';
-import LoginAdmin from '../Admin/Screens/LoginAdmin';
-import AdminStackNavigator from './AdminStackNavigator';
-import Splash from '../User/screens/Splash';
+import Splash from '../screens/Splash';
 
 const Stack = createNativeStackNavigator();
 
-const Root = ({token, navigation}) => {
+const Root = ({token}) => {
   const dispatch = useDispatch();
   const [showSplash, setShowSplash] = useState(true);
 
@@ -54,19 +52,13 @@ const Root = ({token, navigation}) => {
             headerShown: false,
           }}>
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="LoginAdmin" component={LoginAdmin} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
-          // initialRouteName="AdminStackNavigator"
           screenOptions={{
             headerShown: false,
           }}>
           <Stack.Screen name="StackNavigator" component={StackNavigator} />
-          <Stack.Screen
-            name="AdminStackNavigator"
-            component={AdminStackNavigator}
-          />
         </Stack.Navigator>
       )}
     </>
@@ -87,4 +79,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);
-// export default Root;

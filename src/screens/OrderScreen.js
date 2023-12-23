@@ -14,8 +14,13 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Picker} from '@react-native-picker/picker';
+
+const GilroyText = ({label, ...props}) => (
+  <Text style={{fontFamily: 'Gilroy-Regular', ...styles.pikerLabel}} {...props}>
+    {label}
+  </Text>
+);
 
 const fetchOrders = async () => {
   try {
@@ -46,129 +51,80 @@ const OrderScreen = ({navigation}) => {
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [statusInput, setStatusInput] = useState('pending');
-  const [filterVisible, setFilterVisible] = useState(false);
-  const [filterActive, setFilterActive] = useState(false);
-
-  const clearFilter = () => {
-    // setOrders(originalOrders);
-    setFilterActive(false);
-  };
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
+    console.log('Filtering by status:', statusIs);
+
     const filteredOptions = orders.filter(item => item.statusIs === statusIs);
+    console.log('Filtered options:', filteredOptions);
+
     setOrders(filteredOptions);
-    setFilterActive(true);
   };
 
   // UI component to set status filter
   const renderStatusFilter = () => (
     <View style={styles.sbContainer}>
-      <Text style={[styles.buttonText, {color: '#000'}]}>
-        Filter by Status:
-      </Text>
-      {/* <TextInput
-        style={styles.input}
-        onChangeText={setStatusInput}
-        value={statusInput}
-        placeholder="Enter status"
-        placeholderTextColor={'#000'}
-        keyboardType="default"
-        maxLength={15}
-        textTransform="lowercase"
-      /> */}
+      <Text style={[styles.buttonText, {color: '#000'}]}>Sort By Status:</Text>
       <View style={styles.input}>
         <Picker
           selectedValue={statusInput}
-          onValueChange={(itemValue, itemIndex) => setStatusInput(itemValue)}>
-          <Picker.Item
-            style={{color: '#000', backgroundColor: '#fff'}}
+          onValueChange={(itemValue, itemIndex) => {
+            setStatusInput(itemValue);
+            // Call filterOptionsByStatus only if the selected value is not "All"
+            if (itemValue !== 'All') {
+              // Call filterOptionsByStatus directly when the value changes
+              filterOptionsByStatus(itemValue);
+            } else {
+            }
+          }}
+          dropdownIconColor="#000"
+          itemStyle={styles.pikerLabel}>
+          <GilroyText style={styles.pikerLabel} label="All" />
+          <GilroyText
+            style={styles.pikerLabel}
             label="Pending"
             value="pending"
           />
-          <Picker.Item
-            style={{color: '#000', backgroundColor: '#fff'}}
+          <GilroyText
+            style={styles.pikerLabel}
             label="Processing"
             value="processing"
           />
-          <Picker.Item
-            style={{color: '#000', backgroundColor: '#fff'}}
+          <GilroyText
+            style={styles.pikerLabel}
             label="Completed"
             value="completed"
           />
-          <Picker.Item
-            style={{color: '#000', backgroundColor: '#fff'}}
+          <GilroyText
+            style={styles.pikerLabel}
             label="Rejected"
             value="rejected"
           />
         </Picker>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          if (filterVisible) {
-            clearFilter();
-            setFilterVisible(false);
-            setStatusInput('');
-          } else {
-            filterOptionsByStatus(statusInput);
-            setFilterVisible(true);
-          }
-        }}
-        style={styles.button}>
-        <Text style={styles.buttonText}>
-          {filterVisible ? 'Clear' : 'Filter'}
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 
   useEffect(() => {
-    if (!filterActive) {
-      const fetchData = async () => {
-        try {
-          const data = await fetchOrders();
-          setOrders(data);
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        const data = await fetchOrders();
+        setOrders(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-      fetchData();
+    fetchData();
 
-      const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
 
-      return () => {
-        clearInterval(intervalId); // Clear the interval when the component unmounts
-      };
-    }
-  }, [filterActive]);
-
-  // // Function to fetch orders and update state
-  // const fetchAndSetOrders = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const data = await fetchOrders();
-  //     setOrders(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Initial data fetch
-  //   fetchAndSetOrders();
-
-  //   // Set up interval for auto-refresh every 5 minutes (adjust as needed)
-  //   const refreshInterval = setInterval(() => {
-  //     fetchAndSetOrders();
-  //   }, 5 * 60 * 1000); // 5 minutes in milliseconds
-
-  //   // Cleanup interval on component unmount
-  //   return () => clearInterval(refreshInterval);
-  // }, []);
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+    };
+  }, []);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -242,9 +198,6 @@ const OrderScreen = ({navigation}) => {
             }}
             renderItem={orders => {
               const item = orders.item;
-              // console.log(item.image[0]);
-              // let Date = item.updatedAt;
-              // console.log(Date);
               return (
                 <TouchableOpacity onPress={() => handleCardPress(item)}>
                   <View style={styles.card} key={item._id}>
@@ -313,7 +266,7 @@ const OrderScreen = ({navigation}) => {
                     }}
                     onPress={closeModal}>
                     <Image
-                      src="https://img.icons8.com/material-outlined/24/cancel--v1.png"
+                      src="https://img.icons8.com/material-outlined/cancel--v1.png"
                       style={{height: 40, width: 40, color: '#000'}}
                     />
                   </TouchableOpacity>
@@ -360,7 +313,6 @@ const OrderScreen = ({navigation}) => {
                   <View style={{borderWidth: 1, paddingHorizontal: 10}}>
                     <Text style={styles.orderModal}>Date: </Text>
                     <Text style={styles.orderModal}>Category:</Text>
-                    <Text style={styles.orderModal}>Description:</Text>
                     <Text style={styles.orderModal}>Tunch:</Text>
                     <Text style={styles.orderModal}>Weight:</Text>
                     <Text style={styles.orderModal}>Size:</Text>
@@ -368,11 +320,9 @@ const OrderScreen = ({navigation}) => {
                     <Text style={styles.orderModal}>Status:</Text>
                   </View>
                   <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.orderModal}>
-                        {new Date(selectedOrder?.updatedAt).toLocaleString()}
-                      </Text>
-                    </View>
+                    <Text style={styles.orderModal}>
+                      {new Date(selectedOrder?.updatedAt).toLocaleString()}
+                    </Text>
                     <Text
                       style={[
                         styles.orderModal,
@@ -381,9 +331,6 @@ const OrderScreen = ({navigation}) => {
                         },
                       ]}>
                       {selectedOrder?.category}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.description}
                     </Text>
                     <Text style={styles.orderModal}>
                       {selectedOrder?.tunch}
@@ -399,6 +346,15 @@ const OrderScreen = ({navigation}) => {
                       {selectedOrder?.statusIs}
                     </Text>
                   </View>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    padding: 5,
+                  }}>
+                  <Text style={styles.orderModal}>
+                    Description: {selectedOrder?.description}
+                  </Text>
                 </View>
               </View>
             </View>

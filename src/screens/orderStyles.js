@@ -6,29 +6,11 @@ export default StyleSheet.create({
   },
   list: {
     paddingHorizontal: 17,
-    backgroundColor: '#E6E6E6',
+    backgroundColor: '#e1d2c4',
+    paddingTop: 10,
   },
   separator: {
     marginTop: 10,
-  },
-  voiceButton: {
-    marginLeft: 10,
-    fontSize: 24,
-    padding: 10,
-    position: 'absolute',
-    right: 0,
-  },
-  input1: {
-    // height: 35,
-    margin: 1,
-    borderWidth: 1,
-    paddingHorizontal: 5,
-    padding: 0,
-    // width: 75,
-    // fontSize: 1,
-    // borderRadius: 5,
-    color: '#000000',
-    borderColor: '#000',
   },
   /******** card **************/
   card: {
@@ -51,9 +33,8 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
   },
   cardImage: {
-    // flex: 1,
+    flex: 1,
     height: 'auto',
-    width: '40%',
     resizeMode: 'contain',
     borderWidth: 1,
     borderColor: '#000000',
@@ -62,15 +43,16 @@ export default StyleSheet.create({
   title: {
     fontSize: 18,
     flex: 1,
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     textTransform: 'capitalize',
-    fontFamily: 'Gilroy-Regular',
   },
   order: {
     fontSize: 13,
     marginTop: 5,
-    color: '#000',
     fontFamily: 'Gilroy-Regular',
+    color: '#000',
+    // color: '#808080',
   },
   iconData: {
     width: 15,
@@ -80,8 +62,8 @@ export default StyleSheet.create({
   },
   orderContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
   },
   tinyLogo: {
     width: 25,
@@ -98,58 +80,84 @@ export default StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    fontWeight: 'bold',
-    // marginBottom: 5,
+    fontFamily: 'Cirka-Variable',
   },
-  button1: {
+  /************ modals ************/
+  popupOverlay: {
+    backgroundColor: '#00000057',
+    flex: 1,
+    marginTop: 20,
+  },
+  popup: {
+    backgroundColor: 'white',
+    // marginTop: 0,
+    marginHorizontal: 20,
+  },
+  popupContent: {
+    //alignItems: 'center',
+    margin: 5,
+    height: 'auto',
+  },
+  modalInfo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleModal: {
+    fontSize: 18,
+    color: '#000',
+    fontFamily: 'Gilroy-Regular',
+    alignSelf: 'center',
+  },
+  voiceButton: {
+    marginLeft: 10,
+    fontSize: 24,
+    fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
-    borderColor: '#000',
-    position: 'absolute',
-    padding: 10,
-    // marginBottom: 5,
-    bottom: 10,
-    elevation: 5,
-    alignSelf: 'center',
-    backgroundColor: '#000',
+    padding: 3.5,
+    color: '#000000',
   },
-  buttonText1: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 20,
+  orderModal: {
+    fontSize: 16,
+    marginTop: 5,
+    fontFamily: 'Gilroy-Regular',
+    color: '#000',
+  },
+  input: {
+    borderWidth: 1,
+    margin: 5,
+    flex: 1,
+    // width: 137,
+    // height: 36,
+    alignContent: 'center',
+    justifyContent: 'center',
+    color: '#000000',
+    // marginHorizontal: 10,
     fontFamily: 'Gilroy-Regular',
   },
-  // modal
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
+  sbContainer: {
     alignItems: 'center',
-    marginTop: 22,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginHorizontal: 10,
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+  buttonText: {
+    fontFamily: 'Gilroy-Regular',
+    color: '#fff',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  button: {
+    backgroundColor: '#000',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 22,
-    color: '#000',
+  color: {
+    width: 20,
+    height: 20,
+    marginRight: 2,
+    borderRadius: 10,
+  },
+  pikerLabel: {
+    color: '#000', 
+    backgroundColor: '#fff',
     fontFamily: 'Gilroy-Regular',
   },
 });

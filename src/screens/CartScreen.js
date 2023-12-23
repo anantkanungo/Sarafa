@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import styles from './cartStyles';
 import {useSelector, useDispatch} from 'react-redux';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {removeFromCart} from '../../reduxThunk/action/orderAction';
+import {removeFromCart} from '../reduxThunk/action/orderAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -104,6 +103,7 @@ const CartScreen = ({navigation}) => {
             src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
         </TouchableOpacity>
+        <Text style={styles.headerText}>My Cart</Text>
       </View>
       {cartItems.length > 0 ? (
         <>
@@ -130,9 +130,8 @@ const CartScreen = ({navigation}) => {
                     setSelectedItemId(item.id);
                   }}
                   style={[styles.voiceButton, {top: '50%'}]}>
-                  {/* <FontAwesome5 name={'pen'} size={25} color={'#000'} /> */}
                   <Image
-                    src="https://img.icons8.com/material-outlined/edit.png" 
+                    src="https://img.icons8.com/material-outlined/edit.png"
                     style={{width: 25, height: 25}}
                   />
                 </TouchableOpacity>
@@ -155,7 +154,13 @@ const CartScreen = ({navigation}) => {
           </TouchableOpacity>
         </>
       ) : (
-        <Text style={{textAlign: 'center', color: '#000', fontSize: 22}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000',
+            fontSize: 22,
+            fontFamily: 'Gilroy-Regular',
+          }}>
           Your cart is empty!
         </Text>
       )}

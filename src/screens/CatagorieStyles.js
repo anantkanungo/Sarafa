@@ -38,8 +38,7 @@ export default StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   button: {
-    backgroundColor: '#454545',
-    borderRadius: 5,
+    backgroundColor: '#000',
     paddingVertical: 5,
     paddingHorizontal: 15,
   },
@@ -47,7 +46,7 @@ export default StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 30,
-    backgroundColor: '#454545',
+    backgroundColor: '#000',
     position: 'absolute',
     top: '50%',
     right: 20,
@@ -59,7 +58,7 @@ export default StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 30,
-    backgroundColor: '#454545',
+    backgroundColor: '#000',
     position: 'absolute',
     top: '40%',
     right: 20,
@@ -86,7 +85,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 40,
     marginHorizontal: 10,
-    borderRadius: 7,
+    elevation: 5,
   },
   popupOverlay: {
     backgroundColor: '#00000057',
@@ -117,11 +116,10 @@ export default StyleSheet.create({
     // flex: 1,
     width: '45%',
     height: 40,
-    backgroundColor: '#20b2aa',
+    backgroundColor: '#000',
     padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 7,
   },
   modalInfo: {
     alignItems: 'center',
@@ -129,6 +127,7 @@ export default StyleSheet.create({
   },
   txtClose: {
     color: 'white',
+    fontFamily: 'Gilroy-Regular',
   },
   title: {
     fontSize: 18,
@@ -142,6 +141,7 @@ export default StyleSheet.create({
   txt: {
     textAlign: 'center',
     padding: 2,
+    fontFamily: 'Gilroy-Regular',
   },
   innerItem: {
     flex: 1,
@@ -152,15 +152,11 @@ export default StyleSheet.create({
     top: 5,
     right: 5,
     backgroundColor: 'transparent',
-    // backgroundColor: '#35A7FF',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
-    borderRadius: 5,
   },
   tick: {
-    // fontSize: 20,
-    // color: '#fff',
     width: 30,
     height: 30,
   },
@@ -170,8 +166,8 @@ export default StyleSheet.create({
     top: '75%',
     borderWidth: 1,
     borderColor: '#454545',
-    padding: 5,
-    borderRadius: 5,
+    padding: 3,
+    backgroundColor: '#000'
   },
   category: {
     textAlign: 'center',
@@ -191,7 +187,6 @@ export default StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 5,
     padding: 0,
-    borderRadius: 5,
     color: '#000000',
     borderColor: '#000',
   },
