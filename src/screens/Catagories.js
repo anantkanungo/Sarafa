@@ -9,6 +9,7 @@ import {
   Modal,
   LayoutAnimation,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import styles from './CatagorieStyles';
 import Check from '../assets/icons8-checkmark-48.png';
@@ -21,8 +22,28 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import axios from 'axios';
+
+const fetchCatalog = async () => {
+  try {
+    const response = await axios.get(
+      'http://139.59.58.151:8000/getallcatalog',
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+    // console.log(response);
+    // console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const Catagories = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [numColumns, setNumColumns] = useState(3);
   const scaleRef = useRef(1);
 
@@ -41,170 +62,28 @@ const Catagories = ({navigation}) => {
     setColumnCount(Math.round(nextScale));
   };
 
-  const data = [
-    {
-      id: 1,
-      category: 'ring',
-      image: 'https://m.media-amazon.com/images/I/71tg+iUHJ9L._AC_UY1100_.jpg',
-      weight: '2.5',
-      size: '2',
-      quantity: '1',
-    },
-    {
-      id: 2,
-      category: 'earring',
-      image: 'https://bootdey.com/image/400x200/87CEEB/000000',
-      weight: '3.5',
-      size: '3',
-      quantity: '1',
-    },
-    {
-      id: 3,
-      category: 'bangle',
-      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
-      weight: '1',
-      size: '1',
-      quantity: '1',
-    },
-    {
-      id: 4,
-      category: 'chain',
-      image: 'https://bootdey.com/image/400x200/4682B4/000000',
-      weight: '1.5',
-      size: '1',
-      quantity: '1',
-    },
-    {
-      id: 5,
-      category: 'necklace',
-      image: 'https://bootdey.com/image/400x200/40E0D0/000000',
-      weight: '4.5',
-      size: '4',
-      quantity: '1',
-    },
-    {
-      id: 6,
-      category: 'nosepin',
-      image: 'https://bootdey.com/image/400x200/008080/000000',
-      weight: '5.5',
-      size: '5',
-      quantity: '1',
-    },
-    {
-      id: 7,
-      category: 'pendants',
-      image: 'https://bootdey.com/image/400x200/FF6347/000000',
-      weight: '7.5',
-      size: '7',
-      quantity: '1',
-    },
-    {
-      id: 8,
-      category: 'mangalsutra',
-      image: 'https://bootdey.com/image/400x200/4169E1/000000',
-      weight: '8',
-      size: '8',
-      quantity: '1',
-    },
-    {
-      id: 9,
-      category: 'others',
-      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
-      weight: '9',
-      size: '9',
-      quantity: '1',
-    },
-    {
-      id: 10,
-      category: 'mangalsutra',
-      image: 'https://bootdey.com/image/400x200/FA8072/000000',
-      weight: '10',
-      size: '10',
-      quantity: '1',
-    },
-    {
-      id: 11,
-      category: 'ring',
-      image: 'https://bootdey.com/img/Content/avatar/avatar2.png',
-      weight: '2.5',
-      size: '2',
-      quantity: '1',
-    },
-    {
-      id: 12,
-      category: 'pendants',
-      image: 'https://bootdey.com/image/400x200/87CEEB/000000',
-      weight: '2',
-      size: '2',
-      quantity: '1',
-    },
-    {
-      id: 13,
-      category: 'pendants',
-      image: 'https://bootdey.com/img/Content/avatar/avatar3.png',
-      weight: '1',
-      size: '1',
-      quantity: '1',
-    },
-    {
-      id: 14,
-      category: 'nosepin',
-      image: 'https://bootdey.com/image/400x200/4682B4/000000',
-      weight: '4',
-      size: '4',
-      quantity: '1',
-    },
-    {
-      id: 15,
-      category: 'necklace',
-      image: 'https://bootdey.com/img/Content/avatar/avatar4.png',
-      weight: '5',
-      size: '5',
-      quantity: '1',
-    },
-    {
-      id: 16,
-      category: 'earring',
-      image: 'https://bootdey.com/image/400x200/008080/000000',
-      weight: '6',
-      size: '6',
-      quantity: '1',
-    },
-    {
-      id: 17,
-      category: 'bangle',
-      image: 'https://bootdey.com/img/Content/avatar/avatar5.png',
-      weight: '7',
-      size: '7',
-      quantity: '1',
-    },
-    {
-      id: 18,
-      category: 'chain',
-      image: 'https://bootdey.com/image/400x200/4169E1/000000',
-      weight: '8',
-      size: '8',
-      quantity: '1',
-    },
-    {
-      id: 19,
-      category: 'others',
-      image: 'https://bootdey.com/image/400x200/6A5ACD/000000',
-      weight: '9',
-      size: '9',
-      quantity: '1',
-    },
-    {
-      id: 20,
-      category: 'mangalsutra',
-      image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-      weight: '10',
-      size: '10',
-      quantity: '1',
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchCatalog();
+        setOptions(data);
+        // console.log('Data: ', data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const [options, setOptions] = useState(data);
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+    };
+  }, []);
+
+  const [options, setOptions] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [userSelected, setUserSelected] = useState({});
   // a state to toggle the multi-select mode
@@ -218,13 +97,13 @@ const Catagories = ({navigation}) => {
 
   const clearFilter = () => {
     setWeightFilter(null);
-    setOptions(data);
+    setOptions(options);
   };
 
   // Function to filter options by weight
   const filterOptionsByWeight = weight => {
     setWeightFilter(weight);
-    const filteredOptions = data.filter(
+    const filteredOptions = options.filter(
       item => parseFloat(item.weight) === parseFloat(weight),
     );
     setOptions(filteredOptions);
@@ -317,19 +196,21 @@ const Catagories = ({navigation}) => {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
     var itemDimension = Dimensions.get('window').width / numColumns;
+    console.log('size: ', item.size);
     return (
       <TouchableOpacity
         style={[styles.item, {height: itemDimension}]}
         onPress={() => selectItem(item, false)}
         onLongPress={() => selectItem(item, true)}
         activeOpacity={0.8}>
-        {/* <TouchableOpacity
-        style={[styles.item, {height: itemDimension}]}
-        onPress={() => selectItem(item)}> */}
         <View style={styles.innerItem}>
+          {/* <Image
+            style={{height: itemDimension - 2, width: itemDimension - 2}}
+            source={{uri: item.image[0]}}
+          /> */}
           <Image
             style={{height: itemDimension - 2, width: itemDimension - 2}}
-            source={{uri: item.image}}
+            src="https://img.icons8.com/ios/50/long-arrow-left.png"
           />
           {multiSelectMode && selectedItems.includes(item) && (
             <View style={styles.tickContainer}>
@@ -459,13 +340,31 @@ const Catagories = ({navigation}) => {
           }
         }}
         simultaneousHandlers={['pinchX', 'pinchY']}>
-        <FlatList
-          key={numColumns}
-          data={formatRow(options, numColumns)}
-          keyExtractor={item => item.id}
-          renderItem={renderItem}
-          numColumns={numColumns}
-        />
+        {isLoading ? (
+          <ActivityIndicator visible={isLoading} />
+        ) : options.length > 0 ? (
+          <>
+            <FlatList
+              key={numColumns}
+              data={formatRow(options, numColumns)}
+              keyExtractor={item => {
+                return item._id.toString();
+              }}
+              renderItem={renderItem}
+              numColumns={numColumns}
+            />
+          </>
+        ) : (
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#000',
+              fontSize: 22,
+              fontFamily: 'Gilroy-Regular',
+            }}>
+            Your Orders is empty!
+          </Text>
+        )}
       </PinchGestureHandler>
 
       {
@@ -525,10 +424,10 @@ const Catagories = ({navigation}) => {
                     }}
                   />
                 </TouchableOpacity>
-                <Image
+                {/* <Image
                   style={{width: 'auto', height: 300, resizeMode: 'contain'}}
-                  source={{uri: userSelected.image}}
-                />
+                  source={{uri: userSelected.image[0]}}
+                /> */}
                 <Text style={styles.category}>{userSelected.category}</Text>
                 <Text style={styles.textModal}>
                   Weight: {userSelected.weight}

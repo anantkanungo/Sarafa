@@ -13,7 +13,7 @@ import axios from 'axios';
 const fetchCatalog = async () => {
   try {
     const response = await axios.get(
-      'http://139.59.58.151:8000/getallcatalog',
+      'http://139.59.58.151:8000/getallcatalog/category',
       {
         headers: {
           Accept: 'application/json',
@@ -80,7 +80,7 @@ const Catalogs = ({navigation}) => {
                   <View style={styles.imageContainer}>
                     <Image
                       style={styles.cardImage}
-                      source={{uri: item.image[0]}}
+                      source={{uri: item.image}}
                     />
                   </View>
                   <View style={styles.cardContent}>
