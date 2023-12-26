@@ -76,7 +76,10 @@ const Catalogs = ({navigation}) => {
               return (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() => navigation.navigate('Catagories')}>
+                  // onPress={() => navigation.navigate('Catagories')}
+                  onPress={() =>
+                    navigation.navigate('Catagories', {category: item.category})
+                  }>
                   <View style={styles.imageContainer}>
                     <Image
                       style={styles.cardImage}

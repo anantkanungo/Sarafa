@@ -7,7 +7,7 @@ export default StyleSheet.create({
   list: {
     paddingHorizontal: 17,
     backgroundColor: '#e1d2c4',
-    paddingTop: 10,
+    padding: 5,
   },
   separator: {
     marginTop: 10,

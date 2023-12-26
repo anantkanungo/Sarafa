@@ -9,7 +9,6 @@ import {
   Modal,
   LayoutAnimation,
   TextInput,
-  ActivityIndicator,
 } from 'react-native';
 import styles from './CatagorieStyles';
 import Check from '../assets/icons8-checkmark-48.png';
@@ -23,27 +22,33 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
-
-const fetchCatalog = async () => {
-  try {
-    const response = await axios.get(
-      'http://139.59.58.151:8000/getallcatalog',
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-      },
-    );
-    // console.log(response);
-    // console.log(response.data.data);
-    return response.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+import {useRoute} from '@react-navigation/native';
 
 const Catagories = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const route = useRoute();
+  const {category} = route.params;
+  // console.log('categry', category);
+
+  const [categorys, setCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchCatalog = async () => {
+      axios.get('http://139.59.58.151:8000/getallcatalog').then(res => {
+        // console.log(res);
+
+        const result = res.data.data.filter((items, index) => {
+          return items.category === category;
+        });
+        // console.log('result', result);
+        if (result) {
+          setCategory(result);
+        }
+      });
+    };
+    fetchCatalog();
+  }, [categorys]);
+  // console.log('catalog', categorys);
+
   const [numColumns, setNumColumns] = useState(3);
   const scaleRef = useRef(1);
 
@@ -62,28 +67,7 @@ const Catagories = ({navigation}) => {
     setColumnCount(Math.round(nextScale));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchCatalog();
-        setOptions(data);
-        // console.log('Data: ', data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
-  }, []);
-
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(categorys);
   const [modalVisible, setModalVisible] = useState(false);
   const [userSelected, setUserSelected] = useState({});
   // a state to toggle the multi-select mode
@@ -97,13 +81,13 @@ const Catagories = ({navigation}) => {
 
   const clearFilter = () => {
     setWeightFilter(null);
-    setOptions(options);
+    setOptions(categorys);
   };
 
   // Function to filter options by weight
   const filterOptionsByWeight = weight => {
     setWeightFilter(weight);
-    const filteredOptions = options.filter(
+    const filteredOptions = categorys.filter(
       item => parseFloat(item.weight) === parseFloat(weight),
     );
     setOptions(filteredOptions);
@@ -196,7 +180,6 @@ const Catagories = ({navigation}) => {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
     var itemDimension = Dimensions.get('window').width / numColumns;
-    console.log('size: ', item.size);
     return (
       <TouchableOpacity
         style={[styles.item, {height: itemDimension}]}
@@ -204,13 +187,9 @@ const Catagories = ({navigation}) => {
         onLongPress={() => selectItem(item, true)}
         activeOpacity={0.8}>
         <View style={styles.innerItem}>
-          {/* <Image
-            style={{height: itemDimension - 2, width: itemDimension - 2}}
-            source={{uri: item.image[0]}}
-          /> */}
           <Image
             style={{height: itemDimension - 2, width: itemDimension - 2}}
-            src="https://img.icons8.com/ios/50/long-arrow-left.png"
+            source={{uri: item.image[0]}}
           />
           {multiSelectMode && selectedItems.includes(item) && (
             <View style={styles.tickContainer}>
@@ -268,7 +247,7 @@ const Catagories = ({navigation}) => {
 
   useEffect(() => {
     let result = cartItems.filter(element => {
-      return element.id === userSelected.id;
+      return element.id === userSelected._id;
     });
     if (result.length) {
       setIsAdded(true);
@@ -288,7 +267,7 @@ const Catagories = ({navigation}) => {
           />
         </TouchableOpacity>
 
-        <Text style={styles.headerText}>Catagories</Text>
+        <Text style={styles.headerText}>{category}</Text>
       </View>
       {/* Filter */}
       {renderWeightFilter()}
@@ -340,31 +319,17 @@ const Catagories = ({navigation}) => {
           }
         }}
         simultaneousHandlers={['pinchX', 'pinchY']}>
-        {isLoading ? (
-          <ActivityIndicator visible={isLoading} />
-        ) : options.length > 0 ? (
-          <>
-            <FlatList
-              key={numColumns}
-              data={formatRow(options, numColumns)}
-              keyExtractor={item => {
-                return item._id.toString();
-              }}
-              renderItem={renderItem}
-              numColumns={numColumns}
-            />
-          </>
-        ) : (
-          <Text
-            style={{
-              textAlign: 'center',
-              color: '#000',
-              fontSize: 22,
-              fontFamily: 'Gilroy-Regular',
-            }}>
-            Your Orders is empty!
-          </Text>
-        )}
+        <FlatList
+          key={numColumns}
+          // data={formatRow(category, numColumns)}
+          data={categorys ? formatRow(categorys, numColumns) : []}
+          // keyExtractor={item => {
+          //   return item._id.toString();
+          // }}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          numColumns={numColumns}
+        />
       </PinchGestureHandler>
 
       {
@@ -424,10 +389,10 @@ const Catagories = ({navigation}) => {
                     }}
                   />
                 </TouchableOpacity>
-                {/* <Image
+                <Image
                   style={{width: 'auto', height: 300, resizeMode: 'contain'}}
                   source={{uri: userSelected.image[0]}}
-                /> */}
+                />
                 <Text style={styles.category}>{userSelected.category}</Text>
                 <Text style={styles.textModal}>
                   Weight: {userSelected.weight}

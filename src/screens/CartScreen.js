@@ -110,7 +110,8 @@ const CartScreen = ({navigation}) => {
           <FlatList
             style={[styles.list, {backgroundColor: '#e1d2c4'}]}
             data={cartItems}
-            keyExtractor={item => item.id.toString()}
+            // keyExtractor={item => item.id.toString()}
+            keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
             }}
@@ -135,7 +136,7 @@ const CartScreen = ({navigation}) => {
                     style={{width: 25, height: 25}}
                   />
                 </TouchableOpacity>
-                <Image style={styles.cardImage} source={{uri: item.image}} />
+                <Image style={styles.cardImage} source={{uri: item.image[0]}} />
                 <View style={styles.cardHeader}>
                   <Text style={styles.title}>{item.category}</Text>
                   <Text style={styles.order}>Weight: {item.weight}</Text>

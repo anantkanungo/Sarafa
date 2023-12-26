@@ -51,6 +51,18 @@ const OrderScreen = ({navigation}) => {
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [statusInput, setStatusInput] = useState('pending');
+  const [isFilterApplied, setFilterApplied] = useState(false);
+
+  const applyFilter = () => {
+    setFilterApplied(true);
+
+    // Apply the filter
+  };
+  const clearFilter = () => {
+    setFilterApplied(false);
+
+    // Clear the filter
+  };
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -83,22 +95,22 @@ const OrderScreen = ({navigation}) => {
           <GilroyText style={styles.pikerLabel} label="All" />
           <GilroyText
             style={styles.pikerLabel}
-            label="Pending"
+            label="🔵 Pending"
             value="pending"
           />
           <GilroyText
             style={styles.pikerLabel}
-            label="Processing"
+            label="🟡 Processing"
             value="processing"
           />
           <GilroyText
             style={styles.pikerLabel}
-            label="Completed"
+            label="🟢 Completed"
             value="completed"
           />
           <GilroyText
             style={styles.pikerLabel}
-            label="Rejected"
+            label="🔴 Rejected"
             value="rejected"
           />
         </Picker>
@@ -108,6 +120,9 @@ const OrderScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (isFilterApplied) {
+        return;
+      }
       try {
         const data = await fetchOrders();
         setOrders(data);
@@ -119,7 +134,7 @@ const OrderScreen = ({navigation}) => {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    const intervalId = setInterval(fetchData, 1000); // Fetch data every 1 seconds
 
     return () => {
       clearInterval(intervalId); // Clear the interval when the component unmounts
