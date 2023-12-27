@@ -29,7 +29,7 @@ const CartScreen = ({navigation}) => {
   // Edit item in cart
   const editItemInCart = (cartItems, itemId, newSize, newQuantity) => {
     return cartItems.map(item =>
-      item.id === itemId
+      item._id === itemId
         ? {...item, size: newSize, quantity: newQuantity}
         : item,
     );
@@ -47,10 +47,9 @@ const CartScreen = ({navigation}) => {
   };
 
   // Remove item from cart
-
-  const handleRemoveFromCart = userSelected => {
-    // console.warn(userSelected);
-    dispatch(removeFromCart(userSelected.id));
+  const handleRemoveFromCart = item => {
+    // console.warn(item);
+    dispatch(removeFromCart(item._id));
   };
 
   useEffect(() => {
@@ -100,7 +99,7 @@ const CartScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            src="https://img.icons8.com/ios/50/long-arrow-left.png"
+            source={{uri: 'https://img.icons8.com/ios/50/long-arrow-left.png'}}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>My Cart</Text>
@@ -116,23 +115,27 @@ const CartScreen = ({navigation}) => {
               return <View style={styles.separator} />;
             }}
             renderItem={({item}) => (
-              <View style={styles.card} key={item.id}>
+              <View style={styles.card} key={item._id}>
                 <TouchableOpacity
                   onPress={() => handleRemoveFromCart(item)}
                   style={styles.voiceButton}>
                   <Image
-                    src="https://img.icons8.com/material-outlined/24/trash--v1.png"
+                    source={{
+                      uri: 'https://img.icons8.com/material-outlined/24/trash--v1.png',
+                    }}
                     style={{width: 25, height: 25, tintColor: '#000'}}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     setModalVisible(true);
-                    setSelectedItemId(item.id);
+                    setSelectedItemId(item._id);
                   }}
                   style={[styles.voiceButton, {top: '50%'}]}>
                   <Image
-                    src="https://img.icons8.com/material-outlined/edit.png"
+                    source={{
+                      uri: 'https://img.icons8.com/material-outlined/edit.png',
+                    }}
                     style={{width: 25, height: 25}}
                   />
                 </TouchableOpacity>

@@ -30,6 +30,7 @@ const Catagories = ({navigation}) => {
   // console.log('categry', category);
 
   const [categorys, setCategory] = useState([]);
+  const [refreshCategorys, setRefreshCategorys] = useState(true);
 
   useEffect(() => {
     const fetchCatalog = async () => {
@@ -45,8 +46,12 @@ const Catagories = ({navigation}) => {
         }
       });
     };
-    fetchCatalog();
-  }, [categorys]);
+    // fetchCatalog();
+    if (refreshCategorys) {
+      fetchCatalog();
+      setRefreshCategorys(false); // Disable auto-refresh
+    }
+  }, [categorys, refreshCategorys]);
   // console.log('catalog', categorys);
 
   const [numColumns, setNumColumns] = useState(3);
@@ -79,18 +84,23 @@ const Catagories = ({navigation}) => {
   const [weightInput, setWeightInput] = useState('');
   const [filterVisible, setFilterVisible] = useState(false);
 
-  const clearFilter = () => {
-    setWeightFilter(null);
-    setOptions(categorys);
-  };
-
   // Function to filter options by weight
   const filterOptionsByWeight = weight => {
-    setWeightFilter(weight);
-    const filteredOptions = categorys.filter(
-      item => parseFloat(item.weight) === parseFloat(weight),
-    );
-    setOptions(filteredOptions);
+    // Filter the options based on the provided weight
+    const filteredOptions = categorys.filter(item => {
+      const itemWeight = parseFloat(item.weight);
+      return !isNaN(itemWeight) && itemWeight === parseFloat(weight);
+    });
+
+    setCategory(filteredOptions);
+    setRefreshCategorys(false); // Disable auto-refresh
+  };
+
+  const clearFilter = () => {
+    // Clear the weight filter and reset the category list
+    setWeightFilter(null);
+    setRefreshCategorys(true); // Enable auto-refresh
+    // setCategory(categorys);
   };
 
   // UI component to set weight filter
@@ -128,16 +138,18 @@ const Catagories = ({navigation}) => {
   );
 
   const navigateToPreviousItem = () => {
-    if (currentIndex > 0) {
-      setUserSelected(options[currentIndex - 1]);
-      setCurrentIndex(currentIndex - 1);
+    const newIndex = currentIndex - 1;
+    if (newIndex >= 0 && newIndex < categorys.length) {
+      setCurrentIndex(newIndex);
+      setUserSelected(categorys[newIndex]);
     }
   };
 
   const navigateToNextItem = () => {
-    if (currentIndex < options.length - 1) {
-      setUserSelected(options[currentIndex + 1]);
-      setCurrentIndex(currentIndex + 1);
+    const newIndex = currentIndex + 1;
+    if (newIndex >= 0 && newIndex < categorys.length) {
+      setCurrentIndex(newIndex);
+      setUserSelected(categorys[newIndex]);
     }
   };
 
@@ -157,7 +169,7 @@ const Catagories = ({navigation}) => {
   };
 
   const toggleSelection = user => {
-    const index = selectedItems.findIndex(item => item.id === user.id);
+    const index = selectedItems.findIndex(item => item._id === user._id);
 
     if (index === -1) {
       // Item not in selection, add it
@@ -191,12 +203,14 @@ const Catagories = ({navigation}) => {
             style={{height: itemDimension - 2, width: itemDimension - 2}}
             source={{uri: item.image[0]}}
           />
-          {multiSelectMode && selectedItems.includes(item) && (
-            <View style={styles.tickContainer}>
-              {/* <Text style={styles.tick}>✓</Text> */}
-              <Image style={styles.tick} source={Check} />
-            </View>
-          )}
+          {multiSelectMode &&
+            selectedItems.some(
+              selectedItem => selectedItem._id === item._id,
+            ) && (
+              <View style={styles.tickContainer}>
+                <Image style={styles.tick} source={Check} />
+              </View>
+            )}
         </View>
       </TouchableOpacity>
     );
@@ -209,7 +223,7 @@ const Catagories = ({navigation}) => {
       numberOfElementsLastRow !== numColumns &&
       numberOfElementsLastRow !== 0
     ) {
-      data.push({id: `blank-${numberOfElementsLastRow}`, empty: true});
+      data.push({_id: `blank-${numberOfElementsLastRow}`, empty: true});
       numberOfElementsLastRow++;
     }
     return data;
@@ -218,7 +232,7 @@ const Catagories = ({navigation}) => {
   const handleSubmit = () => {
     // Filter out selected items that are already in the cart
     const itemsToAdd = selectedItems.filter(item => {
-      return !cartItems.find(cartItem => cartItem.id === item.id);
+      return !cartItems.find(cartItem => cartItem._id === item._id);
     });
 
     // Dispatch addToCart action for each selected item that is not already in the cart
@@ -242,12 +256,12 @@ const Catagories = ({navigation}) => {
 
   const handleRemoveFromCart = userSelected => {
     // console.warn(userSelected);
-    dispatch(removeFromCart(userSelected.id));
+    dispatch(removeFromCart(userSelected._id));
   };
 
   useEffect(() => {
     let result = cartItems.filter(element => {
-      return element.id === userSelected._id;
+      return element._id === userSelected._id;
     });
     if (result.length) {
       setIsAdded(true);
@@ -255,6 +269,21 @@ const Catagories = ({navigation}) => {
       setIsAdded(false);
     }
   }, [cartItems, userSelected]);
+
+  // const renderSlider = () => (
+  //   <View style={styles.sliderContainer}>
+  //     <Text style={styles.buttonText}>Number of Columns:</Text>
+  //     <Slider
+  //       style={{width: 200, height: 40}}
+  //       minimumValue={1}
+  //       maximumValue={10}
+  //       step={1}
+  //       value={numColumns}
+  //       onValueChange={value => setNumColumns(value)}
+  //     />
+  //     <Text style={styles.sliderValue}>{numColumns}</Text>
+  //   </View>
+  // );
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -271,6 +300,7 @@ const Catagories = ({navigation}) => {
       </View>
       {/* Filter */}
       {renderWeightFilter()}
+      {/* {renderSlider()} Add the slider component here */}
       <View
         style={{
           flexDirection: 'row',
@@ -390,12 +420,19 @@ const Catagories = ({navigation}) => {
                   />
                 </TouchableOpacity>
                 <Image
-                  style={{width: 'auto', height: 300, resizeMode: 'contain'}}
-                  source={{uri: userSelected.image[0]}}
+                  style={{width: 'auto', height: 300}}
+                  source={{
+                    uri:
+                      userSelected &&
+                      userSelected.image &&
+                      userSelected.image[0],
+                  }}
                 />
-                <Text style={styles.category}>{userSelected.category}</Text>
+                <Text style={styles.category}>
+                  {userSelected && userSelected.category}
+                </Text>
                 <Text style={styles.textModal}>
-                  Weight: {userSelected.weight}
+                  Weight: {userSelected && userSelected.weight}
                 </Text>
                 <Text style={styles.textModal}>
                   Description Lorem dolor sit amet, consectetuer adipiscing

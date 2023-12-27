@@ -557,9 +557,15 @@ const PlaceOrder = ({navigation}) => {
                     maxLength={2}
                   />
                   <Pressable
-                    style={[Styles.button, Styles.buttonOpen]}
+                    style={[
+                      Styles.button,
+                      Styles.buttonOpen,
+                      {backgroundColor: '#000'},
+                    ]}
                     onPress={() => setModalVisible1(!modalVisible1)}>
-                    <Text style={Styles.textStyle}>Done</Text>
+                    <Text style={[Styles.textStyle, {color: '#fff'}]}>
+                      Done
+                    </Text>
                   </Pressable>
                 </View>
               </View>

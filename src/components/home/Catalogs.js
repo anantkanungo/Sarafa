@@ -131,9 +131,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexBasis: '45%',
     marginHorizontal: 10,
-    // borderWidth: 2,
-    borderRadius: 3,
-    // borderColor: '#7788',
     elevation: 5, // Android
   },
   cardContent: {
@@ -142,8 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#7788',
-    borderBottomLeftRadius: 1,
-    borderBottomEndRadius: 1,
   },
   cardImage: {
     flex: 1,
