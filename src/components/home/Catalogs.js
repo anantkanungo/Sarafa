@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import FastImage from 'react-native-fast-image';
 
 const fetchCatalog = async () => {
   try {
@@ -81,9 +82,12 @@ const Catalogs = ({navigation}) => {
                     navigation.navigate('Catagories', {category: item.category})
                   }>
                   <View style={styles.imageContainer}>
-                    <Image
+                    <FastImage
                       style={styles.cardImage}
-                      source={{uri: item.image}}
+                      source={{
+                        uri: item.image,
+                        priority: FastImage.priority.high,
+                      }}
                     />
                   </View>
                   <View style={styles.cardContent}>

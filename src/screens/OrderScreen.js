@@ -7,7 +7,7 @@ import {
   Image,
   ActivityIndicator,
   Modal,
-  TextInput,
+  ScrollView,
 } from 'react-native';
 import styles from './orderStyles';
 import axios from 'axios';
@@ -25,18 +25,15 @@ const GilroyText = ({label, ...props}) => (
 const fetchOrders = async () => {
   try {
     const token = await AsyncStorage.getItem('@AuthToken');
-    const response = await axios.get(
-      'http://139.59.58.151:8000/pendingorders',
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.get('http://139.59.58.151:8000/getallorders', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     // console.log(response);
-    // console.log(response.data.result);
-    return response.data.result;
+    // console.log(response.data.data);
+    return response.data.data;
   } catch (error) {
     console.log(error);
   }
@@ -44,25 +41,14 @@ const fetchOrders = async () => {
 
 const OrderScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [audioPlayer, setAudioPlayer] = useState();
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [statusInput, setStatusInput] = useState('pending');
-  const [isFilterApplied, setFilterApplied] = useState(false);
-
-  const applyFilter = () => {
-    setFilterApplied(true);
-
-    // Apply the filter
-  };
-  const clearFilter = () => {
-    setFilterApplied(false);
-
-    // Clear the filter
-  };
+  const [statusInput, setStatusInput] = useState('');
+  const [refreshStatus, setRefreshStatus] = useState(true);
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -72,6 +58,11 @@ const OrderScreen = ({navigation}) => {
     console.log('Filtered options:', filteredOptions);
 
     setOrders(filteredOptions);
+    setRefreshStatus(false); // Disable auto-refresh
+  };
+
+  const clearFilter = () => {
+    setRefreshStatus(true); // Enable auto-refresh
   };
 
   // UI component to set status filter
@@ -83,16 +74,16 @@ const OrderScreen = ({navigation}) => {
           selectedValue={statusInput}
           onValueChange={(itemValue, itemIndex) => {
             setStatusInput(itemValue);
-            // Call filterOptionsByStatus only if the selected value is not "All"
-            if (itemValue !== 'All') {
-              // Call filterOptionsByStatus directly when the value changes
+            filterOptionsByStatus(itemValue);
+            if (itemValue !== 'all') {
               filterOptionsByStatus(itemValue);
             } else {
+              clearFilter();
             }
           }}
           dropdownIconColor="#000"
           itemStyle={styles.pikerLabel}>
-          <GilroyText style={styles.pikerLabel} label="All" />
+          <GilroyText style={styles.pikerLabel} label="All" value="all" />
           <GilroyText
             style={styles.pikerLabel}
             label="🔵 Pending"
@@ -120,26 +111,26 @@ const OrderScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isFilterApplied) {
-        return;
-      }
       try {
         const data = await fetchOrders();
         setOrders(data);
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchData();
+    if (refreshStatus) {
+      fetchData();
+      setRefreshStatus(false); // Disable auto-refresh
 
-    const intervalId = setInterval(fetchData, 1000); // Fetch data every 1 seconds
+      const intervalId = setInterval(fetchData, 1000); // Fetch data every 1 seconds
 
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
-  }, []);
+      return () => {
+        clearInterval(intervalId); // Clear the interval when the component unmounts
+      };
+    }
+  }, [refreshStatus]);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -198,9 +189,9 @@ const OrderScreen = ({navigation}) => {
       </View>
       {/* Filter */}
       {renderStatusFilter()}
-      {isLoading ? (
+      {/* {isLoading ? (
         <ActivityIndicator visible={isLoading} />
-      ) : orders.length > 0 ? (
+      ) : orders.length > 0 ? ( */}
         <>
           <FlatList
             style={styles.list}
@@ -257,7 +248,7 @@ const OrderScreen = ({navigation}) => {
             }}
           />
         </>
-      ) : (
+      {/* ) : (
         <Text
           style={{
             textAlign: 'center',
@@ -267,7 +258,7 @@ const OrderScreen = ({navigation}) => {
           }}>
           Your Orders is empty!
         </Text>
-      )}
+      )} */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -330,53 +321,57 @@ const OrderScreen = ({navigation}) => {
                     <Text style={styles.titleModal}>No Audio Available</Text>
                   )}
                 </View>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{borderWidth: 1, paddingHorizontal: 10}}>
-                    <Text style={styles.orderModal}>Date: </Text>
-                    <Text style={styles.orderModal}>Category:</Text>
-                    <Text style={styles.orderModal}>Tunch:</Text>
-                    <Text style={styles.orderModal}>Weight:</Text>
-                    <Text style={styles.orderModal}>Size:</Text>
-                    <Text style={styles.orderModal}>Quantity:</Text>
-                    <Text style={styles.orderModal}>Status:</Text>
+                <ScrollView>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{borderWidth: 1, paddingHorizontal: 10}}>
+                      <Text style={styles.orderModal}>Date: </Text>
+                      <Text style={styles.orderModal}>Category:</Text>
+                      <Text style={styles.orderModal}>Tunch:</Text>
+                      <Text style={styles.orderModal}>Weight:</Text>
+                      <Text style={styles.orderModal}>Size:</Text>
+                      <Text style={styles.orderModal}>Quantity:</Text>
+                      <Text style={styles.orderModal}>Status:</Text>
+                    </View>
+                    <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
+                      <Text style={styles.orderModal}>
+                        {new Date(selectedOrder?.updatedAt).toLocaleString()}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.orderModal,
+                          {
+                            textTransform: 'capitalize',
+                          },
+                        ]}>
+                        {selectedOrder?.category}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.tunch}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.weight}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.size}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.quantity}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.statusIs}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      padding: 5,
+                    }}>
                     <Text style={styles.orderModal}>
-                      {new Date(selectedOrder?.updatedAt).toLocaleString()}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.orderModal,
-                        {
-                          textTransform: 'capitalize',
-                        },
-                      ]}>
-                      {selectedOrder?.category}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.tunch}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.weight}
-                    </Text>
-                    <Text style={styles.orderModal}>{selectedOrder?.size}</Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.quantity}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.statusIs}
+                      Description: {selectedOrder?.description}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    padding: 5,
-                  }}>
-                  <Text style={styles.orderModal}>
-                    Description: {selectedOrder?.description}
-                  </Text>
-                </View>
+                </ScrollView>
               </View>
             </View>
           </View>

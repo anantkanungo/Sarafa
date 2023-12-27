@@ -23,6 +23,8 @@ import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 import {useRoute} from '@react-navigation/native';
+import Slider from '@react-native-community/slider';
+import FastImage from 'react-native-fast-image';
 
 const Catagories = ({navigation}) => {
   const route = useRoute();
@@ -65,8 +67,8 @@ const Catagories = ({navigation}) => {
   const onPinchGestureEvent = event => {
     // Use the scale value from the pinch gesture to dynamically change numColumns
     const nextScale = Math.max(
-      1,
-      Math.min(10, scaleRef.current / event.nativeEvent.scale),
+      2,
+      Math.min(5, scaleRef.current / event.nativeEvent.scale),
     );
     scaleRef.current = nextScale;
     setColumnCount(Math.round(nextScale));
@@ -199,9 +201,12 @@ const Catagories = ({navigation}) => {
         onLongPress={() => selectItem(item, true)}
         activeOpacity={0.8}>
         <View style={styles.innerItem}>
-          <Image
+          <FastImage
             style={{height: itemDimension - 2, width: itemDimension - 2}}
-            source={{uri: item.image[0]}}
+            source={{
+              uri: item.image[0],
+              priority: FastImage.priority.high,
+            }}
           />
           {multiSelectMode &&
             selectedItems.some(
@@ -270,20 +275,18 @@ const Catagories = ({navigation}) => {
     }
   }, [cartItems, userSelected]);
 
-  // const renderSlider = () => (
-  //   <View style={styles.sliderContainer}>
-  //     <Text style={styles.buttonText}>Number of Columns:</Text>
-  //     <Slider
-  //       style={{width: 200, height: 40}}
-  //       minimumValue={1}
-  //       maximumValue={10}
-  //       step={1}
-  //       value={numColumns}
-  //       onValueChange={value => setNumColumns(value)}
-  //     />
-  //     <Text style={styles.sliderValue}>{numColumns}</Text>
-  //   </View>
-  // );
+  const renderSlider = () => (
+    <View style={styles.sliderContainer}>
+      <Slider
+        style={{width: 200, height: 40}}
+        minimumValue={2}
+        maximumValue={5}
+        step={1}
+        value={numColumns}
+        onValueChange={value => setNumColumns(value)}
+      />
+    </View>
+  );
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -300,7 +303,6 @@ const Catagories = ({navigation}) => {
       </View>
       {/* Filter */}
       {renderWeightFilter()}
-      {/* {renderSlider()} Add the slider component here */}
       <View
         style={{
           flexDirection: 'row',
@@ -362,6 +364,8 @@ const Catagories = ({navigation}) => {
         />
       </PinchGestureHandler>
 
+      {/* Add the slider component here */}
+      {renderSlider()}
       {
         <Text style={styles.txt}>
           {
@@ -372,19 +376,6 @@ const Catagories = ({navigation}) => {
           }
         </Text>
       }
-
-      <TouchableOpacity
-        style={styles.button3}
-        onPress={() => setColumnCount(numColumns - 1)}
-        disabled={numColumns <= 1}>
-        <FontAwesome5 name={'plus'} size={20} color={'#fff'} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button2}
-        onPress={() => setColumnCount(numColumns + 1)}
-        disabled={numColumns >= 10}>
-        <FontAwesome5 name={'minus'} size={20} color={'#fff'} />
-      </TouchableOpacity>
 
       <Modal
         animationType={'fade'}
@@ -435,8 +426,10 @@ const Catagories = ({navigation}) => {
                   Weight: {userSelected && userSelected.weight}
                 </Text>
                 <Text style={styles.textModal}>
-                  Description Lorem dolor sit amet, consectetuer adipiscing
-                  elit. Aenean commodo ligula..
+                  Size: {userSelected && userSelected.size}
+                </Text>
+                <Text style={styles.textModal}>
+                  Description: {userSelected && userSelected.description}
                 </Text>
               </View>
               <View style={styles.popupButtons}>

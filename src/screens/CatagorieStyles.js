@@ -42,30 +42,6 @@ export default StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
   },
-  button2: {
-    width: 35,
-    height: 35,
-    borderRadius: 30,
-    backgroundColor: '#000',
-    position: 'absolute',
-    top: '50%',
-    right: 20,
-    elevation: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button3: {
-    width: 35,
-    height: 35,
-    borderRadius: 30,
-    backgroundColor: '#000',
-    position: 'absolute',
-    top: '40%',
-    right: 20,
-    elevation: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   buttonText: {
     color: '#fff',
     fontFamily: 'Gilroy-Regular',
@@ -167,7 +143,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#454545',
     padding: 3,
-    backgroundColor: '#000'
+    backgroundColor: '#000',
   },
   category: {
     textAlign: 'center',
@@ -189,5 +165,8 @@ export default StyleSheet.create({
     padding: 0,
     color: '#000000',
     borderColor: '#000',
+  },
+  sliderContainer: {
+    alignSelf: 'center',
   },
 });
