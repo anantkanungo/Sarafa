@@ -11,7 +11,7 @@ import styles from './loginStyles';
 import {connect} from 'react-redux';
 import {AuthFunction, customerLogin} from '../reduxThunk/action/authAction';
 // You can use your custom background image
-import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
+import BackgroundImage from '../assets/NG_logo.png';
 
 const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   const [userId, setUserId] = useState('');
@@ -44,7 +44,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               onChangeText={e => setUserId(e)}
               autoCapitalize="none"
               placeholder="User Id"
-              placeholderTextColor="#000"
+              placeholderTextColor="#b8860b"
               maxLength={20}
             />
           </View>
@@ -54,7 +54,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
               onChangeText={e => setPassword(e)}
               secureTextEntry={true}
               placeholder="Password"
-              placeholderTextColor="#000"
+              placeholderTextColor="#b8860b"
               autoCapitalize="none"
               textContentType="password"
               maxLength={20}

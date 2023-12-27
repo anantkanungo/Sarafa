@@ -3,21 +3,30 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#e1d2c4',
   },
+  // image: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   width: null,
+  // },
   image: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: null,
+    top: '20%',
+    height: 150,
+    borderRadius: 75,
+    alignSelf: 'center',
+    width: 150,
   },
+
   wrapper: {
     width: '85%',
   },
   input: {
-    // height: 60,
     flex: 1,
     fontSize: 22,
-    fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
+    // fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
     color: '#000000',
   },
@@ -37,18 +46,20 @@ export default StyleSheet.create({
   },
   loginText: {
     fontSize: 34,
-    fontFamily: 'Gilroy-Regular',
+    // fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
     marginTop: 12,
     marginBottom: 4,
-    color: 'white',
+    color: '#79443B',
     textAlign: 'center',
   },
   loginText1: {
     fontSize: 24,
-    fontFamily: 'Gilroy-Regular',
+    // fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
     marginTop: 12,
     marginBottom: 4,
-    color: 'white',
+    color: '#79443B',
     textAlign: 'center',
   },
   inputView: {
@@ -62,7 +73,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#454545',
+    backgroundColor: '#C19A6B',
     paddingVertical: 10,
     marginTop: 10,
   },

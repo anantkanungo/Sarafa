@@ -7,10 +7,9 @@ export default StyleSheet.create({
   list: {
     paddingHorizontal: 17,
     backgroundColor: '#e1d2c4',
-    padding: 5,
   },
   separator: {
-    marginTop: 10,
+    marginVertical: 5,
   },
   /******** card **************/
   card: {
@@ -23,7 +22,6 @@ export default StyleSheet.create({
     marginVertical: 4,
     backgroundColor: 'white',
     flexDirection: 'row',
-    // alignContent: 'center',
     borderWidth: 1,
     borderColor: '#8C92AC',
     padding: 10,
