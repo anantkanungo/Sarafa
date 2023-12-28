@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   Modal,
   ScrollView,
+  Button,
+  Pressable,
 } from 'react-native';
 import styles from './orderStyles';
 import axios from 'axios';
@@ -15,6 +17,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {Picker} from '@react-native-picker/picker';
+import close from '../assets/icons8-close-window-50.png';
+import {RadioButton} from 'react-native-paper';
 
 const GilroyText = ({label, ...props}) => (
   <Text style={{fontFamily: 'Gilroy-Regular', ...styles.pikerLabel}} {...props}>
@@ -49,6 +53,7 @@ const OrderScreen = ({navigation}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [statusInput, setStatusInput] = useState('');
   const [refreshStatus, setRefreshStatus] = useState(true);
+  const [clearFilterStatus, setClearFilterStatus] = useState(false);
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -58,55 +63,34 @@ const OrderScreen = ({navigation}) => {
     console.log('Filtered options:', filteredOptions);
 
     setOrders(filteredOptions);
-    setRefreshStatus(false); // Disable auto-refresh
+    setRefreshStatus(false);
   };
 
   const clearFilter = () => {
     setRefreshStatus(true); // Enable auto-refresh
   };
 
-  // UI component to set status filter
+  const applyFilter = () => {
+    if (statusInput !== 'all') {
+      filterOptionsByStatus(statusInput);
+    } else {
+      clearFilter();
+    }
+    setClearFilterStatus(!clearFilterStatus);
+  };
+
   const renderStatusFilter = () => (
-    <View style={styles.sbContainer}>
-      <Text style={[styles.buttonText, {color: '#000'}]}>Sort By Status:</Text>
-      <View style={styles.input}>
-        <Picker
-          selectedValue={statusInput}
-          onValueChange={(itemValue, itemIndex) => {
-            setStatusInput(itemValue);
-            filterOptionsByStatus(itemValue);
-            if (itemValue !== 'all') {
-              filterOptionsByStatus(itemValue);
-            } else {
-              clearFilter();
-            }
-          }}
-          dropdownIconColor="#000"
-          itemStyle={styles.pikerLabel}>
-          <GilroyText style={styles.pikerLabel} label="All" value="all" />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🔵 Pending"
-            value="pending"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🟡 Processing"
-            value="processing"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🟢 Completed"
-            value="completed"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🔴 Rejected"
-            value="rejected"
-          />
-        </Picker>
-      </View>
-    </View>
+    <RadioButton.Group
+      onValueChange={newValue => {
+        setStatusInput(newValue);
+      }}
+      value={statusInput}>
+      <RadioButton.Item label="All" value="all" />
+      <RadioButton.Item label="🔵 Pending" value="pending" />
+      <RadioButton.Item label="🟡 Processing" value="processing" />
+      <RadioButton.Item label="🟢 Completed" value="completed" />
+      <RadioButton.Item label="🔴 Rejected" value="rejected" />
+    </RadioButton.Group>
   );
 
   useEffect(() => {
@@ -181,8 +165,6 @@ const OrderScreen = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>Orders</Text>
       </View>
-      {/* Filter */}
-      {renderStatusFilter()}
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
       ) : orders.length > 0 ? (
@@ -241,6 +223,11 @@ const OrderScreen = ({navigation}) => {
               );
             }}
           />
+          <TouchableOpacity
+            style={styles.button1}
+            onPress={() => setClearFilterStatus(true)}>
+            <Text style={styles.buttonText1}>Filter</Text>
+          </TouchableOpacity>
         </>
       ) : (
         <View style={[styles.container, {justifyContent: 'center'}]}>
@@ -259,8 +246,49 @@ const OrderScreen = ({navigation}) => {
             }}>
             Your Orders is empty!
           </Text>
+          <Pressable
+            style={styles.button1}
+            onPress={() => {
+              setStatusInput('all');
+              clearFilter();
+              setClearFilterStatus(!clearFilterStatus);
+            }}>
+            <Text style={styles.textStyle}>Reset</Text>
+          </Pressable>
         </View>
       )}
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={clearFilterStatus}
+        onRequestClose={() => {
+          setClearFilterStatus(!clearFilterStatus);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {/* Filter */}
+            {renderStatusFilter()}
+            <View style={{flexDirection: 'row'}}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setStatusInput('all');
+                  clearFilter();
+                  setClearFilterStatus(!clearFilterStatus);
+                }}>
+                <Text style={styles.textStyle}>Reset</Text>
+              </Pressable>
+              <View style={{width: 50}} />
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={applyFilter}>
+                <Text style={styles.textStyle}>Apply</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Modal
         animationType="fade"
         transparent={true}
@@ -280,7 +308,7 @@ const OrderScreen = ({navigation}) => {
                     }}
                     onPress={closeModal}>
                     <Image
-                      src="https://img.icons8.com/material-outlined/close-window.png"
+                      source={close}
                       style={{height: 40, width: 40, color: '#000'}}
                     />
                   </TouchableOpacity>
