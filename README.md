@@ -82,4 +82,4 @@ To learn more about React Native, take a look at the following resources:
 
 api not working on release apk in android react-native
 The app connects to the api that I made.
-https://stackoverflow.com/questions/57289466/react-native-android-app-not-working-in-release
+<!-- https://stackoverflow.com/questions/57289466/react-native-android-app-not-working-in-release -->
