@@ -379,12 +379,9 @@ const Catagories = ({navigation}) => {
       {renderSlider()}
       {
         <Text style={styles.txt}>
-          {
-            !multiSelectMode
-              ? 'Long press to select'
-              : 'Click Submit to confirm order'
-            // : selectedItems.length + ' item selected'
-          }
+          {!multiSelectMode
+            ? 'Long press to select'
+            : 'Click Add to Cart Button'}
         </Text>
       }
 
