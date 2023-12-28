@@ -3,5 +3,6 @@
         "Homescreen",
         "Loginsecreen",
         "Registersecreen"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "disabled"
 }
