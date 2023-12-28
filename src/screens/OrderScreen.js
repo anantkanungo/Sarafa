@@ -25,7 +25,7 @@ const GilroyText = ({label, ...props}) => (
 const fetchOrders = async () => {
   try {
     const token = await AsyncStorage.getItem('@AuthToken');
-    const response = await axios.get('http://139.59.58.151:8000/getallorders', {
+    const response = await axios.get('http://139.59.58.151:8000/allorders', {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${token}`,
@@ -243,15 +243,23 @@ const OrderScreen = ({navigation}) => {
           />
         </>
       ) : (
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#000',
-            fontSize: 22,
-            fontFamily: 'Gilroy-Regular',
-          }}>
-          Your Orders is empty!
-        </Text>
+        <View style={[styles.container, {justifyContent: 'center'}]}>
+          <Image
+            style={{alignSelf: 'center', width: 100, height: 100}}
+            source={{
+              uri: 'https://img.icons8.com/ios/100/000000/empty-box.png',
+            }}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#000',
+              fontSize: 22,
+              fontFamily: 'Gilroy-Regular',
+            }}>
+            Your Orders is empty!
+          </Text>
+        </View>
       )}
       <Modal
         animationType="fade"

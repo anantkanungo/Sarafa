@@ -158,15 +158,23 @@ const CartScreen = ({navigation}) => {
           </TouchableOpacity>
         </>
       ) : (
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#000',
-            fontSize: 22,
-            fontFamily: 'Gilroy-Regular',
-          }}>
-          Your cart is empty!
-        </Text>
+        <View style={[styles.container, {justifyContent: 'center'}]}>
+          <Image
+            style={{alignSelf: 'center', width: 100, height: 100}}
+            source={{
+              uri: 'https://img.icons8.com/ios/100/000000/empty-box.png',
+            }}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#000',
+              fontSize: 22,
+              fontFamily: 'Gilroy-Regular',
+            }}>
+            Your cart is empty!
+          </Text>
+        </View>
       )}
 
       {/* Edit Modal */}

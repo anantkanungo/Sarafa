@@ -26,7 +26,7 @@ const Header = ({customerLogout, details}) => {
               marginBottom: 10,
               fontFamily: 'Cirka-Variable',
             }}>
-            Hello, {details?.username}
+            Hello,
           </Text>
           <TouchableOpacity onPress={() => customerLogout()}>
             <Image
@@ -42,7 +42,7 @@ const Header = ({customerLogout, details}) => {
               color: 'white',
               fontFamily: 'Cirka-Variable',
             }}>
-            Jeweler's name
+            {details?.username}
           </Text>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </View>
