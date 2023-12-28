@@ -41,7 +41,7 @@ const fetchOrders = async () => {
 
 const OrderScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [audioPlayer, setAudioPlayer] = useState();
@@ -114,7 +114,7 @@ const OrderScreen = ({navigation}) => {
       try {
         const data = await fetchOrders();
         setOrders(data);
-        // setIsLoading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -123,14 +123,8 @@ const OrderScreen = ({navigation}) => {
     if (refreshStatus) {
       fetchData();
       setRefreshStatus(false); // Disable auto-refresh
-
-      const intervalId = setInterval(fetchData, 1000); // Fetch data every 1 seconds
-
-      return () => {
-        clearInterval(intervalId); // Clear the interval when the component unmounts
-      };
     }
-  }, [refreshStatus]);
+  }, [orders, refreshStatus]);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -189,9 +183,9 @@ const OrderScreen = ({navigation}) => {
       </View>
       {/* Filter */}
       {renderStatusFilter()}
-      {/* {isLoading ? (
+      {isLoading ? (
         <ActivityIndicator visible={isLoading} />
-      ) : orders.length > 0 ? ( */}
+      ) : orders.length > 0 ? (
         <>
           <FlatList
             style={styles.list}
@@ -248,7 +242,7 @@ const OrderScreen = ({navigation}) => {
             }}
           />
         </>
-      {/* ) : (
+      ) : (
         <Text
           style={{
             textAlign: 'center',
@@ -258,7 +252,7 @@ const OrderScreen = ({navigation}) => {
           }}>
           Your Orders is empty!
         </Text>
-      )} */}
+      )}
       <Modal
         animationType="fade"
         transparent={true}
@@ -278,7 +272,7 @@ const OrderScreen = ({navigation}) => {
                     }}
                     onPress={closeModal}>
                     <Image
-                      src="https://img.icons8.com/material-outlined/cancel--v1.png"
+                      src="https://img.icons8.com/material-outlined/close-window.png"
                       style={{height: 40, width: 40, color: '#000'}}
                     />
                   </TouchableOpacity>
@@ -321,7 +315,7 @@ const OrderScreen = ({navigation}) => {
                     <Text style={styles.titleModal}>No Audio Available</Text>
                   )}
                 </View>
-                <ScrollView>
+                <ScrollView style={{height: 150}}>
                   <View style={{flexDirection: 'row'}}>
                     <View style={{borderWidth: 1, paddingHorizontal: 10}}>
                       <Text style={styles.orderModal}>Date: </Text>

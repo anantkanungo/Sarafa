@@ -23,7 +23,7 @@ import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 import {useRoute} from '@react-navigation/native';
-import Slider from '@react-native-community/slider';
+import Slider from 'react-native-slider';
 import FastImage from 'react-native-fast-image';
 
 const Catagories = ({navigation}) => {
@@ -158,6 +158,7 @@ const Catagories = ({navigation}) => {
   const selectItem = (user, isLongPress) => {
     if (isLongPress) {
       setMultiSelectMode(true);
+      setClearButtonVisible(true);
       toggleSelection(user);
     } else {
       if (multiSelectMode || clearButtonVisible) {
@@ -284,6 +285,15 @@ const Catagories = ({navigation}) => {
         step={1}
         value={numColumns}
         onValueChange={value => setNumColumns(value)}
+        trackStyle={{height: 8, borderRadius: 5, backgroundColor: 'grey'}}
+        thumbStyle={{
+          backgroundColor: 'white',
+          borderWidth: 2,
+          borderColor: 'grey',
+        }}
+        minimumTrackTintColor={'grey'}
+        maximumTrackTintColor={'grey'}
+        animationType="timing"
       />
     </View>
   );
@@ -353,6 +363,7 @@ const Catagories = ({navigation}) => {
         simultaneousHandlers={['pinchX', 'pinchY']}>
         <FlatList
           key={numColumns}
+          style={{backgroundColor: '#e1d2c4'}}
           // data={formatRow(category, numColumns)}
           data={categorys ? formatRow(categorys, numColumns) : []}
           // keyExtractor={item => {

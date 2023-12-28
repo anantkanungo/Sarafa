@@ -18,7 +18,7 @@ export default StyleSheet.create({
     marginHorizontal: 10,
   },
   headerText: {
-    // marginRight: 23,
+    textTransform: 'capitalize',
     fontSize: 20,
     color: '#000000',
     fontFamily: 'Cirka-Variable',
@@ -47,7 +47,7 @@ export default StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
   },
   item: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e1d2c4',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -150,6 +150,7 @@ export default StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     color: '#000',
     fontSize: 22,
+    textTransform: 'capitalize'
   },
   textModal: {
     textAlign: 'center',

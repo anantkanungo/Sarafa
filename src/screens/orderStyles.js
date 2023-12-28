@@ -88,11 +88,9 @@ export default StyleSheet.create({
   },
   popup: {
     backgroundColor: 'white',
-    // marginTop: 0,
     marginHorizontal: 20,
   },
   popupContent: {
-    //alignItems: 'center',
     margin: 5,
     height: 'auto',
   },
