@@ -4,7 +4,7 @@ import {View, StyleSheet, Image} from 'react-native';
 export default function Splash() {
   return (
     <View style={styles.body}>
-      <Image style={styles.logo} source={require('../../assets/NG_logo.png')} />
+      <Image style={styles.logo} source={require('../assets/NG_logo.png')} />
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   TextInput,
@@ -8,12 +8,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import styles from './loginStyles';
-import { connect } from 'react-redux';
-import { AuthFunction, customerLogin } from '../../reduxThunk/action/authAction';
+import {connect} from 'react-redux';
+import {AuthFunction, customerLogin} from '../reduxThunk/action/authAction';
 // You can use your custom background image
-import BackgroundImage from '../../assets/IMG_BACKGROUND.jpg';
+import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
-const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
+const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -30,10 +30,9 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.bottomView}>
         <Image style={styles.image} source={BackgroundImage} />
-        <View style={{ marginTop: 100 }}>
+        <View style={{marginTop: 100}}>
           <Text style={styles.loginText}>NG Jewllers</Text>
           <Text style={styles.loginText1}>Distributor </Text>
         </View>

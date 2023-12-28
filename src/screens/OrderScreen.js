@@ -1,35 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { customerLogout } from '../../reduxThunk/action/authAction';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import {connect} from 'react-redux';
+import {customerLogout} from '../reduxThunk/action/authAction';
 
-const OrderScreen = ({ customerLogout, navigation }) => {
-  const data = [{
-    id: 1,
-    title: 'Shop ID_1',
-  },
+const OrderScreen = ({customerLogout, navigation}) => {
+  const data = [
+    {
+      id: 1,
+      title: 'Shop ID_1',
+    },
 
-  {
-    id: 2,
-    title: 'Shop ID_2',
-  },
-  {
-    id: 3,
-    title: 'Shop ID_3',
-  },
-  {
-    id: 4,
-    title: 'Shop ID_4',
-  },
-  {
-    id: 5,
-    title: 'Shop ID_5',
-  },
+    {
+      id: 2,
+      title: 'Shop ID_2',
+    },
+    {
+      id: 3,
+      title: 'Shop ID_3',
+    },
+    {
+      id: 4,
+      title: 'Shop ID_4',
+    },
+    {
+      id: 5,
+      title: 'Shop ID_5',
+    },
   ];
 
   const [results, setResults] = useState(data);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => navigation.navigate('ShopOrder')}>
@@ -53,10 +61,13 @@ const OrderScreen = ({ customerLogout, navigation }) => {
             }} */}
         {/* /> */}
         {/* </TouchableOpacity> */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
-        </View>
-        <TouchableOpacity onPress={() => customerLogout()}><Text style={styles.logoutButtonText}>Logout</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}></View>
+        <TouchableOpacity onPress={() => customerLogout()}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -77,11 +88,10 @@ const OrderScreen = ({ customerLogout, navigation }) => {
         style={styles.list}
         contentContainerStyle={styles.listContainer}
         data={results}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={renderItem}
       />
-
     </View>
   );
 };
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     margin: 6,
     borderColor: 'black',
-    borderWidth: .25,
+    borderWidth: 0.25,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -180,4 +190,3 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
 });
-
