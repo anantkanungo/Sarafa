@@ -148,8 +148,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 150,
     width: null,
-    borderTopLeftRadius: 2,
-    borderTopRightRadius: 2,
   },
   imageContainer: {
     shadowColor: '#000',
