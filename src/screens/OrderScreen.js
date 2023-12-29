@@ -36,7 +36,7 @@ const fetchOrders = async () => {
       },
     });
     // console.log(response);
-    // console.log(response.data.data);
+    console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     console.log(error);
@@ -54,6 +54,7 @@ const OrderScreen = ({navigation}) => {
   const [statusInput, setStatusInput] = useState('');
   const [refreshStatus, setRefreshStatus] = useState(true);
   const [clearFilterStatus, setClearFilterStatus] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -63,11 +64,11 @@ const OrderScreen = ({navigation}) => {
     console.log('Filtered options:', filteredOptions);
 
     setOrders(filteredOptions);
-    setRefreshStatus(false);
+    setAutoRefresh(false); // Disable auto-refresh
   };
 
   const clearFilter = () => {
-    setRefreshStatus(true); // Enable auto-refresh
+    setAutoRefresh(true); // Enable auto-refresh
   };
 
   const applyFilter = () => {
@@ -77,12 +78,14 @@ const OrderScreen = ({navigation}) => {
       clearFilter();
     }
     setClearFilterStatus(!clearFilterStatus);
+    setAutoRefresh(false); // Disable auto-refresh when the filter button is clicked
   };
 
   const renderStatusFilter = () => (
     <RadioButton.Group
       onValueChange={newValue => {
         setStatusInput(newValue);
+        setAutoRefresh(true); // Enable auto-refresh when the picker value changes
       }}
       value={statusInput}>
       <RadioButton.Item label="All" value="all" />
@@ -104,11 +107,14 @@ const OrderScreen = ({navigation}) => {
       }
     };
 
-    if (refreshStatus) {
-      fetchData();
-      setRefreshStatus(false); // Disable auto-refresh
-    }
-  }, [orders, refreshStatus]);
+    const intervalId = setInterval(() => {
+      if (autoRefresh) {
+        fetchData();
+      }
+    }, 500); // Adjust the interval time as needed
+
+    return () => clearInterval(intervalId);
+  }, [autoRefresh, refreshStatus]);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -160,7 +166,7 @@ const OrderScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            src="https://img.icons8.com/ios/50/long-arrow-left.png"
+            source={{uri: 'https://img.icons8.com/ios/50/long-arrow-left.png'}}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>Orders</Text>
@@ -207,7 +213,7 @@ const OrderScreen = ({navigation}) => {
                           backgroundColor:
                             item.statusIs === 'pending'
                               ? '#aecbfa'
-                              : item.statusIs === 'processing'
+                              : item.statusIs === 'proccesing'
                               ? '#FFBF00'
                               : item.statusIs === 'completed'
                               ? '#ccff90'
@@ -278,7 +284,9 @@ const OrderScreen = ({navigation}) => {
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={applyFilter}>
+                onPress={() => {
+                  applyFilter();
+                }}>
                 <Text style={styles.textStyle}>Apply</Text>
               </Pressable>
             </View>
