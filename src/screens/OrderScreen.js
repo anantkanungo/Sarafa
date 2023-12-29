@@ -246,15 +246,11 @@ const OrderScreen = ({navigation}) => {
             }}>
             Your Orders is empty!
           </Text>
-          <Pressable
+          <TouchableOpacity
             style={styles.button1}
-            onPress={() => {
-              setStatusInput('all');
-              clearFilter();
-              setClearFilterStatus(!clearFilterStatus);
-            }}>
-            <Text style={styles.textStyle}>Reset</Text>
-          </Pressable>
+            onPress={() => setClearFilterStatus(true)}>
+            <Text style={styles.buttonText1}>Filter</Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -269,7 +265,8 @@ const OrderScreen = ({navigation}) => {
           <View style={styles.modalView}>
             {/* Filter */}
             {renderStatusFilter()}
-            <View style={{flexDirection: 'row'}}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
@@ -279,7 +276,6 @@ const OrderScreen = ({navigation}) => {
                 }}>
                 <Text style={styles.textStyle}>Reset</Text>
               </Pressable>
-              <View style={{width: 50}} />
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={applyFilter}>

@@ -175,7 +175,6 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
     marginTop: 22,
   },
   modalView: {
@@ -183,7 +182,6 @@ export default StyleSheet.create({
     marginVertical: 20,
     backgroundColor: 'white',
     padding: 10,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
