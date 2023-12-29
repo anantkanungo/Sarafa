@@ -1,27 +1,5 @@
 {
-<<<<<<< HEAD
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.3",
-    "multer": "^1.4.5-lts.1"
-=======
-  "name": "WEBKINDProject",
+  "name": "NGKARIGAR",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -32,15 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.19.3",
-    "@react-navigation/native": "^6.1.8",
-    "@react-navigation/native-stack": "^6.9.14",
-    "axios": "^1.5.1",
     "react": "18.2.0",
-    "react-native": "0.72.6",
-    "react-native-loading-spinner-overlay": "^3.0.1",
-    "react-native-safe-area-context": "^4.7.3",
-    "react-native-screens": "^3.26.0"
+    "react-native": "0.72.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -61,6 +32,5 @@
   },
   "engines": {
     "node": ">=16"
->>>>>>> f23ba97 (1st Login UI)
   }
 }

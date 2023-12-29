@@ -1,4 +1,4 @@
-package com.webkindproject;
+package com.ngkarigar;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

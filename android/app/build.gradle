@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.webkindproject"
+    namespace "com.ngkarigar"
     defaultConfig {
-        applicationId "com.webkindproject"
+        applicationId "com.ngkarigar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
