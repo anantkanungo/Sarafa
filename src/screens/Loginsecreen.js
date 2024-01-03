@@ -18,7 +18,7 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   const [password, setPassword] = useState('');
 
   const handleAddDetail = () => {
-    if (password.length < 4) {
+    if (password.length < 3) {
       alert('Password must be at least 5 characters long');
       return;
     }

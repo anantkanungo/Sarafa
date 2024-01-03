@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+// Import necessary libraries
+import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Button, TextInput, Platform,
-  PermissionsAndroid,
-  Modal,
+  View,
+  Text,
+  Image,
+  StyleSheet,
   Alert,
-  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 
-const Orderpage = ({ navigation }) => {
-
-  const data = [];
+const OrderPage = ({route, navigation}) => {
+  const {selectedTask} = route.params;
 
   const taskComplete = () => {
     Alert.alert('Your task is complete');
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,36 +29,41 @@ const Orderpage = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-      <View>
-        {<TouchableOpacity onPress={() => navigation.navigate('ScreenZoom')}>
-          <Image style={styles.productImage}
-            src='https://i.pinimg.com/originals/34/89/c5/3489c53379ede9c53be27ca67342f639.jpg' />
-
-        </TouchableOpacity>}
-
-
-      </View>
-      <View style={styles.productText}>
-        <Text style={styles.catagory1}>Catagory</Text>
-        <Text style={styles.catagory2}>Description about the jewllery...</Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ImageZoom', {imageUrl: selectedTask.image[0]})
+        }>
+        <Image source={{uri: selectedTask.image[0]}} style={styles.image} />
+      </TouchableOpacity>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text style={styles.title}>{selectedTask.category}</Text>
+        <Text style={styles.description}>
+          description: {selectedTask.description}
+        </Text>
+        <Text style={styles.description}>Size: {selectedTask.size}</Text>
+        <Text style={styles.description}>Weight: {selectedTask.weight}</Text>
+        <Text style={styles.description}>Status: {selectedTask.statusIs}</Text>
+        <Text style={styles.description}>
+          Urgent: {`${selectedTask.urgent}`}
+        </Text>
       </View>
       <View style={styles.sbContainer}>
-        <TouchableOpacity style={styles.loginButton} onPress={taskComplete}>
+        <TouchableOpacity onPress={taskComplete}>
           <Text style={styles.SubmitButtonText}>Task Complete</Text>
         </TouchableOpacity>
       </View>
-
-
     </View>
-    // </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    // backgroundColor: '#DBD7D2',
+    marginHorizontal: 10,
   },
   tinyLogo: {
     width: 30,
@@ -68,9 +74,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginLeft: 16,
-    marginBottom: 50,
     // backgroundColor: '#DBD7D2',
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 5,
+    fontFamily: 'Gilroy-Regular',
+    color: 'black',
+    textTransform: 'capitalize',
+  },
+  description: {
+    fontSize: 19,
+    color: 'black',
+    fontFamily: 'Gilroy-Regular',
   },
   sbContainer: {
     alignSelf: 'center',
@@ -84,36 +106,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 10,
     fontFamily: 'Gilroy-Regular',
-
   },
-  productImage: {
-    marginHorizontal: 19,
-    height: 300,
-    width: '90%',
-    // objectFit: "cover",
-  },
-
-  catagory1: {
+  voiceButton: {
+    marginLeft: 10,
     fontSize: 24,
     fontFamily: 'Gilroy-Regular',
-    marginTop: 28,
-    marginBottom: 4,
-    color: 'black',
-    marginLeft: 4,
-    textAlign: 'center',
+    borderWidth: 1,
+    padding: 3.5,
+    color: '#000000',
   },
-  catagory2: {
-    fontSize: 18,
-    marginTop: 18,
-    marginBottom: 4,
-    color: 'grey',
-    marginLeft: 4,
-    fontFamily: 'Gilroy-Regular',
-    textAlign: 'center',
-
-  },
-
 });
 
-export default Orderpage;
-
+export default OrderPage;

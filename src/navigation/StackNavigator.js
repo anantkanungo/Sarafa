@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OrderScreen from '../screens/OrderScreen';
-import Orderpage from '../screens/Orderpage';
-import ScreenZoom from '../screens/ScreenZoom';
+import OrderPage from '../screens/OrderPage';
+import ImageZoomScreen from '../screens/ImageZoomScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,8 +14,8 @@ const StackNavigator = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
-      <Stack.Screen name="Orderpage" component={Orderpage} />
-      <Stack.Screen name="ScreenZoom" component={ScreenZoom} />
+      <Stack.Screen name="OrderPage" component={OrderPage} />
+      <Stack.Screen name="ImageZoom" component={ImageZoomScreen} />
     </Stack.Navigator>
   );
 };

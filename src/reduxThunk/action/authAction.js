@@ -55,7 +55,7 @@ export const customerLogin = (userId, password) => {
 
         if (token && details) {
           // Check if the role is customer
-          // if (response.data.role === 'kariger') {
+          if (response.data.role === 'kariger') {
             dispatch({type: authToken, payload: token});
             // Storing token to AsyncStorage
             try {
@@ -64,10 +64,10 @@ export const customerLogin = (userId, password) => {
               console.error('AsyncStorage error:', error);
             }
             dispatch(customerLogin_Success(details));
-          // } else {
-          //   // Handle the case where the role is not customer
-          //   Alert.alert('Login Failed', 'Invalid role, please retry');
-          // }
+          } else {
+            // Handle the case where the role is not customer
+            Alert.alert('Login Failed', 'Invalid role, please retry');
+          }
         } else {
           Alert.alert(
             'Login Failed',

@@ -1,71 +1,60 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
+import axios from 'axios';
+// import {useNavigation} from '@react-navigation/native';
 
-const OrderScreen = ({customerLogout, navigation}) => {
-  const data = [
-    {
-      id: 1,
-      title: 'Order 1',
-      Text: 'Description about the order',
-    },
+const OrderScreen = ({customerLogout, details, navigation}) => {
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState('');
 
-    {
-      id: 2,
-      title: 'Order 2',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 3,
-      title: 'Order 3',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 4,
-      title: 'Order 4',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 5,
-      title: 'Order 5',
-      Text: 'Description about the order(earring)',
-    },
-  ];
+  const fetchOrders = async () => {
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        'http://139.59.58.151:8000/kariger/task',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-  const [results, setResults] = useState(data);
+      const userData = response.data.data[0];
+      setAddress(userData.address);
+      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate('Orderpage')}>
+      onPress={() => navigateToOrderPage(item)}>
       <View style={styles.cardHighlight} />
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.Text}</Text>
+        <Text style={styles.title}>{item.category}</Text>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
     </TouchableOpacity>
   );
+
+  const navigateToOrderPage = selectedTask => {
+    navigation.navigate('OrderPage', {selectedTask});
+  };
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
-        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            style={styles.tinyLogo}
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-            }}
-          /> */}
-        {/* </TouchableOpacity> */}
         <View
           style={{
             flexDirection: 'row',
@@ -78,8 +67,8 @@ const OrderScreen = ({customerLogout, navigation}) => {
 
       {/* Info Container */}
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Karigar_Name</Text>
-        <Text style={styles.infoText}>Ph:+91912365498</Text>
+        <Text style={styles.infoText}>{details?.username}</Text>
+        <Text style={styles.infoText}>Address: {address}</Text>
       </View>
 
       {/* Title Container */}
@@ -88,17 +77,22 @@ const OrderScreen = ({customerLogout, navigation}) => {
       </View>
 
       {/* FlatList */}
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={results}
-        keyExtractor={item => item.id.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={orders}
+          keyExtractor={item => item._id}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
+
 const mapStateToProps = state => {
   return {
     loading: state.loading,
