@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   TextInput,
@@ -6,26 +6,28 @@ import {
   Image,
   View,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import styles from './loginStyles';
 import {connect} from 'react-redux';
 import {AuthFunction, customerLogin} from '../reduxThunk/action/authAction';
 // You can use your custom background image
-import BackgroundImage from '../assets/NG_logo.png';
+import BackgroundImage from '../assets/IMG_BACKGROUND.jpg';
 
 const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
   const handleAddDetail = () => {
-    if (password.length < 3) {
-      alert('Password must be at least 5 characters long');
+    if (password.length < 2) {
+      Alert.alert(
+        'Login Failed',
+        'Enter valid User Id & Password, please retry',
+      );
       return;
     }
 
     getCustomerDetails(userId, password);
-    setUserId('');
-    setPassword('');
   };
 
   return (
@@ -34,8 +36,8 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
         <View>
           <Image style={styles.image} source={BackgroundImage} />
           <View style={{marginTop: 100}}>
-            <Text style={styles.loginText}>NG Jewllers</Text>
-            <Text style={styles.loginText1}>Distributor</Text>
+            <Text style={styles.loginText}>NG Jewellers</Text>
+            <Text style={styles.loginText1}>Workshop</Text>
           </View>
         </View>
         <View style={styles.wrapper}>
@@ -43,24 +45,22 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
             <TextInput
               style={styles.input}
               onChangeText={e => setUserId(e)}
+              // label="User"
               autoCapitalize="none"
-              placeholder="Enter Id"
-              placeholderTextColor="#b8860b"
-              maxLength={20}
-              textTansform="lowercase"
+              placeholder="Workshop Id"
+              placeholderTextColor="#B8860B"
             />
           </View>
           <View style={styles.inputView}>
             <TextInput
               style={styles.input}
               onChangeText={e => setPassword(e)}
+              // label="Password"
               secureTextEntry={true}
               placeholder="Password"
-              placeholderTextColor="#b8860b"
+              placeholderTextColor="#B8860B"
               autoCapitalize="none"
               textContentType="password"
-              maxLength={20}
-              textTansform="lowercase"
             />
           </View>
           <TouchableOpacity

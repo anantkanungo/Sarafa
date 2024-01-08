@@ -9,7 +9,6 @@ import {gstore} from './src/reduxThunk/Store';
 // import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
-
   return (
     <Provider store={gstore}>
       <NavigationContainer>
