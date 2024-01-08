@@ -5,10 +5,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const ImageZoomScreen = ({route, navigation}) => {
   const {imageUrl} = route.params;
 
+  const imageUrls = imageUrl ? [{url: imageUrl}] : [];
+
   return (
     <View style={styles.container}>
       <ImageViewer
-        imageUrls={[{url: imageUrl}]}
+        imageUrls={imageUrls}
         enableSwipeDown
         onSwipeDown={() => navigation.goBack()}
       />
