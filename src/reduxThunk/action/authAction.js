@@ -52,15 +52,22 @@ export const customerLogin = (userId, password) => {
         console.log(response.data);
         const token = response.data.token;
         const details = response.data;
+
         if (token && details) {
-          dispatch({type: authToken, payload: token});
-          // Storing token to AsyncStorage
-          try {
-            await AsyncStorage.setItem('@AuthToken', token);
-          } catch (error) {
-            console.error('AsyncStorage error:', error);
+          // Check if the role is customer
+          if (response.data.role === 'workshop') {
+            dispatch({type: authToken, payload: token});
+            // Storing token to AsyncStorage
+            try {
+              await AsyncStorage.setItem('@AuthToken', token);
+            } catch (error) {
+              console.error('AsyncStorage error:', error);
+            }
+            dispatch(customerLogin_Success(details));
+          } else {
+            // Handle the case where the role is not customer
+            Alert.alert('Login Failed', 'Invalid role, please retry');
           }
-          dispatch(customerLogin_Success(details));
         } else {
           Alert.alert(
             'Login Failed',

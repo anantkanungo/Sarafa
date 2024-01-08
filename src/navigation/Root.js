@@ -11,7 +11,7 @@ import Splash from '../screens/Splash';
 
 const Stack = createNativeStackNavigator();
 
-const Root = ({token, navigation}) => {
+const Root = ({token}) => {
   const dispatch = useDispatch();
   const [showSplash, setShowSplash] = useState(true);
 
@@ -34,7 +34,7 @@ const Root = ({token, navigation}) => {
 
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,42 +7,37 @@ import {
   Image,
   ActivityIndicator,
   Modal,
-  TextInput,
+  ScrollView,
+  Pressable,
 } from 'react-native';
 import styles from './orderStyles';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import { Picker } from '@react-native-picker/picker';
-
-const GilroyText = ({ label, ...props }) => (
-  <Text style={{ fontFamily: 'Gilroy-Regular', ...styles.pikerLabel }} {...props}>
-    {label}
-  </Text>
-);
+import close from '../assets/icons8-close-window-50.png';
+import {RadioButton} from 'react-native-paper';
 
 const fetchOrders = async () => {
   try {
     const token = await AsyncStorage.getItem('@AuthToken');
     const response = await axios.get(
-      'http://139.59.58.151:8000/pendingorders',
+      'http://139.59.58.151:8000/workshop/task',
       {
         headers: {
-          Accept: 'application/json',
           Authorization: `Bearer ${token}`,
         },
       },
     );
     // console.log(response);
-    // console.log(response.data.result);
-    return response.data.result;
+    // console.log(response.data.data);
+    return response.data.data[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-const ShopOrder = ({ navigation }) => {
+const OrderScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -50,19 +45,9 @@ const ShopOrder = ({ navigation }) => {
   const [audioPlayer, setAudioPlayer] = useState();
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [statusInput, setStatusInput] = useState('pending');
-  const [isFilterApplied, setFilterApplied] = useState(false);
-
-  const applyFilter = () => {
-    setFilterApplied(true);
-
-    // Apply the filter
-  };
-  const clearFilter = () => {
-    setFilterApplied(false);
-
-    // Clear the filter
-  };
+  const [statusInput, setStatusInput] = useState('');
+  const [clearFilterStatus, setClearFilterStatus] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -71,75 +56,55 @@ const ShopOrder = ({ navigation }) => {
     const filteredOptions = orders.filter(item => item.statusIs === statusIs);
     console.log('Filtered options:', filteredOptions);
 
+    setAutoRefresh(false); // Disable auto-refresh
     setOrders(filteredOptions);
   };
 
-  // UI component to set status filter
+  const clearFilter = () => {
+    setAutoRefresh(true); // Enable auto-refresh
+  };
+
+  const applyFilter = () => {
+    if (statusInput !== 'all') {
+      filterOptionsByStatus(statusInput);
+    } else {
+      clearFilter();
+    }
+    setClearFilterStatus(!clearFilterStatus);
+    setAutoRefresh(false); // Disable auto-refresh when the filter button is clicked
+  };
+
   const renderStatusFilter = () => (
-    <View style={styles.sbContainer}>
-      <Text style={[styles.buttonText, { color: '#000' }]}>Sort By Status:</Text>
-      <View style={styles.input}>
-        <Picker
-          selectedValue={statusInput}
-          onValueChange={(itemValue, itemIndex) => {
-            setStatusInput(itemValue);
-            // Call filterOptionsByStatus only if the selected value is not "All"
-            if (itemValue !== 'All') {
-              // Call filterOptionsByStatus directly when the value changes
-              filterOptionsByStatus(itemValue);
-            } else {
-            }
-          }}
-          dropdownIconColor="#000"
-          itemStyle={styles.pikerLabel}>
-          <GilroyText style={styles.pikerLabel} label="All" />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🔵 Pending"
-            value="pending"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🟡 Processing"
-            value="processing"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🟢 Completed"
-            value="completed"
-          />
-          <GilroyText
-            style={styles.pikerLabel}
-            label="🔴 Rejected"
-            value="rejected"
-          />
-        </Picker>
-      </View>
-    </View>
+    <RadioButton.Group
+      onValueChange={newValue => {
+        setAutoRefresh(true); // Enable auto-refresh when the picker value changes
+        setStatusInput(newValue);
+      }}
+      value={statusInput}>
+      <RadioButton.Item label="All" value="all" />
+      <RadioButton.Item label="🔵 Pending" value="pending" />
+      <RadioButton.Item label="🟡 Proccesing" value="proccesing" />
+      <RadioButton.Item label="🟢 Completed" value="completed" />
+      <RadioButton.Item label="🔴 Rejected" value="rejected" />
+    </RadioButton.Group>
   );
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isFilterApplied) {
-        return;
-      }
       try {
         const data = await fetchOrders();
-        setOrders(data);
+        setOrders(data.task || []);
         setIsLoading(false);
+        // After the initial data load, enable auto-refresh
+        setAutoRefresh(true);
       } catch (error) {
         console.error(error);
       }
     };
-
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 1000); // Fetch data every 1 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
-  }, []);
+    if (autoRefresh) {
+      fetchData();
+    }
+  }, [autoRefresh]);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -191,13 +156,11 @@ const ShopOrder = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            src="https://img.icons8.com/ios/50/long-arrow-left.png"
+            source={{uri: 'https://img.icons8.com/ios/50/long-arrow-left.png'}}
           />
         </TouchableOpacity>
-        {/* <Text style={styles.headerText}>Orders</Text> */}
+        <Text style={styles.headerText}>Orders</Text>
       </View>
-      {/* Filter */}
-      {/* {renderStatusFilter()} */}
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
       ) : orders.length > 0 ? (
@@ -240,13 +203,13 @@ const ShopOrder = ({ navigation }) => {
                           backgroundColor:
                             item.statusIs === 'pending'
                               ? '#aecbfa'
-                              : item.statusIs === 'processing'
-                                ? '#FFBF00'
-                                : item.statusIs === 'completed'
-                                  ? '#ccff90'
-                                  : item.statusIs === 'rejected'
-                                    ? '#f28b82'
-                                    : '#ffffff',
+                              : item.statusIs === 'proccesing'
+                              ? '#FFBF00'
+                              : item.statusIs === 'completed'
+                              ? '#ccff90'
+                              : item.statusIs === 'rejected'
+                              ? '#f28b82'
+                              : '#ffffff',
                         },
                         styles.color,
                       ]}
@@ -256,18 +219,70 @@ const ShopOrder = ({ navigation }) => {
               );
             }}
           />
+          {/* <TouchableOpacity
+            style={styles.button1}
+            onPress={() => setClearFilterStatus(true)}>
+            <Text style={styles.buttonText1}>Filter</Text>
+          </TouchableOpacity> */}
         </>
       ) : (
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#000',
-            fontSize: 22,
-            fontFamily: 'Gilroy-Regular',
-          }}>
-          Your Orders is empty!
-        </Text>
+        <View style={[styles.container, {justifyContent: 'center'}]}>
+          <Image
+            style={{alignSelf: 'center', width: 100, height: 100}}
+            source={{
+              uri: 'https://img.icons8.com/ios/100/000000/empty-box.png',
+            }}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#000',
+              fontSize: 22,
+              fontFamily: 'Gilroy-Regular',
+            }}>
+            Your Orders is empty!
+          </Text>
+          {/* <TouchableOpacity
+            style={styles.button1}
+            onPress={() => setClearFilterStatus(true)}>
+            <Text style={styles.buttonText1}>Filter</Text>
+          </TouchableOpacity> */}
+        </View>
       )}
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={clearFilterStatus}
+        onRequestClose={() => {
+          setClearFilterStatus(!clearFilterStatus);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {/* Filter */}
+            {renderStatusFilter()}
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setStatusInput('all');
+                  clearFilter();
+                  setClearFilterStatus(!clearFilterStatus);
+                }}>
+                <Text style={styles.textStyle}>Reset</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  applyFilter();
+                }}>
+                <Text style={styles.textStyle}>Apply</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Modal
         animationType="fade"
         transparent={true}
@@ -287,8 +302,8 @@ const ShopOrder = ({ navigation }) => {
                     }}
                     onPress={closeModal}>
                     <Image
-                      src="https://img.icons8.com/material-outlined/cancel--v1.png"
-                      style={{ height: 40, width: 40, color: '#000' }}
+                      source={close}
+                      style={{height: 40, width: 40, color: '#000'}}
                     />
                   </TouchableOpacity>
                 </View>
@@ -296,15 +311,15 @@ const ShopOrder = ({ navigation }) => {
                 <FlatList
                   data={selectedOrder?.image} // Assuming selectedOrder.images is an array of image URIs
                   keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
+                  renderItem={({item}) => (
                     <Image
-                      style={{ width: 300, height: 300, resizeMode: 'contain' }}
-                      source={{ uri: item }}
+                      style={{width: 300, height: 300, resizeMode: 'contain'}}
+                      source={{uri: item}}
                     />
                   )}
                   horizontal // Set this to render images horizontally
                 />
-                <View style={{ flexDirection: 'row', margin: 10 }}>
+                <View style={{flexDirection: 'row', margin: 10}}>
                   <Text style={styles.titleModal}>Audio: </Text>
                   {Array.isArray(audioURL) && audioURL.length > 0 ? (
                     <TouchableOpacity
@@ -330,53 +345,57 @@ const ShopOrder = ({ navigation }) => {
                     <Text style={styles.titleModal}>No Audio Available</Text>
                   )}
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ borderWidth: 1, paddingHorizontal: 10 }}>
-                    <Text style={styles.orderModal}>Date: </Text>
-                    <Text style={styles.orderModal}>Category:</Text>
-                    <Text style={styles.orderModal}>Tunch:</Text>
-                    <Text style={styles.orderModal}>Weight:</Text>
-                    <Text style={styles.orderModal}>Size:</Text>
-                    <Text style={styles.orderModal}>Quantity:</Text>
-                    <Text style={styles.orderModal}>Status:</Text>
+                <ScrollView style={{height: 150}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{borderWidth: 1, paddingHorizontal: 10}}>
+                      <Text style={styles.orderModal}>Date: </Text>
+                      <Text style={styles.orderModal}>Category:</Text>
+                      <Text style={styles.orderModal}>Tunch:</Text>
+                      <Text style={styles.orderModal}>Weight:</Text>
+                      <Text style={styles.orderModal}>Size:</Text>
+                      <Text style={styles.orderModal}>Quantity:</Text>
+                      <Text style={styles.orderModal}>Status:</Text>
+                    </View>
+                    <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
+                      <Text style={styles.orderModal}>
+                        {new Date(selectedOrder?.updatedAt).toLocaleString()}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.orderModal,
+                          {
+                            textTransform: 'capitalize',
+                          },
+                        ]}>
+                        {selectedOrder?.category}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.tunch}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.weight}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.size}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.quantity}
+                      </Text>
+                      <Text style={styles.orderModal}>
+                        {selectedOrder?.statusIs}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{ borderWidth: 1, flex: 1, paddingLeft: 10 }}>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      padding: 5,
+                    }}>
                     <Text style={styles.orderModal}>
-                      {new Date(selectedOrder?.updatedAt).toLocaleString()}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.orderModal,
-                        {
-                          textTransform: 'capitalize',
-                        },
-                      ]}>
-                      {selectedOrder?.category}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.tunch}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.weight}
-                    </Text>
-                    <Text style={styles.orderModal}>{selectedOrder?.size}</Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.quantity}
-                    </Text>
-                    <Text style={styles.orderModal}>
-                      {selectedOrder?.statusIs}
+                      Description: {selectedOrder?.description}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    padding: 5,
-                  }}>
-                  <Text style={styles.orderModal}>
-                    Description: {selectedOrder?.description}
-                  </Text>
-                </View>
+                </ScrollView>
               </View>
             </View>
           </View>
@@ -386,4 +405,4 @@ const ShopOrder = ({ navigation }) => {
   );
 };
 
-export default ShopOrder;
+export default OrderScreen;

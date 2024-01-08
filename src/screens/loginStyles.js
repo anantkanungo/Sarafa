@@ -1,10 +1,16 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e1d2c4'
+    backgroundColor: '#e1d2c4',
   },
+  // image: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   width: null,
+  // },
   image: {
     top: '20%',
     height: 150,
@@ -12,47 +18,53 @@ export default StyleSheet.create({
     alignSelf: 'center',
     width: 150,
   },
+
   wrapper: {
     width: '85%',
   },
   input: {
-    height: 60,
     flex: 1,
-    fontSize: 32,
-    textAlign: 'center',
-    marginLeft: -25,
+    fontSize: 22,
     fontFamily: 'Cirka-Variable',
-    color: '',
+    // fontFamily: 'Gilroy-Regular',
+    textAlign: 'center',
+    color: '#000000',
   },
   bottomView: {
+    // backgroundColor: '#fff',
     opacity: 0.95,
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     paddingTop: 10,
     paddingBottom: 40,
     paddingHorizontal: 10,
     alignItems: 'center',
   },
   loginText: {
-    fontSize: 38,
-    marginTop: 12,
-    marginBottom: 4,
+    fontSize: 34,
+    // fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
+    // marginTop: 12,
+    // marginBottom: 4,
     color: '#79443B',
     textAlign: 'center',
-    fontFamily: 'Cirka-Variable',
   },
   loginText1: {
-    fontSize: 28,
-    marginTop: 12,
+    fontSize: 24,
+    // fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Cirka-Variable',
+    // marginTop: 12,
     marginBottom: 4,
     color: '#79443B',
     textAlign: 'center',
-    fontFamily: 'Cirka-Variable',
   },
   inputView: {
-    height: 50,
+    // height: 50,
+    padding: 0,
     backgroundColor: '#f1f3f6',
     marginTop: 10,
     marginBottom: 10,
@@ -68,7 +80,7 @@ export default StyleSheet.create({
   loginButtonText: {
     color: '#fff',
     alignSelf: 'center',
-    fontSize: 30,
+    fontSize: 16,
     fontFamily: 'Gilroy-Regular',
   },
 });

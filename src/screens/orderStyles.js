@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -6,10 +6,10 @@ export default StyleSheet.create({
   },
   list: {
     paddingHorizontal: 17,
-    backgroundColor: '#E6E6E6',
+    backgroundColor: '#e1d2c4',
   },
   separator: {
-    marginTop: 10,
+    marginVertical: 5,
   },
   /******** card **************/
   card: {
@@ -19,13 +19,11 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 4,
-    marginVertical: 8,
+    marginVertical: 4,
     backgroundColor: 'white',
     flexDirection: 'row',
-    // alignContent: 'center',
     borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
+    borderColor: '#8C92AC',
     padding: 10,
   },
   cardHeader: {
@@ -38,20 +36,19 @@ export default StyleSheet.create({
     resizeMode: 'contain',
     borderWidth: 1,
     borderColor: '#000000',
-    borderRadius: 5,
   },
   /******** card components **************/
   title: {
     fontSize: 18,
     flex: 1,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     textTransform: 'capitalize',
   },
   order: {
     fontSize: 13,
     marginTop: 5,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
     // color: '#808080',
   },
@@ -81,23 +78,7 @@ export default StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    fontWeight: 'bold',
-    // marginBottom: 5,
-  },
-  button1: {
-    backgroundColor: '#454545',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    // margin: 10,
-    width: 200,
-  },
-  buttonText1: {
-    color: '#fff',
-    alignSelf: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Cirka-Variable',
   },
   /************ modals ************/
   popupOverlay: {
@@ -107,12 +88,9 @@ export default StyleSheet.create({
   },
   popup: {
     backgroundColor: 'white',
-    // marginTop: 0,
     marginHorizontal: 20,
-    borderRadius: 7,
   },
   popupContent: {
-    //alignItems: 'center',
     margin: 5,
     height: 'auto',
   },
@@ -123,45 +101,47 @@ export default StyleSheet.create({
   titleModal: {
     fontSize: 18,
     color: '#000',
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     alignSelf: 'center',
   },
   voiceButton: {
     marginLeft: 10,
     fontSize: 24,
+    fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
     padding: 3.5,
-    borderRadius: 5,
     color: '#000000',
   },
   orderModal: {
     fontSize: 16,
     marginTop: 5,
-    fontWeight: 'bold',
+    fontFamily: 'Gilroy-Regular',
     color: '#000',
-    // backgroundColor: '#555',
   },
   input: {
-    margin: 1,
     borderWidth: 1,
-    paddingHorizontal: 5,
-    padding: 0,
-    borderRadius: 5,
+    margin: 5,
+    flex: 1,
+    // width: 137,
+    // height: 36,
+    alignContent: 'center',
+    justifyContent: 'center',
     color: '#000000',
-    borderColor: '#000',
+    // marginHorizontal: 10,
+    fontFamily: 'Gilroy-Regular',
   },
   sbContainer: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginHorizontal: 10,
   },
   buttonText: {
-    fontWeight: 'bold',
-    color: '#000',
+    fontFamily: 'Gilroy-Regular',
+    color: '#fff',
   },
   button: {
-    backgroundColor: '#454545',
-    borderRadius: 5,
+    backgroundColor: '#000',
     paddingVertical: 5,
     paddingHorizontal: 15,
   },
@@ -170,5 +150,50 @@ export default StyleSheet.create({
     height: 20,
     marginRight: 2,
     borderRadius: 10,
+  },
+  pikerLabel: {
+    color: '#000', 
+    backgroundColor: '#fff',
+    fontFamily: 'Gilroy-Regular',
+  },
+  button1: {
+    borderWidth: 1,
+    borderColor: '#000',
+    position: 'absolute',
+    padding: 10,
+    bottom: 10,
+    elevation: 5,
+    alignSelf: 'center',
+    backgroundColor: '#000',
+  },
+  buttonText1: {
+    color: '#fff',
+    alignSelf: 'center',
+    fontSize: 20,
+    fontFamily: 'Gilroy-Regular',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginTop: 22,
+  },
+  modalView: {
+    width: '100%',
+    marginVertical: 20,
+    backgroundColor: 'white',
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

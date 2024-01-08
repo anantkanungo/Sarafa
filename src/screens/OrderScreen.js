@@ -1,41 +1,39 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
+import axios from 'axios';
+// import {useNavigation} from '@react-navigation/native';
 
-const OrderScreen = ({customerLogout, navigation}) => {
-  const data = [
-    {
-      id: 1,
-      title: 'Shop ID_1',
-    },
+const OrderScreen = ({customerLogout, details, navigation}) => {
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState('');
 
-    {
-      id: 2,
-      title: 'Shop ID_2',
-    },
-    {
-      id: 3,
-      title: 'Shop ID_3',
-    },
-    {
-      id: 4,
-      title: 'Shop ID_4',
-    },
-    {
-      id: 5,
-      title: 'Shop ID_5',
-    },
-  ];
+  const fetchOrders = async () => {
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        'http://139.59.58.151:8000/workshop/task',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-  const [results, setResults] = useState(data);
+      const userData = response.data.data[0];
+      setAddress(userData.address);
+      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -43,8 +41,8 @@ const OrderScreen = ({customerLogout, navigation}) => {
       onPress={() => navigation.navigate('ShopOrder')}>
       <View style={styles.cardHighlight} />
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.Text}</Text>
+        <Text style={styles.title}>{item.category}</Text>
+        <Text style={styles.description}>{item.orderId}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -53,14 +51,6 @@ const OrderScreen = ({customerLogout, navigation}) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
-        {/* <TouchableOpacity onPress={() => navigation.navigate(Your_Order)}>
-          <Image
-            style={styles.tinyLogo}
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3114/3114883.png',
-            }} */}
-        {/* /> */}
-        {/* </TouchableOpacity> */}
         <View
           style={{
             flexDirection: 'row',
@@ -73,9 +63,8 @@ const OrderScreen = ({customerLogout, navigation}) => {
 
       {/* Info Container */}
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Full_Name</Text>
-        <Text style={styles.infoText2}>Ph:+91912365498</Text>
-        <Text style={styles.infoText}>Distributor_ID</Text>
+        <Text style={styles.infoText}>{details?.username}</Text>
+        <Text style={styles.infoText}>Address: {address}</Text>
       </View>
 
       {/* Title Container */}
@@ -84,17 +73,22 @@ const OrderScreen = ({customerLogout, navigation}) => {
       </View>
 
       {/* FlatList */}
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={results}
-        keyExtractor={item => item.id.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={orders}
+          keyExtractor={item => item._id}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
+
 const mapStateToProps = state => {
   return {
     loading: state.loading,
@@ -123,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginLeft: 15,
+    marginLeft: 10,
   },
   infoContainer: {
     backgroundColor: 'black',
@@ -137,56 +131,61 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 8,
   },
-  infoText2: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontFamily: 'Gilroy-Regular',
-    color: 'white',
-    marginTop: 8,
-  },
   titleContainer: {
     marginTop: 5,
     alignItems: 'center',
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 25,
     fontFamily: 'Gilroy-Regular',
+    padding: 10,
     color: 'black',
-    marginTop: 5,
-    marginBottom: 5,
   },
   list: {
     flex: 1,
   },
-  listContainer: {
-    marginHorizontal: 15,
-  },
+  listContainer: {},
   separator: {
     // height: 1,
     // backgroundColor: 'black',
     // marginVertical: 10,
   },
   cardContainer: {
-    margin: 6,
+    marginHorizontal: 15,
     borderColor: 'black',
-    borderWidth: 0.25,
+    borderWidth: 0.5,
     alignItems: 'center',
     flexDirection: 'row',
+    marginBottom: 15,
+  },
+  cardHighlight: {
+    backgroundColor: '#ACE1AF',
+    position: 'absolute',
+    height: '100%',
+    width: 180,
+    left: 0,
   },
   cardContent: {
-    marginLeft: 10,
+    marginLeft: 15,
   },
   title: {
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     color: '#000',
-    marginTop: 2,
+    marginTop: 4,
+    textTransform: 'capitalize',
+  },
+  description: {
+    fontSize: 15,
+    fontFamily: 'Gilroy-Regular',
+    color: 'grey',
+    marginTop: 5,
   },
   logoutButtonText: {
     color: 'black',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    marginBottom: 10,
     marginRight: 15,
+    padding: 5,
   },
 });
