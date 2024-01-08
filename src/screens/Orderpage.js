@@ -30,9 +30,11 @@ const OrderPage = ({details, route, navigation}) => {
       // Update the statusIs field to "completed"
       const updatedTask = {...selectedTask, statusIs: 'completed'};
 
+      const id = selectedTask._id;
+      console.log(id);
       // Make the API call to update the task
       const response = await axios.put(
-        'http://139.59.58.151:8000/update/task',
+        `http://139.59.58.151:8000/update/task/${id}`,
         updatedTask,
         {
           headers: {
@@ -44,7 +46,7 @@ const OrderPage = ({details, route, navigation}) => {
       // Check the response status
       if (response.status === 200) {
         Alert.alert('Your task is complete');
-        // You may want to update your local state or Redux store with the updated task information here
+        navigation.goBack();
       } else {
         Alert.alert('Failed to update task. Please try again.');
       }

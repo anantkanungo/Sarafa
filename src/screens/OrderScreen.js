@@ -33,7 +33,7 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [address, orders]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
