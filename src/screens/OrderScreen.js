@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Modal,
   ScrollView,
-  Button,
   Pressable,
 } from 'react-native';
 import styles from './orderStyles';
@@ -16,7 +15,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import {Picker} from '@react-native-picker/picker';
 import close from '../assets/icons8-close-window-50.png';
 import {RadioButton} from 'react-native-paper';
 
@@ -52,7 +50,6 @@ const OrderScreen = ({navigation}) => {
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [statusInput, setStatusInput] = useState('');
-  const [refreshStatus, setRefreshStatus] = useState(true);
   const [clearFilterStatus, setClearFilterStatus] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
@@ -63,8 +60,8 @@ const OrderScreen = ({navigation}) => {
     const filteredOptions = orders.filter(item => item.statusIs === statusIs);
     console.log('Filtered options:', filteredOptions);
 
-    setOrders(filteredOptions);
     setAutoRefresh(false); // Disable auto-refresh
+    setOrders(filteredOptions);
   };
 
   const clearFilter = () => {
@@ -84,14 +81,15 @@ const OrderScreen = ({navigation}) => {
   const renderStatusFilter = () => (
     <RadioButton.Group
       onValueChange={newValue => {
-        setStatusInput(newValue);
         setAutoRefresh(true); // Enable auto-refresh when the picker value changes
+        setStatusInput(newValue);
       }}
       value={statusInput}>
       <RadioButton.Item label="All" value="all" />
       <RadioButton.Item label="🔵 Pending" value="pending" />
       <RadioButton.Item label="🟡 Processing" value="processing" />
       <RadioButton.Item label="🟢 Completed" value="completed" />
+      <RadioButton.Item label="🟠 Collect" value="collect" />
       <RadioButton.Item label="🔴 Rejected" value="rejected" />
     </RadioButton.Group>
   );
@@ -102,19 +100,16 @@ const OrderScreen = ({navigation}) => {
         const data = await fetchOrders();
         setOrders(data);
         setIsLoading(false);
+        // After the initial data load, enable auto-refresh
+        setAutoRefresh(true);
       } catch (error) {
         console.error(error);
       }
     };
-
-    const intervalId = setInterval(() => {
-      if (autoRefresh) {
-        fetchData();
-      }
-    }, 500); // Adjust the interval time as needed
-
-    return () => clearInterval(intervalId);
-  }, [autoRefresh, refreshStatus]);
+    if (autoRefresh) {
+      fetchData();
+    }
+  }, [autoRefresh]);
 
   const handleCardPress = order => {
     setSelectedOrder(order);
@@ -213,10 +208,12 @@ const OrderScreen = ({navigation}) => {
                           backgroundColor:
                             item.statusIs === 'pending'
                               ? '#aecbfa'
-                              : item.statusIs === 'proccesing'
+                              : item.statusIs === 'processing'
                               ? '#FFBF00'
                               : item.statusIs === 'completed'
                               ? '#ccff90'
+                              : item.statusIs === 'collect'
+                              ? '#FF4F00'
                               : item.statusIs === 'rejected'
                               ? '#f28b82'
                               : '#ffffff',

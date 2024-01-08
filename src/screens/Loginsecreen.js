@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import styles from './loginStyles';
 import {connect} from 'react-redux';
@@ -94,14 +95,19 @@ const LoginScreen = ({getCustomerDetails, props, navigation}) => {
   }, []); // Empty dependency array ensures useEffect runs only once after the initial render
 
   const handleAddDetail = () => {
-    if (password.length < 4) {
-      alert('Password must be at least 5 characters long');
+    if (password.length < 3) {
+      Alert.alert(
+        'Login Failed',
+        'Enter valid User Id & Password, please retry',
+      );
+      // setUserId('');
+      // setPassword('');
       return;
     }
 
     getCustomerDetails(userId, password);
-    setUserId('');
-    setPassword('');
+    // setUserId('');
+    // setPassword('');
     // navigation.navigate('BottomTab'); // Navigate to the home screen
   };
 

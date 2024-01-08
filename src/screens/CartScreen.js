@@ -47,14 +47,51 @@ const CartScreen = ({navigation}) => {
   };
 
   // Remove item from cart
+  // const handleRemoveFromCart = item => {
+  //   // console.warn(item);
+  //   dispatch(removeFromCart(item._id));
+  // };
+  // Remove item from cart
   const handleRemoveFromCart = item => {
-    // console.warn(item);
-    dispatch(removeFromCart(item._id));
+    Alert.alert(
+      'Remove Item',
+      `Are you sure you want to remove ${item.category} from your cart?`,
+      [
+        {
+          text: 'Remove',
+          onPress: () => {
+            dispatch(removeFromCart(item._id));
+            // Display a success alert
+            Alert.alert(
+              'Item Removed',
+              `${item.category} has been removed from your cart.`,
+            );
+          },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   useEffect(() => {
     setCartItems(cartData);
   }, [cartData]);
+
+  const submitAlert = () => {
+    Alert.alert(
+      'Place Order',
+      'Are you sure you want to place all this orders?',
+      [
+        {text: 'Place Order', onPress: handlePlaceOrder},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      {cancelable: true},
+    );
+  };
 
   const handlePlaceOrder = async () => {
     console.warn('Place Order: ', cartItems);
@@ -121,9 +158,9 @@ const CartScreen = ({navigation}) => {
                   style={styles.voiceButton}>
                   <Image
                     source={{
-                      uri: 'https://img.icons8.com/material-outlined/24/trash--v1.png',
+                      uri: 'https://img.icons8.com/material-outlined/trash--v1.png',
                     }}
-                    style={{width: 25, height: 25, tintColor: '#000'}}
+                    style={{width: 18, height: 18, tintColor: '#000'}}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -153,7 +190,7 @@ const CartScreen = ({navigation}) => {
           {/* Place Order button */}
           <TouchableOpacity
             style={styles.button1}
-            onPress={() => handlePlaceOrder()}>
+            onPress={() => submitAlert()}>
             <Text style={styles.buttonText1}>Place Order</Text>
           </TouchableOpacity>
         </>

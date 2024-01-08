@@ -33,6 +33,13 @@ const customerLogin_Error = err => {
   };
 };
 
+const clearLoginState = () => {
+  return {
+    type: authToken,
+    payload: null,
+  };
+};
+
 export const customerLogin = (userId, password) => {
   return function (dispatch) {
     dispatch(customerLogin_Request());
@@ -67,27 +74,27 @@ export const customerLogin = (userId, password) => {
           } else {
             // Handle the case where the role is not customer
             Alert.alert('Login Failed', 'Invalid role, please retry');
+            dispatch(clearLoginState());
           }
         } else {
           Alert.alert(
             'Login Failed',
             'Enter valid User Id & Password, please retry',
           );
+          dispatch(clearLoginState());
         }
       })
       .catch(err => {
         console.log(err);
         dispatch(customerLogin_Error(err));
         Alert.alert('Login Failed', 'Network error Please retry');
+        dispatch(clearLoginState());
       });
   };
 };
 
 export const customerLogout = () => dispatch => {
-  dispatch({
-    type: authToken,
-    payload: null,
-  });
+  dispatch(clearLoginState());
 
   AsyncStorage.removeItem('@AuthToken');
 };
