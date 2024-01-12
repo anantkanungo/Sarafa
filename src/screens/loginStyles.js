@@ -25,8 +25,7 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 22,
-    fontFamily: 'Cirka-Variable',
-    // fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
     color: '#000000',
   },
@@ -46,8 +45,7 @@ export default StyleSheet.create({
   },
   loginText: {
     fontSize: 34,
-    // fontFamily: 'Gilroy-Regular',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
     // marginTop: 12,
     // marginBottom: 4,
     color: '#79443B',
@@ -55,8 +53,7 @@ export default StyleSheet.create({
   },
   loginText1: {
     fontSize: 24,
-    // fontFamily: 'Gilroy-Regular',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
     // marginTop: 12,
     marginBottom: 4,
     color: '#79443B',
