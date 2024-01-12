@@ -9,29 +9,32 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import {connect} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 
-const fetchCatalog = async () => {
-  try {
-    const response = await axios.get(
-      'http://139.59.58.151:8000/getallcatalog/category',
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-      },
-    );
-    // console.log(response);
-    // console.log(response.data.data);
-    return response.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const Catalogs = ({navigation}) => {
+const Catalogs = ({details, navigation}) => {
   const [catalog, setCatalog] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const fetchCatalog = async () => {
+    try {
+      const token = details?.token;
+
+      const response = await axios.get(
+        'http://139.59.58.151:8000/getallcatalog/category',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      // console.log(response);
+      // console.log(response.data.data);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +61,7 @@ const Catalogs = ({navigation}) => {
     <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
-      ) : catalog.length > 0 ? (
+      ) : catalog && catalog.length > 0 ? (
         <>
           <FlatList
             style={styles.list}
@@ -113,7 +116,15 @@ const Catalogs = ({navigation}) => {
   );
 };
 
-export default Catalogs;
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
+export default connect(mapStateToProps)(Catalogs);
 
 const styles = StyleSheet.create({
   container: {

@@ -21,7 +21,7 @@ export default StyleSheet.create({
     textTransform: 'capitalize',
     fontSize: 20,
     color: '#000000',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
   },
   button1: {
     backgroundColor: '#454545',

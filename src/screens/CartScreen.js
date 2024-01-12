@@ -12,7 +12,10 @@ import {
 } from 'react-native';
 import styles from './cartStyles';
 import {useSelector, useDispatch} from 'react-redux';
-import {removeFromCart} from '../reduxThunk/action/orderAction';
+import {
+  removeFromCart,
+  removeAllItemsFromCart,
+} from '../reduxThunk/action/orderAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -119,6 +122,8 @@ const CartScreen = ({navigation}) => {
           // console.log('Response status:', response.status);
           console.log('Response data:', response.data);
           Alert.alert('Your order is Successful.');
+          setCartItems([]);
+          dispatch(removeAllItemsFromCart());
         })
         .catch(error => {
           console.error('Failed to place order. Error message:', error.message);

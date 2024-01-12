@@ -26,10 +26,8 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    // fontWeight: 'bold',
     marginBottom: 6,
     fontFamily: 'Gilroy-Regular',
-    // fontFamily: 'Gilroy-RegularItalic'
   },
 });
 

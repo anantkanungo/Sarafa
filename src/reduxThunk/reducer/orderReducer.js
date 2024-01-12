@@ -7,9 +7,11 @@ export const orderReducer = (state = initialState, action) => {
       return [...state, action.payload];
     case remove_from_cart:
       let newOrder = state.filter(userSelected => {
-        return userSelected._id != action.payload;
+        return userSelected._id !== action.payload;
       });
       return [...newOrder];
+    case 'REMOVE_ALL_ITEMS_FROM_CART':
+      return [];
     default:
       return state;
   }

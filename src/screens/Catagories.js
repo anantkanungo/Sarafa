@@ -10,6 +10,7 @@ import {
   LayoutAnimation,
   TextInput,
 } from 'react-native';
+import {connect} from 'react-redux';
 import styles from './CatagorieStyles';
 import Check from '../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -26,7 +27,7 @@ import {useRoute} from '@react-navigation/native';
 import Slider from 'react-native-slider';
 import FastImage from 'react-native-fast-image';
 
-const Catagories = ({navigation}) => {
+const Catagories = ({details, navigation}) => {
   const route = useRoute();
   const {category} = route.params;
   // console.log('categry', category);
@@ -36,17 +37,24 @@ const Catagories = ({navigation}) => {
 
   useEffect(() => {
     const fetchCatalog = async () => {
-      axios.get('http://139.59.58.151:8000/getallcatalog').then(res => {
-        // console.log(res);
+      const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTk3ZDNlMDM2NjA0ZjUxMTE3MWQ0MjIiLCJ1bmFtZSI6IlJhamt1bWFyIiwiaWF0IjoxNzA0Nzk5MTI4LCJleHAiOjE3MDUxNTkxMjh9.pjGYlGOzYQEgxKqVo7_YuJorpUcqGxNDMC1nsWpabM0';
 
-        const result = res.data.data.filter((items, index) => {
-          return items.category === category;
+      axios
+        .get('http://139.59.58.151:8000/getallcatalog', {
+          headers: {Authorization: `Bearer ${token}`},
+        })
+        .then(res => {
+          // console.log(res);
+
+          const result = res.data.data.filter((items, index) => {
+            return items.category === category;
+          });
+          // console.log('result', result);
+          if (result) {
+            setCategory(result);
+          }
         });
-        // console.log('result', result);
-        if (result) {
-          setCategory(result);
-        }
-      });
     };
     // fetchCatalog();
     if (refreshCategorys) {
@@ -470,4 +478,12 @@ const Catagories = ({navigation}) => {
   );
 };
 
-export default Catagories;
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
+export default connect(mapStateToProps)(Catagories);

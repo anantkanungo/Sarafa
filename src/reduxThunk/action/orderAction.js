@@ -13,3 +13,7 @@ export const removeFromCart = userSelected => {
     payload: userSelected,
   };
 };
+
+export const removeAllItemsFromCart = () => ({
+  type: 'REMOVE_ALL_ITEMS_FROM_CART',
+});

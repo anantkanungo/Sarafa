@@ -498,7 +498,7 @@ const PlaceOrder = ({navigation}) => {
         {/* Tunch */}
         <View style={Styles.rowContainer}>
           <View style={Styles.tunchContainer}>
-            <Text style={Styles.tunchView1}>टंच :</Text>
+            <Text style={Styles.tunchView1}>Tunch:</Text>
             <View style={Styles.tunchView2}>
               <Picker
                 selectedValue={tunch}
@@ -546,7 +546,7 @@ const PlaceOrder = ({navigation}) => {
             }}>
             <View style={Styles.centeredView}>
               <View style={Styles.modalView}>
-                <Text style={Styles.modalText}>Enter टंच :</Text>
+                <Text style={Styles.modalText}>Enter Tunch :</Text>
                 <View style={{flexDirection: 'row'}}>
                   <TextInput
                     style={Styles.input1}

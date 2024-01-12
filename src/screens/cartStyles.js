@@ -98,7 +98,7 @@ export default StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
   },
   button1: {
     borderWidth: 1,

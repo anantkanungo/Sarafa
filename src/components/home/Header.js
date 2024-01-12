@@ -24,7 +24,7 @@ const Header = ({customerLogout, details}) => {
               fontSize: 18,
               color: 'white',
               marginBottom: 10,
-              fontFamily: 'Cirka-Variable',
+              fontFamily: 'Gilroy-Regular',
             }}>
             Hello,
           </Text>
@@ -40,7 +40,7 @@ const Header = ({customerLogout, details}) => {
             style={{
               fontSize: 24,
               color: 'white',
-              fontFamily: 'Cirka-Variable',
+              fontFamily: 'Gilroy-Regular',
             }}>
             {details?.username}
           </Text>
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: '#fff',
     fontSize: 11,
-    // fontWeight: 'bold',
     fontFamily: 'Gilroy-Regular',
   },
 });

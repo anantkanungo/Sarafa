@@ -28,7 +28,7 @@ export default StyleSheet.create({
   headerText: {
     fontSize: 24,
     color: '#000000',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
   },
   // UploadImage
   contain: {
@@ -81,7 +81,7 @@ export default StyleSheet.create({
   },
   tunchView1: {
     fontSize: 28,
-    marginHorizontal: 14,
+    marginHorizontal: 5,
     color: '#000000',
     fontFamily: 'Gilroy-Regular',
   },
@@ -193,7 +193,7 @@ export default StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
     fontSize: 22,
     color: '#000',
   },

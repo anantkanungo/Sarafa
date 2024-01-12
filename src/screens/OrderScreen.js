@@ -310,7 +310,7 @@ const OrderScreen = ({navigation}) => {
                     onPress={closeModal}>
                     <Image
                       source={close}
-                      style={{height: 40, width: 40, color: '#000'}}
+                      style={{height: 40, width: 40, tintColor: '#000'}}
                     />
                   </TouchableOpacity>
                 </View>
