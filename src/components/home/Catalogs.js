@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,10 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
-const Catalogs = ({details, navigation}) => {
+const Catalogs = ({ details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [id, setId] = useState(null);
 
@@ -44,32 +44,32 @@ const Catalogs = ({details, navigation}) => {
       title: 'All Orders / सभी ऑर्डर',
       componentName: 'Your_Order',
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrRkFIuxRyQ4VSBoaEAGFn8_w1YBOvXVTb4qQZCxZ7oc42va5iWStOIEWQsMQeW2TFZSw&usqp=CAU',
+        'https://cdn-icons-png.flaticon.com/128/9588/9588518.png',
     },
     {
       id: 2,
       title: 'Karigar Details / कारीगर जानकारी',
       componentName: 'KarigarInfo',
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkHDlRVsz7KgsE7gDAmhRvCP4Ww2TfcS9Q845TkhQBtp-TXQpphcyfkTPXS9hk5CWloUs&usqp=CAU',
+        "https://cdn-icons-png.flaticon.com/128/5502/5502081.png"
     },
     {
       id: 3,
       title: 'Task Assign / कार्य नियत',
       componentName: 'TaskAssign',
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkHDlRVsz7KgsE7gDAmhRvCP4Ww2TfcS9Q845TkhQBtp-TXQpphcyfkTPXS9hk5CWloUs&usqp=CAU',
+        "https://cdn-icons-png.flaticon.com/128/5847/5847233.png",
     },
   ];
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() =>
-        navigation.navigate(`${item.componentName}`, {orders, id})
+        navigation.navigate(`${item.componentName}`, { orders, id })
       }>
       <View style={styles.imageContainer}>
-        <Image style={styles.cardImage} source={{uri: item.image}} />
+        <Image style={styles.cardImage} source={{ uri: item.image }} />
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.title}</Text>
@@ -133,19 +133,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardImage: {
-    flex: 1,
+    // flex: 1,
     height: 150,
-    width: '100%',
+    width: 150,
   },
   imageContainer: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
+
     },
     shadowOpacity: 0.32,
     shadowRadius: 5.46,
+
+    alignSelf: 'center',
     elevation: 9,
+    paddingVertical: 5,
   },
   title: {
     fontSize: 18,

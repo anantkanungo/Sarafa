@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet } from 'react-native';
 import {
   Text,
   View,
@@ -8,15 +8,15 @@ import {
   Image,
   Button,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
-import {connect} from 'react-redux';
+import { Picker } from '@react-native-picker/picker';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
-const TaskAssign = ({route, details, navigation}) => {
+const TaskAssign = ({ route, details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [orderId, setOrderId] = useState('');
   const [karigars, setKarigars] = useState([]);
-  const {id} = route.params || {};
+  const { id } = route.params || {};
   const [karigerId, setKarigerId] = useState('');
 
   const fetchOrders = async () => {
@@ -94,7 +94,7 @@ const TaskAssign = ({route, details, navigation}) => {
 
       // Check the response status
       if (response.status === 200) {
-        Alert.alert('Your task is complete');
+        Alert.alert('Your task has been assigned');
         navigation.goBack();
       } else {
         Alert.alert('Failed to update task. Please try again.');
@@ -118,7 +118,7 @@ const TaskAssign = ({route, details, navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Text style={styles.headerText}>Workshop_ID_Task_Assign</Text>
         </View>
         <View>
@@ -154,14 +154,14 @@ const TaskAssign = ({route, details, navigation}) => {
               selectedValue={karigerId}
               onValueChange={(itemValue, itemIndex) => setKarigerId(itemValue)}>
               <Picker.Item
-                style={{color: '#000'}}
+                style={{ color: '#000' }}
                 key="default"
                 label="Select Kariger"
                 value=""
               />
               {karigars.map(kariger => (
                 <Picker.Item
-                  style={{color: '#000'}}
+                  style={{ color: '#000' }}
                   key={kariger._id}
                   label={kariger.name}
                   value={kariger._id}
