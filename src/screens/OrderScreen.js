@@ -3,18 +3,17 @@ import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
 import axios from 'axios';
-// import {useNavigation} from '@react-navigation/native';
 
 const OrderScreen = ({customerLogout, details, navigation}) => {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState('');
+  const [uid, setUid] = useState(null);
 
   const fetchOrders = async () => {
     try {
       const token = details?.token;
       const response = await axios.get(
-        'http://139.59.58.151:8000/workshop/task',
+        'http://139.59.58.151:8000/distributor/shops',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,8 +23,13 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
 
       const userData = response.data.data[0];
       setAddress(userData.address);
-      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
-      setIsLoading(false);
+      const data = response.data.data;
+      setOrders(data);
+      setUid(userData.uid);
+      if (!response.data || !response.data.data || !response.data.data.length) {
+        console.log('Invalid response data');
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -33,16 +37,18 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+    // console.log(orders);
+    // console.log(uid);
+  }, [orders, uid]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate('ShopOrder')}>
+      onPress={() => navigation.navigate('ShopOrder', {uid})}>
       <View style={styles.cardHighlight} />
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.category}</Text>
-        <Text style={styles.description}>{item.orderId}</Text>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.description}>{item.address}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -73,18 +79,14 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
       </View>
 
       {/* FlatList */}
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          style={styles.list}
-          contentContainerStyle={styles.listContainer}
-          data={orders}
-          keyExtractor={item => item._id}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={renderItem}
-        />
-      )}
+      <FlatList
+        style={styles.list}
+        contentContainerStyle={styles.listContainer}
+        data={orders}
+        keyExtractor={item => item._id}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        renderItem={renderItem}
+      />
     </View>
   );
 };

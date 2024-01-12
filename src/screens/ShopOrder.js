@@ -18,82 +18,43 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import close from '../assets/icons8-close-window-50.png';
 import {RadioButton} from 'react-native-paper';
 
-const fetchOrders = async () => {
-  try {
-    const token = await AsyncStorage.getItem('@AuthToken');
-    const response = await axios.get(
-      'http://139.59.58.151:8000/workshop/task',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    // console.log(response);
-    // console.log(response.data.data);
-    return response.data.data[0];
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const OrderScreen = ({navigation}) => {
-  const [orders, setOrders] = useState([]);
+const ShopOrder = ({route, navigation}) => {
+  const [order, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [audioPlayer, setAudioPlayer] = useState();
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [statusInput, setStatusInput] = useState('');
-  const [clearFilterStatus, setClearFilterStatus] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const {uid} = route.params || {};
 
-  // Function to filter options by status
-  const filterOptionsByStatus = statusIs => {
-    console.log('Filtering by status:', statusIs);
-
-    const filteredOptions = orders.filter(item => item.statusIs === statusIs);
-    console.log('Filtered options:', filteredOptions);
-
-    setAutoRefresh(false); // Disable auto-refresh
-    setOrders(filteredOptions);
-  };
-
-  const clearFilter = () => {
-    setAutoRefresh(true); // Enable auto-refresh
-  };
-
-  const applyFilter = () => {
-    if (statusInput !== 'all') {
-      filterOptionsByStatus(statusInput);
-    } else {
-      clearFilter();
+  const fetchOrders = async () => {
+    try {
+      const token = await AsyncStorage.getItem('@AuthToken');
+      const response = await axios.get(
+        `http://139.59.58.151:8000/allorders/${uid}`,
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      // console.log(response);
+      // console.log(response.data.data);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
     }
-    setClearFilterStatus(!clearFilterStatus);
-    setAutoRefresh(false); // Disable auto-refresh when the filter button is clicked
   };
-
-  const renderStatusFilter = () => (
-    <RadioButton.Group
-      onValueChange={newValue => {
-        setAutoRefresh(true); // Enable auto-refresh when the picker value changes
-        setStatusInput(newValue);
-      }}
-      value={statusInput}>
-      <RadioButton.Item label="All" value="all" />
-      <RadioButton.Item label="🔵 Pending" value="pending" />
-      <RadioButton.Item label="🟡 Proccesing" value="proccesing" />
-      <RadioButton.Item label="🟢 Completed" value="completed" />
-      <RadioButton.Item label="🔴 Rejected" value="rejected" />
-    </RadioButton.Group>
-  );
 
   useEffect(() => {
+    // console.log(uid);
     const fetchData = async () => {
       try {
         const data = await fetchOrders();
-        setOrders(data.task || []);
+        setOrders(data);
         setIsLoading(false);
         // After the initial data load, enable auto-refresh
         setAutoRefresh(true);
@@ -163,19 +124,19 @@ const OrderScreen = ({navigation}) => {
       </View>
       {isLoading ? (
         <ActivityIndicator visible={isLoading} />
-      ) : orders.length > 0 ? (
+      ) : order.length > 0 ? (
         <>
           <FlatList
             style={styles.list}
-            data={orders}
+            data={order}
             keyExtractor={item => {
               return item._id.toString();
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
             }}
-            renderItem={orders => {
-              const item = orders.item;
+            renderItem={order => {
+              const item = order.item;
               return (
                 <TouchableOpacity onPress={() => handleCardPress(item)}>
                   <View style={styles.card} key={item._id}>
@@ -203,10 +164,12 @@ const OrderScreen = ({navigation}) => {
                           backgroundColor:
                             item.statusIs === 'pending'
                               ? '#aecbfa'
-                              : item.statusIs === 'proccesing'
+                              : item.statusIs === 'processing'
                               ? '#FFBF00'
                               : item.statusIs === 'completed'
                               ? '#ccff90'
+                              : item.statusIs === 'collect'
+                              ? '#FF4F00'
                               : item.statusIs === 'rejected'
                               ? '#f28b82'
                               : '#ffffff',
@@ -219,11 +182,6 @@ const OrderScreen = ({navigation}) => {
               );
             }}
           />
-          {/* <TouchableOpacity
-            style={styles.button1}
-            onPress={() => setClearFilterStatus(true)}>
-            <Text style={styles.buttonText1}>Filter</Text>
-          </TouchableOpacity> */}
         </>
       ) : (
         <View style={[styles.container, {justifyContent: 'center'}]}>
@@ -242,47 +200,9 @@ const OrderScreen = ({navigation}) => {
             }}>
             Your Orders is empty!
           </Text>
-          {/* <TouchableOpacity
-            style={styles.button1}
-            onPress={() => setClearFilterStatus(true)}>
-            <Text style={styles.buttonText1}>Filter</Text>
-          </TouchableOpacity> */}
         </View>
       )}
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={clearFilterStatus}
-        onRequestClose={() => {
-          setClearFilterStatus(!clearFilterStatus);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            {/* Filter */}
-            {renderStatusFilter()}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setStatusInput('all');
-                  clearFilter();
-                  setClearFilterStatus(!clearFilterStatus);
-                }}>
-                <Text style={styles.textStyle}>Reset</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  applyFilter();
-                }}>
-                <Text style={styles.textStyle}>Apply</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
       <Modal
         animationType="fade"
         transparent={true}
@@ -405,4 +325,4 @@ const OrderScreen = ({navigation}) => {
   );
 };
 
-export default OrderScreen;
+export default ShopOrder;

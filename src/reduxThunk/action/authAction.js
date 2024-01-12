@@ -55,7 +55,7 @@ export const customerLogin = (userId, password) => {
 
         if (token && details) {
           // Check if the role is customer
-          if (response.data.role === 'workshop') {
+          if (response.data.role === 'distributor') {
             dispatch({type: authToken, payload: token});
             // Storing token to AsyncStorage
             try {
