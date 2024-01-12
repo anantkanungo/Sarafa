@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet} from 'react-native';
 import {
   Text,
   View,
@@ -9,8 +9,102 @@ import {
   Button,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
-const TaskAssign = ({navigation}) => {
+const TaskAssign = ({route, details, navigation}) => {
+  const [orders, setOrders] = useState([]);
+  const [orderId, setOrderId] = useState('');
+  const [karigars, setKarigars] = useState([]);
+  const {id} = route.params || {};
+  const [karigerId, setKarigerId] = useState('');
+
+  const fetchOrders = async () => {
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        'http://139.59.58.151:8000/workshop/task',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const userData = response.data.data[0];
+      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+    // console.log(orders);
+  }, [orders]);
+
+  const fetchKarigar = async () => {
+    // const id = '659a6b88c3cafd83cfd41cf2';
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        `http://139.59.58.151:8000/workshop/kariger/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const userData = response.data.data[0];
+      setKarigars(userData.kariger || []); // Assuming contains the array of orders
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchKarigar();
+    // console.log(karigars);
+    // console.log(id);
+  }, [karigars]);
+
+  const assignTask = async () => {
+    try {
+      const token = details?.token;
+      const orderID = orderId;
+      console.log(orderID);
+      const karigerID = karigerId;
+      console.log(karigerID);
+
+      const updatedTask = {
+        order: orderID,
+        kariger: karigerID,
+      };
+      // Make the API call to update the task
+      const response = await axios.put(
+        'http://139.59.58.151:8000/assign/task',
+        updatedTask,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      // Check the response status
+      if (response.status === 200) {
+        Alert.alert('Your task is complete');
+        navigation.goBack();
+      } else {
+        Alert.alert('Failed to update task. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating task:', error.message);
+      Alert.alert('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -28,96 +122,59 @@ const TaskAssign = ({navigation}) => {
           <Text style={styles.headerText}>Workshop_ID_Task_Assign</Text>
         </View>
         <View>
-          {/* OdersPicker */}
+          {/* Orders Picker */}
           <View style={styles.jewelryPicker}>
             <Picker
-              // selectedValue={category}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
+              selectedValue={orderId} // Set selectedValue to orderId
+              onValueChange={(itemValue, itemIndex) => setOrderId(itemValue)}>
+              {/* Display dynamically generated Picker.Items based on orders */}
               <Picker.Item
                 style={{
                   color: '#000',
                 }}
-                label="Select Order"
-                value="ring"
+                key="default"
+                label="Select Order Id"
+                value=""
               />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Order_ID"
-                value="earring"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Order_ID_2"
-                value="bangle"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Order_ID_3"
-                value="chain"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Order_ID_4"
-                value="necklace"
-              />
+              {orders.map(order => (
+                <Picker.Item
+                  style={{
+                    color: '#000',
+                  }}
+                  key={order._id}
+                  label={order.orderId}
+                  value={order._id}
+                />
+              ))}
             </Picker>
           </View>
-          {/* WorkshopPicker */}
+          {/* Kariger Picker */}
           <View style={styles.jewelryPicker}>
             <Picker
-              // selectedValue={category}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
+              selectedValue={karigerId}
+              onValueChange={(itemValue, itemIndex) => setKarigerId(itemValue)}>
               <Picker.Item
                 style={{color: '#000'}}
-                label="Workshop_ID_1"
-                value="ring"
+                key="default"
+                label="Select Kariger"
+                value=""
               />
-              {/* <Picker.Item
-                style={{ color: '#000' }}
-                label="Workshop_ID_1"
-                value="earring"
-              /> */}
-            </Picker>
-          </View>
-          {/* KarigarPicker */}
-          <View style={styles.jewelryPicker}>
-            <Picker
-              // selectedValue={category}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Select Karigar"
-                value="ring"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Karigar_ID_1"
-                value="earring"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Karigar_ID_2"
-                value="bangle"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Karigar_ID_3"
-                value="chain"
-              />
-              <Picker.Item
-                style={{color: '#000'}}
-                label="Karigar_ID_4"
-                value="necklace"
-              />
+              {karigars.map(kariger => (
+                <Picker.Item
+                  style={{color: '#000'}}
+                  key={kariger._id}
+                  label={kariger.name}
+                  value={kariger._id}
+                />
+              ))}
             </Picker>
           </View>
         </View>
       </View>
 
       {/* Submit button */}
-
       <View style={styles.sbContainer}>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={assignTask}>
           <Text style={styles.loginButtonText}>Assign Karigar</Text>
         </TouchableOpacity>
       </View>
@@ -132,7 +189,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default TaskAssign;
+export default connect(mapStateToProps)(TaskAssign);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

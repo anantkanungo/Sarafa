@@ -22,7 +22,7 @@ export default StyleSheet.create({
     fontSize: 32,
     textAlign: 'center',
     marginLeft: -25,
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
     color: '',
   },
   bottomView: {
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     // marginBottom: 4,
     color: '#79443B',
     textAlign: 'center',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
   },
   loginText1: {
     fontSize: 28,
@@ -50,7 +50,7 @@ export default StyleSheet.create({
     marginBottom: 15,
     color: '#79443B',
     textAlign: 'center',
-    fontFamily: 'Cirka-Variable',
+    fontFamily: 'Gilroy-Regular',
   },
   inputView: {
     height: 50,

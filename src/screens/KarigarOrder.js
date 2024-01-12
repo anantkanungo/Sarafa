@@ -1,15 +1,66 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  FlatList,
+  Text,
   Image,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
 } from 'react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 
-const KarigerOrder = ({navigation}) => {
-  const data = [];
+const KarigerOrder = ({route, navigation}) => {
+  const [audioPlayer, setAudioPlayer] = useState();
+  const [audioURL, setAudioURL] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const {selectedTask} = route.params;
+
+  // Audio Player
+  const startAudio = async () => {
+    let url = audioURL;
+
+    if (Array.isArray(url)) {
+      console.error('url is an array:', url);
+      url = url[0];
+    }
+
+    // console.log('Audio URL:', url);
+    const result = await audioPlayer.startPlayer(url);
+    setIsPlaying(true);
+    console.log(result);
+  };
+
+  const stopAudio = async () => {
+    const result = await audioPlayer.stopPlayer();
+    setIsPlaying(false);
+    console.log(result);
+  };
+
+  useEffect(() => {
+    setAudioPlayer(new AudioRecorderPlayer());
+
+    const fetchAudioURL = async () => {
+      // Assuming the audio data is stored in the selectedTask object
+      const audioData = selectedTask.audio;
+
+      if (Array.isArray(audioData) && audioData.length > 0) {
+        // If there are multiple audio files, you can choose the first one
+        const firstAudioURL = audioData[0];
+        setAudioURL(firstAudioURL);
+      }
+    };
+
+    fetchAudioURL();
+
+    return () => {
+      stopAudio();
+      if (audioPlayer) {
+        audioPlayer.destroy();
+      }
+    };
+  }, [selectedTask]);
 
   return (
     <View style={styles.container}>
@@ -24,25 +75,87 @@ const KarigerOrder = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
-      {/* Title Container */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Order Details</Text>
-      </View>
-      <View>
-        {
-          <TouchableOpacity onPress={() => navigation.navigate('ScreenZoom')}>
-            <Image
-              style={styles.productImage}
-              src="https://i.pinimg.com/originals/34/89/c5/3489c53379ede9c53be27ca67342f639.jpg"
-            />
-          </TouchableOpacity>
-        }
-      </View>
-      <View style={styles.productText}>
-        <Text style={styles.catagory1}>Catagory</Text>
-        <Text style={styles.catagory2}>Description about the jewllery...</Text>
-        <Text style={styles.catagory3}>Assigned to : Karigar_Name</Text>
-      </View>
+      <ScrollView>
+        {/* Title Container */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>Order Details</Text>
+        </View>
+        {/* <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ScreenZoom', {imageUrl: selectedTask.image[0]})
+          }>
+          <Image source={{uri: selectedTask.image[0]}} style={styles.image} />
+        </TouchableOpacity> */}
+        <FlatList
+          data={selectedTask?.image} // Assuming selectedTask.images is an array of image URIs
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ScreenZoom', {
+                  imageUrl: item,
+                })
+              }>
+              <Image style={styles.image} source={{uri: item}} />
+            </TouchableOpacity>
+          )}
+          horizontal
+        />
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={styles.title}>{selectedTask.category}</Text>
+          <View style={{flexDirection: 'row', margin: 10}}>
+            <Text style={styles.description}>Audio: </Text>
+            {Array.isArray(audioURL) && audioURL.length > 0 ? (
+              <TouchableOpacity
+                onPress={isPlaying ? stopAudio : startAudio}
+                style={styles.voiceButton}>
+                {isPlaying ? (
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/709/709714.png',
+                    }}
+                    style={styles.tinyLogo}
+                  />
+                ) : (
+                  <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/128/109/109197.png',
+                    }}
+                    style={styles.tinyLogo}
+                  />
+                )}
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.description}>No Audio Available</Text>
+            )}
+          </View>
+          <Text style={styles.description}>Size: {selectedTask.size}</Text>
+          <Text style={styles.description}>
+            Quantity: {selectedTask.quantity}
+          </Text>
+          <Text style={styles.description}>Tunch: {selectedTask.tunch}</Text>
+          <Text style={styles.description}>Weight: {selectedTask.weight}</Text>
+          <Text style={styles.description}>
+            Status: {selectedTask.statusIs}
+          </Text>
+          <Text style={styles.description}>
+            Urgent: {`${selectedTask.urgent}`}
+          </Text>
+          <Text style={styles.description}>
+            description: {selectedTask.description}
+          </Text>
+          <Text style={styles.description}>
+            Kariger: {selectedTask.kariger}
+          </Text>
+          <Text style={styles.description}>
+            Workshop: {selectedTask.workshop}
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -50,6 +163,7 @@ const KarigerOrder = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 10,
   },
   tinyLogo: {
     width: 30,
@@ -60,30 +174,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginLeft: 10,
+    // backgroundColor: '#DBD7D2',
   },
-  productImage: {
-    // flex: 1,
+  image: {
+    width: 300,
     height: 300,
-    width: '100%',
-    objectFit: 'cover',
+    marginTop: 30,
+    marginBottom: 10,
+    resizeMode: 'contain',
   },
-  catagory1: {
+  title: {
+    fontSize: 24,
+    marginBottom: 5,
+    fontFamily: 'Gilroy-Regular',
+    color: 'black',
+    textTransform: 'capitalize',
+  },
+  description: {
+    fontSize: 19,
+    color: 'black',
+    fontFamily: 'Gilroy-Regular',
+  },
+  voiceButton: {
+    marginLeft: 10,
     fontSize: 24,
     fontFamily: 'Gilroy-Regular',
-    marginTop: 8,
-    marginBottom: 4,
-    color: 'black',
-    marginLeft: 4,
-    alignItems: 'center',
-  },
-  catagory2: {
-    fontSize: 18,
-    marginTop: 8,
-    marginBottom: 4,
-    color: 'grey',
-    marginLeft: 4,
-    fontFamily: 'Gilroy-Regular',
+    borderWidth: 1,
+    padding: 3.5,
+    color: '#000000',
   },
   titleContainer: {
     marginTop: 2,
@@ -93,14 +211,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 27,
     color: '#000',
-    fontFamily: 'Gilroy-Regular',
-  },
-  catagory3: {
-    fontSize: 22,
-    marginTop: 8,
-    marginBottom: 4,
-    color: 'black',
-    marginLeft: 4,
     fontFamily: 'Gilroy-Regular',
   },
 });

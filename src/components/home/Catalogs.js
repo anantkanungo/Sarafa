@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,8 +7,37 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
-const Catalogs = ({navigation}) => {
+const Catalogs = ({details, navigation}) => {
+  const [orders, setOrders] = useState([]);
+  const [id, setId] = useState(null);
+
+  const fetchOrders = async () => {
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        'http://139.59.58.151:8000/workshop/task',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const userData = response.data.data[0];
+      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
+      setId(userData._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [orders, id]);
+
   const data = [
     {
       id: 1,
@@ -36,7 +65,9 @@ const Catalogs = ({navigation}) => {
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate(`${item.componentName}`)}>
+      onPress={() =>
+        navigation.navigate(`${item.componentName}`, {orders, id})
+      }>
       <View style={styles.imageContainer}>
         <Image style={styles.cardImage} source={{uri: item.image}} />
       </View>
@@ -64,6 +95,15 @@ const Catalogs = ({navigation}) => {
     </View>
   );
 };
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
+export default connect(mapStateToProps)(Catalogs);
 
 const styles = StyleSheet.create({
   container: {
@@ -126,5 +166,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-export default Catalogs;

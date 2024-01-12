@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,38 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
+import axios from 'axios';
 
-const KarigarInfo = ({customerLogout, navigation}) => {
+const KarigarInfo = ({route, customerLogout, details, navigation}) => {
+  const [orders, setOrders] = useState([]);
+  const {id} = route.params || {};
+
+  const fetchOrders = async () => {
+    // const id = '659a6b88c3cafd83cfd41cf2';
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        `http://139.59.58.151:8000/workshop/kariger/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const userData = response.data.data[0];
+      setOrders(userData.kariger || []); // Assuming contains the array of orders
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+    // console.log(orders);
+    // console.log(id);
+  }, [orders]);
+
   const data = [
     {
       id: 1,
@@ -54,13 +84,18 @@ const KarigarInfo = ({customerLogout, navigation}) => {
 
   const renderCategoryItem = ({item}) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Karigar_Details')}
+      onPress={() => navigation.navigate('Karigar_Details', {orders})}
       style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image style={styles.cardImage} source={{uri: item.image}} />
+        <Image
+          style={styles.cardImage}
+          source={{
+            uri: 'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
+          }}
+        />
       </View>
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -90,10 +125,10 @@ const KarigarInfo = ({customerLogout, navigation}) => {
       <FlatList
         style={styles.list}
         contentContainerStyle={styles.listContainer}
-        data={results}
         horizontal={false}
         numColumns={2}
-        keyExtractor={item => item.id.toString()}
+        data={orders}
+        keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={renderCategoryItem}
       />

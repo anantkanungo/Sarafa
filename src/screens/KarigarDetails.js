@@ -1,56 +1,63 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   FlatList,
   StyleSheet,
+  Image,
 } from 'react-native';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
-const KarigarDetails = ({navigation}) => {
-  const data = [
-    {
-      id: 1,
-      title: 'Order 1',
-      Text: 'Description about the order',
-    },
+const KarigarDetails = ({route, details, navigation}) => {
+  const [order, setOrder] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState('');
+  const {orders} = route.params || [];
+  const id = orders[0]._id;
 
-    {
-      id: 2,
-      title: 'Order 2',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 3,
-      title: 'Order 3',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 4,
-      title: 'Order 4',
-      Text: 'Description about the order(earring)',
-    },
-    {
-      id: 5,
-      title: 'Order 5',
-      Text: 'Description about the order(earring)',
-    },
-  ];
+  const fetchOrders = async () => {
+    try {
+      const token = details?.token;
+      const response = await axios.get(
+        `http://139.59.58.151:8000/kariger/alltask/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-  const [results, setResults] = useState(data);
+      const userData = response.data.data[0];
+      setAddress(userData.address);
+      setOrder(userData.task || []); // Assuming 'task' contains the array of order
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+    // console.log(id);
+  }, [address, order]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate('KarigerOrder')}>
+      onPress={() => navigateToOrderPage(item)}>
       <View style={styles.cardHighlight} />
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.Text}</Text>
+        <Text style={styles.title}>{item.category}</Text>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
     </TouchableOpacity>
   );
+
+  const navigateToOrderPage = selectedTask => {
+    navigation.navigate('KarigerOrder', {selectedTask});
+  };
 
   return (
     <View style={styles.container}>
@@ -70,8 +77,8 @@ const KarigarDetails = ({navigation}) => {
 
       {/* Info Container */}
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Karigar_Name</Text>
-        <Text style={styles.infoText}>Ph:+91912365498</Text>
+        <Text style={styles.infoText}>{details?.username}</Text>
+        <Text style={styles.infoText}>Address: {address}</Text>
       </View>
 
       {/* Title Container */}
@@ -80,17 +87,31 @@ const KarigarDetails = ({navigation}) => {
       </View>
 
       {/* FlatList */}
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContainer}
-        data={results}
-        keyExtractor={item => item.id.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={order}
+          keyExtractor={item => item._id}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    details: state.login.details,
+    error: state.error,
+  };
+};
+
+export default connect(mapStateToProps)(KarigarDetails);
 
 const styles = StyleSheet.create({
   container: {
@@ -151,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ACE1AF',
     position: 'absolute',
     height: '100%',
-    width: 150,
+    width: 180,
     left: 0,
   },
   cardContent: {
@@ -169,6 +190,11 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginTop: 5,
   },
+  logoutButtonText: {
+    color: 'black',
+    fontSize: 22,
+    fontFamily: 'Gilroy-Regular',
+    marginRight: 15,
+    padding: 5,
+  },
 });
-
-export default KarigarDetails;

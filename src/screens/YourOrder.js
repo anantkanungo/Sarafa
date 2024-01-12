@@ -11,31 +11,34 @@ import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
 import axios from 'axios';
 
-const YourOrder = ({customerLogout, details, navigation}) => {
-  const [orders, setOrders] = useState([]);
+const YourOrder = ({customerLogout, route, details, navigation}) => {
+  const {orders} = route.params;
+  // const [orders, setOrders] = useState([]);
+  // const [id, setId] = useState(null);
 
-  const fetchOrders = async () => {
-    try {
-      const token = details?.token;
-      const response = await axios.get(
-        'http://139.59.58.151:8000/workshop/task',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+  // const fetchOrders = async () => {
+  //   try {
+  //     const token = details?.token;
+  //     const response = await axios.get(
+  //       'http://139.59.58.151:8000/workshop/task',
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       },
+  //     );
 
-      const userData = response.data.data[0];
-      setOrders(userData.task || []); // Assuming 'task' contains the array of orders
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     const userData = response.data.data[0];
+  //     setOrders(userData.task || []); // Assuming 'task' contains the array of orders
+  //     setId(userData._id);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  // useEffect(() => {
+  //   fetchOrders();
+  // }, [orders]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
