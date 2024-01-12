@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -146,13 +146,13 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
   },
   color: {
-    width: 20,
-    height: 20,
+    width: 10,
+    height: '100%',
     marginRight: 2,
     borderRadius: 10,
   },
   pikerLabel: {
-    color: '#000', 
+    color: '#000',
     backgroundColor: '#fff',
     fontFamily: 'Gilroy-Regular',
   },

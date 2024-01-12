@@ -1,8 +1,9 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: '#e1d2c4'
   },
   tinyLogo: {
     width: 25,
@@ -80,7 +81,7 @@ export default StyleSheet.create({
     color: '#000000',
   },
   tunchView1: {
-    fontSize: 28,
+    fontSize: 22,
     marginHorizontal: 5,
     color: '#000000',
     fontFamily: 'Gilroy-Regular',

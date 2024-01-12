@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,10 +16,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import close from '../assets/icons8-close-window-50.png';
-import {RadioButton} from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 
-const GilroyText = ({label, ...props}) => (
-  <Text style={{fontFamily: 'Gilroy-Regular', ...styles.pikerLabel}} {...props}>
+const GilroyText = ({ label, ...props }) => (
+  <Text style={{ fontFamily: 'Gilroy-Regular', ...styles.pikerLabel }} {...props}>
     {label}
   </Text>
 );
@@ -41,7 +41,7 @@ const fetchOrders = async () => {
   }
 };
 
-const OrderScreen = ({navigation}) => {
+const OrderScreen = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -89,7 +89,7 @@ const OrderScreen = ({navigation}) => {
       <RadioButton.Item label="🔵 Pending" value="pending" />
       <RadioButton.Item label="🟡 Processing" value="processing" />
       <RadioButton.Item label="🟢 Completed" value="completed" />
-      <RadioButton.Item label="🟠 Collect" value="collect" />
+      {/* <RadioButton.Item label="🟠 Collect" value="collect" /> */}
       <RadioButton.Item label="🔴 Rejected" value="rejected" />
     </RadioButton.Group>
   );
@@ -161,7 +161,7 @@ const OrderScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            source={{uri: 'https://img.icons8.com/ios/50/long-arrow-left.png'}}
+            source={{ uri: 'https://img.icons8.com/ios/50/long-arrow-left.png' }}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>Orders</Text>
@@ -209,14 +209,14 @@ const OrderScreen = ({navigation}) => {
                             item.statusIs === 'pending'
                               ? '#aecbfa'
                               : item.statusIs === 'processing'
-                              ? '#FFBF00'
-                              : item.statusIs === 'completed'
-                              ? '#ccff90'
-                              : item.statusIs === 'collect'
-                              ? '#FF4F00'
-                              : item.statusIs === 'rejected'
-                              ? '#f28b82'
-                              : '#ffffff',
+                                ? '#FFBF00'
+                                : item.statusIs === 'completed'
+                                  ? '#ccff90'
+                                  : item.statusIs === 'collect'
+                                    ? '#FF4F00'
+                                    : item.statusIs === 'rejected'
+                                      ? '#f28b82'
+                                      : '#ffffff',
                         },
                         styles.color,
                       ]}
@@ -233,9 +233,9 @@ const OrderScreen = ({navigation}) => {
           </TouchableOpacity>
         </>
       ) : (
-        <View style={[styles.container, {justifyContent: 'center'}]}>
+        <View style={[styles.container, { justifyContent: 'center' }]}>
           <Image
-            style={{alignSelf: 'center', width: 100, height: 100}}
+            style={{ alignSelf: 'center', width: 100, height: 100 }}
             source={{
               uri: 'https://img.icons8.com/ios/100/000000/empty-box.png',
             }}
@@ -269,7 +269,7 @@ const OrderScreen = ({navigation}) => {
             {/* Filter */}
             {renderStatusFilter()}
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
@@ -310,7 +310,7 @@ const OrderScreen = ({navigation}) => {
                     onPress={closeModal}>
                     <Image
                       source={close}
-                      style={{height: 40, width: 40, tintColor: '#000'}}
+                      style={{ height: 40, width: 40, tintColor: '#000' }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -318,15 +318,15 @@ const OrderScreen = ({navigation}) => {
                 <FlatList
                   data={selectedOrder?.image} // Assuming selectedOrder.images is an array of image URIs
                   keyExtractor={(item, index) => index.toString()}
-                  renderItem={({item}) => (
+                  renderItem={({ item }) => (
                     <Image
-                      style={{width: 300, height: 300, resizeMode: 'contain'}}
-                      source={{uri: item}}
+                      style={{ width: 300, height: 300, resizeMode: 'contain' }}
+                      source={{ uri: item }}
                     />
                   )}
                   horizontal // Set this to render images horizontally
                 />
-                <View style={{flexDirection: 'row', margin: 10}}>
+                <View style={{ flexDirection: 'row', margin: 10 }}>
                   <Text style={styles.titleModal}>Audio: </Text>
                   {Array.isArray(audioURL) && audioURL.length > 0 ? (
                     <TouchableOpacity
@@ -352,9 +352,9 @@ const OrderScreen = ({navigation}) => {
                     <Text style={styles.titleModal}>No Audio Available</Text>
                   )}
                 </View>
-                <ScrollView style={{height: 150}}>
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{borderWidth: 1, paddingHorizontal: 10}}>
+                <ScrollView style={{ height: 150 }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ borderWidth: 1, paddingHorizontal: 10 }}>
                       <Text style={styles.orderModal}>Date: </Text>
                       <Text style={styles.orderModal}>Category:</Text>
                       <Text style={styles.orderModal}>Tunch:</Text>
@@ -363,7 +363,7 @@ const OrderScreen = ({navigation}) => {
                       <Text style={styles.orderModal}>Quantity:</Text>
                       <Text style={styles.orderModal}>Status:</Text>
                     </View>
-                    <View style={{borderWidth: 1, flex: 1, paddingLeft: 10}}>
+                    <View style={{ borderWidth: 1, flex: 1, paddingLeft: 10 }}>
                       <Text style={styles.orderModal}>
                         {new Date(selectedOrder?.updatedAt).toLocaleString()}
                       </Text>
