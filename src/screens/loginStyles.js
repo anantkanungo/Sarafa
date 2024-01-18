@@ -23,7 +23,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginLeft: -25,
     fontFamily: 'Gilroy-Regular',
-    color: '',
+    color: 'black',
   },
   bottomView: {
     opacity: 0.95,
