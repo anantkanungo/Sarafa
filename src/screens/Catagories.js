@@ -37,8 +37,7 @@ const Catagories = ({details, navigation}) => {
 
   useEffect(() => {
     const fetchCatalog = async () => {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTk3ZDNlMDM2NjA0ZjUxMTE3MWQ0MjIiLCJ1bmFtZSI6IlJhamt1bWFyIiwiaWF0IjoxNzA0Nzk5MTI4LCJleHAiOjE3MDUxNTkxMjh9.pjGYlGOzYQEgxKqVo7_YuJorpUcqGxNDMC1nsWpabM0';
+      const token = details?.token;
 
       axios
         .get('http://139.59.58.151:8000/getallcatalog', {
@@ -50,7 +49,7 @@ const Catagories = ({details, navigation}) => {
           const result = res.data.data.filter((items, index) => {
             return items.category === category;
           });
-          // console.log('result', result);
+          console.log('result', result);
           if (result) {
             setCategory(result);
           }
@@ -61,6 +60,7 @@ const Catagories = ({details, navigation}) => {
       fetchCatalog();
       setRefreshCategorys(false); // Disable auto-refresh
     }
+    console.log('result', categorys);
   }, [categorys, refreshCategorys]);
   // console.log('catalog', categorys);
 
