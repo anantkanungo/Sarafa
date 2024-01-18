@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {customerLogout} from '../reduxThunk/action/authAction';
 import axios from 'axios';
@@ -33,16 +40,20 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
 
   useEffect(() => {
     fetchOrders();
+    console.log(orders);
   }, [address, orders]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
-      style={styles.cardContainer}
       onPress={() => navigateToOrderPage(item)}>
-      <View style={styles.cardHighlight} />
-      <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.category}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+      <View style={styles.card} key={item._id}>
+        <Image style={styles.cardImage} source={{uri: item.image[0]}} />
+        <View style={styles.cardHeader}>
+          <Text style={styles.title}>{item.category}</Text>
+          <Text style={styles.order}>Weight: {item.weight}</Text>
+          <Text style={styles.order}>Size: {item.size}</Text>
+          <Text style={styles.order}>Quantity: {item.quantity}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -172,12 +183,6 @@ const styles = StyleSheet.create({
   cardContent: {
     marginLeft: 15,
   },
-  title: {
-    fontSize: 22,
-    fontFamily: 'Gilroy-Regular',
-    color: '#000',
-    marginTop: 4,
-  },
   description: {
     fontSize: 15,
     fontFamily: 'Gilroy-Regular',
@@ -190,5 +195,54 @@ const styles = StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     marginRight: 15,
     padding: 5,
+  },
+  list: {
+    paddingHorizontal: 17,
+    backgroundColor: '#E6E6E6',
+  },
+  separator: {
+    marginTop: 10,
+  },
+  /******** card **************/
+  card: {
+    shadowColor: '#00000021',
+    shadowOffset: {
+      width: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    marginVertical: 4,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    // alignContent: 'center',
+    borderWidth: 1,
+    borderColor: '#8C92AC',
+    padding: 10,
+  },
+  cardHeader: {
+    paddingVertical: 7,
+    paddingHorizontal: 16,
+  },
+  cardImage: {
+    // flex: 1,
+    height: 'auto',
+    width: '40%',
+    resizeMode: 'contain',
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+  /******** card components **************/
+  title: {
+    fontSize: 18,
+    flex: 1,
+    color: '#000',
+    textTransform: 'capitalize',
+    fontFamily: 'Gilroy-Regular',
+  },
+  order: {
+    fontSize: 13,
+    marginTop: 5,
+    color: '#000',
+    fontFamily: 'Gilroy-Regular',
   },
 });
