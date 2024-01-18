@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 // https://github.com/ladjs/react-native-loading-spinner-overlay
 // import Spinner from 'react-native-loading-spinner-overlay';
 import Header from '../components/home/Header.js';
 import Catalogs from '../components/home/Catalogs.js';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.headerText}>Catalog</Text>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.headerText}>Catalogue</Text>
       </View>
       <Catalogs navigation={navigation} />
     </SafeAreaView>
