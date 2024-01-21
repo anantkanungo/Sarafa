@@ -13,10 +13,10 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 // https://www.npmjs.com/package/@react-native-picker/picker
 // https://github.com/lawnstarter/react-native-picker-select/issues/402
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import Voice from '@react-native-voice/voice';
 import Styles from './placeOrderStyles';
 import axios from 'axios';
@@ -24,14 +24,15 @@ import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
+import PhotoEditor from 'react-native-photo-editor';
 
-const GilroyText = ({ label, ...props }) => (
-  <Text style={{ fontFamily: 'Gilroy-Regular', ...Styles.pikerLabel }} {...props}>
+const GilroyText = ({label, ...props}) => (
+  <Text style={{fontFamily: 'Gilroy-Regular', ...Styles.pikerLabel}} {...props}>
     {label}
   </Text>
 );
 
-const PlaceOrder = ({ navigation }) => {
+const PlaceOrder = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [category, setCategory] = useState();
@@ -60,10 +61,10 @@ const PlaceOrder = ({ navigation }) => {
       'Submit Order',
       'Are you sure you want to submit this order?',
       [
-        { text: 'Submit', onPress: submitData },
-        { text: 'Cancel', onPress: clearAllStates },
+        {text: 'Submit', onPress: submitData},
+        {text: 'Cancel', onPress: clearAllStates},
       ],
-      { cancelable: true },
+      {cancelable: true},
     );
   };
 
@@ -195,12 +196,10 @@ const PlaceOrder = ({ navigation }) => {
   };
 
   // UploadImage
-  // camera function
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
-      cropping: true,
       includeBase64: true,
       compressImageQuality: 0.5,
     })
@@ -215,13 +214,15 @@ const PlaceOrder = ({ navigation }) => {
           setCamera(prevPhotos => [...prevPhotos, imageData]);
         }
         setModalVisible(false);
+
+        // Call the photo editor
+        editPhoto(image.path);
       })
       .catch(error => {
         console.error('Failed to open camera:', error);
       });
   };
 
-  // Gallery function
   const choosePhotoFromLibrary = async () => {
     try {
       const images = await ImagePicker.openPicker({
@@ -237,10 +238,24 @@ const PlaceOrder = ({ navigation }) => {
       console.log('Gallery: ', images);
       setModalVisible(false);
       if (Array.isArray(images) && images.length > 0) {
-        setSelectedGallery(images.map(img => ({ uri: img.path })));
+        setSelectedGallery(images.map(img => ({uri: img.path})));
       }
+
+      // Call the photo editor
+      editPhoto(images[0].path); // Assuming you want to edit the first selected image
     } catch (error) {
       console.error('Failed to open gallery:', error);
+    }
+  };
+
+  // Function to open the photo editor
+  const editPhoto = async photoPath => {
+    try {
+      await PhotoEditor.Edit({
+        path: photoPath,
+      });
+    } catch (error) {
+      console.error('Failed to open photo editor:', error);
     }
   };
 
@@ -305,21 +320,21 @@ const PlaceOrder = ({ navigation }) => {
               <Image
                 key={index}
                 source={img}
-                style={{ width: 100, height: 100 }}
+                style={{width: 100, height: 100}}
               />
             ))}
             {camera.map((photo, index) => (
               <Image
                 key={index}
-                source={{ uri: photo.path }}
-                style={{ width: 100, height: 100 }}
+                source={{uri: photo.path}}
+                style={{width: 100, height: 100}}
               />
             ))}
             <Pressable
               style={[Styles.button, Styles.buttonOpen]}
               onPress={() => setModalVisible(true)}>
               <Image
-                style={[Styles.tinyLogo, { alignSelf: 'center' }]}
+                style={[Styles.tinyLogo, {alignSelf: 'center'}]}
                 src="https://img.icons8.com/material-outlined/add-image.png"
               />
               <Text style={Styles.textStyle}>Upload Photo</Text>
@@ -339,12 +354,12 @@ const PlaceOrder = ({ navigation }) => {
             <View style={Styles.centeredView}>
               <View style={Styles.modalView}>
                 <Text style={Styles.modalText}>Upload Photo!</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Pressable
                     style={[Styles.button, Styles.buttonOpen]}
                     onPress={choosePhotoFromLibrary}>
                     <Image
-                      style={[Styles.tinyLogo, { alignSelf: 'center' }]}
+                      style={[Styles.tinyLogo, {alignSelf: 'center'}]}
                       src="https://img.icons8.com/material-outlined/image-gallery.png"
                     />
                     <Text style={Styles.textStyle}>Gallery</Text>
@@ -353,7 +368,7 @@ const PlaceOrder = ({ navigation }) => {
                     style={[Styles.button, Styles.buttonOpen]}
                     onPress={takePhotoFromCamera}>
                     <Image
-                      style={[Styles.tinyLogo, { alignSelf: 'center' }]}
+                      style={[Styles.tinyLogo, {alignSelf: 'center'}]}
                       src="https://img.icons8.com/material-outlined/compact-camera--v2.png"
                     />
                     <Text style={Styles.textStyle}>Camera</Text>
@@ -439,13 +454,13 @@ const PlaceOrder = ({ navigation }) => {
             multiline={true}
           />
           {playButtonVisible && (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <TouchableOpacity
-                style={[Styles.voiceButton, { paddingTop: 10 }]}
+                style={[Styles.voiceButton, {paddingTop: 10}]}
                 onPress={deleteRecording}>
                 <Image
                   src="https://img.icons8.com/material-outlined/24/trash--v1.png"
-                  style={{ width: 25, height: 25, tintColor: '#000' }}
+                  style={{width: 25, height: 25, tintColor: '#000'}}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -475,7 +490,7 @@ const PlaceOrder = ({ navigation }) => {
               onPress={isRecording ? stopRecording : startRecording}
               style={Styles.voiceButton}>
               {isRecording ? (
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Text style={Styles.voiceButtonText}>•••</Text>
                   <Image
                     source={{
@@ -512,7 +527,7 @@ const PlaceOrder = ({ navigation }) => {
                 />
                 <GilroyText style={Styles.pikerLabel} label="92" value="92" />
                 <GilroyText
-                  style={{ color: '#000' }}
+                  style={{color: '#000'}}
                   label={tunch}
                   value={tunch}
                   onChangelable={setTunch}
@@ -547,7 +562,7 @@ const PlaceOrder = ({ navigation }) => {
             <View style={Styles.centeredView}>
               <View style={Styles.modalView}>
                 <Text style={Styles.modalText}>Enter Tunch :</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <TextInput
                     style={Styles.input1}
                     placeholder=""
@@ -560,10 +575,10 @@ const PlaceOrder = ({ navigation }) => {
                     style={[
                       Styles.button,
                       Styles.buttonOpen,
-                      { backgroundColor: '#000' },
+                      {backgroundColor: '#000'},
                     ]}
                     onPress={() => setModalVisible1(!modalVisible1)}>
-                    <Text style={[Styles.textStyle, { color: '#fff' }]}>
+                    <Text style={[Styles.textStyle, {color: '#fff'}]}>
                       Done
                     </Text>
                   </Pressable>
@@ -609,12 +624,12 @@ const PlaceOrder = ({ navigation }) => {
         <View style={Styles.switchContainer}>
           <Text style={Styles.text}>Urgent Delivery :</Text>
           <Switch
-            trackColor={{ false: '#767577', true: '#767577' }}
+            trackColor={{false: '#767577', true: '#767577'}}
             thumbColor={isEnabled ? '#000000' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
-            style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+            style={{transform: [{scaleX: 1.2}, {scaleY: 1.2}]}}
           />
         </View>
         {/* Submit button */}
