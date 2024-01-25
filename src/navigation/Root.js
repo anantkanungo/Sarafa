@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 // https://reactnavigation.org/docs/getting-started/
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {connect, useDispatch} from 'react-redux';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { connect, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {authToken} from '../reduxThunk/Type';
-import {customerLogin} from '../reduxThunk/action/authAction';
+import { authToken } from '../reduxThunk/Type';
+import { customerLogin } from '../reduxThunk/action/authAction';
 import LoginScreen from '../screens/Loginsecreen';
 import StackNavigator from './StackNavigator';
 import Splash from '../screens/Splash';
 
 const Stack = createNativeStackNavigator();
 
-const Root = ({token}) => {
+const Root = ({ token }) => {
   const dispatch = useDispatch();
   const [showSplash, setShowSplash] = useState(true);
 

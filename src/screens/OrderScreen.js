@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
-import {customerLogout} from '../reduxThunk/action/authAction';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { customerLogout } from '../reduxThunk/action/authAction';
 import axios from 'axios';
 
-const OrderScreen = ({customerLogout, details, navigation}) => {
+const OrderScreen = ({ customerLogout, details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [address, setAddress] = useState('');
   const [uid, setUid] = useState(null);
@@ -41,10 +41,10 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
     // console.log(uid);
   }, [orders, uid]);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate('ShopOrder', {uid})}>
+      onPress={() => navigation.navigate('ShopOrder', { uid })}>
       <View style={styles.cardHighlight} />
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.name}</Text>
@@ -108,6 +108,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(OrderScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   tinyLogo: {
     width: 30,
@@ -120,9 +121,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginLeft: 10,
+    marginBottom: 10,
   },
   infoContainer: {
-    backgroundColor: 'black',
+    // backgroundColor: '',
+    // backgroundColor: '#e1d2c4',
+
+    backgroundColor: '#C19A6B',
     marginHorizontal: 15,
     padding: 20,
   },
@@ -131,17 +136,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     color: 'white',
+    // color: '#79443B',
     marginTop: 8,
   },
   titleContainer: {
-    marginTop: 5,
+    marginTop: 15,
     alignItems: 'center',
   },
   titleText: {
     fontSize: 25,
     fontFamily: 'Gilroy-Regular',
     padding: 10,
-    color: 'black',
+    // color: 'black',
+
+    color: '#79443B',
   },
   list: {
     flex: 1,
@@ -154,13 +162,14 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     marginHorizontal: 15,
-    borderColor: 'black',
-    borderWidth: 0.5,
+    // borderColor: 'black',
+    // borderWidth: 5,
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 15,
   },
   cardHighlight: {
+    // backgroundColor: 'white',
     backgroundColor: '#ACE1AF',
     position: 'absolute',
     height: '100%',
@@ -173,18 +182,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    color: '#000',
+    // color: '#000',
+    color: '#79443B',
     marginTop: 4,
     textTransform: 'capitalize',
   },
   description: {
     fontSize: 15,
     fontFamily: 'Gilroy-Regular',
-    color: 'grey',
+    // color: 'grey',
     marginTop: 5,
   },
   logoutButtonText: {
-    color: 'black',
+    // color: 'black',
+    color: '#79443B',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     marginRight: 15,
