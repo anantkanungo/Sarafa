@@ -263,12 +263,25 @@ const PlaceOrder = ({navigation}) => {
       let editedImagePath = RNFS.DocumentDirectoryPath + `/edited_${Date.now()}.jpg`;
       console.log('PhotoPath :', photoPath);
       console.log('Photo :', editedImagePath);
-      await PhotoEditor.Edit({
-        path: photoPath,
-      });
+      // await PhotoEditor.Edit({
+      //   path: photoPath,
+      // });
+      RNFetchBlob.config({ fileCache: true })
+      .fetch('GET', binaryFile.uri)
+      .then((resp) => {
+        RNFS.moveFile(resp.path(), photoPath)
+          .then(() => {
+            console.log('FILE WRITTEN!');
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      })
     } catch (error) {
       console.error('Failed to open photo editor:', error);
-    }
   };
 
   // Audio Recording
