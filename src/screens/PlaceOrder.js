@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
 import PhotoEditor from 'react-native-photo-editor';
+import RNFS from 'react-native-fs';
 
 const GilroyText = ({label, ...props}) => (
   <Text style={{fontFamily: 'Gilroy-Regular', ...Styles.pikerLabel}} {...props}>
@@ -214,9 +215,6 @@ const PlaceOrder = ({navigation}) => {
           setCamera(prevPhotos => [...prevPhotos, imageData]);
         }
         setModalVisible(false);
-
-        // Call the photo editor
-        editPhoto(image.path);
       })
       .catch(error => {
         console.error('Failed to open camera:', error);
@@ -240,17 +238,31 @@ const PlaceOrder = ({navigation}) => {
       if (Array.isArray(images) && images.length > 0) {
         setSelectedGallery(images.map(img => ({uri: img.path})));
       }
-
-      // Call the photo editor
-      editPhoto(images[0].path); // Assuming you want to edit the first selected image
     } catch (error) {
       console.error('Failed to open gallery:', error);
     }
   };
 
+  const editImage = async (imagePath) => {
+    await PhotoEditor.Edit({
+       path: imagePath,
+       output: editedImagePath,
+       onDone: () => {
+         setEditedImages((prevImages) => [...prevImages, editedImagePath]);
+       },
+       onCancel: () => {
+         console.log('on cancel');
+       },
+    });
+   };   
+
   // Function to open the photo editor
-  const editPhoto = async photoPath => {
+  const editPhoto = async index => {
     try {
+      const photoPath = selectedGallery[index].uri;
+      let editedImagePath = RNFS.DocumentDirectoryPath + `/edited_${Date.now()}.jpg`;
+      console.log('PhotoPath :', photoPath);
+      console.log('Photo :', editedImagePath);
       await PhotoEditor.Edit({
         path: photoPath,
       });
@@ -317,11 +329,12 @@ const PlaceOrder = ({navigation}) => {
         <View style={Styles.contain}>
           <ScrollView horizontal={true}>
             {selectedGallery.map((img, index) => (
-              <Image
-                key={index}
-                source={img}
-                style={{width: 100, height: 100}}
-              />
+              <View key={index}>
+                <Image source={img} style={{width: 100, height: 100}} />
+                <TouchableOpacity onPress={() => editPhoto(index)}>
+                  <Text>Edit</Text>
+                </TouchableOpacity>
+              </View>
             ))}
             {camera.map((photo, index) => (
               <Image
