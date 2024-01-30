@@ -44,22 +44,22 @@ const Catalogs = ({ details, navigation }) => {
       title: 'All Orders / सभी ऑर्डर',
       componentName: 'Your_Order',
       image:
-        'https://cdn-icons-png.flaticon.com/128/9588/9588518.png',
+        'https://img.icons8.com/ios-glyphs/FAB005/select-all.png'
     },
     {
       id: 2,
       title: 'Karigar Details / कारीगर जानकारी',
       componentName: 'KarigarInfo',
       image:
-        "https://cdn-icons-png.flaticon.com/128/5502/5502081.png"
+        "https://img.icons8.com/glyph-neue/FAB005/about-us-male.png"
     },
-    {
-      id: 3,
-      title: 'Task Assign / कार्य नियत',
-      componentName: 'TaskAssign',
-      image:
-        "https://cdn-icons-png.flaticon.com/128/5847/5847233.png",
-    },
+    // {
+    //   id: 3,
+    //   title: 'Task Assign / कार्य नियत',
+    //   componentName: 'TaskAssign',
+    //   image:
+    //     "https://cdn-icons-png.flaticon.com/128/5847/5847233.png",
+    // },
   ];
 
   const renderItem = ({ item }) => (
@@ -87,7 +87,7 @@ const Catalogs = ({ details, navigation }) => {
         contentContainerStyle={styles.listContainer}
         data={data}
         horizontal={false}
-        numColumns={2}
+        numColumns={1}
         keyExtractor={item => item.id.toString()}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={renderItem}
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexBasis: '45%',
     marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'black',
+    borderWidth: 0.5,
+    borderColor: '#79443B',
   },
   cardContent: {
     paddingVertical: 4,
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     // flex: 1,
-    height: 150,
-    width: 150,
+    height: 90,
+    width: 90,
   },
   imageContainer: {
     shadowColor: '#000',
@@ -146,15 +146,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.32,
     shadowRadius: 5.46,
-
     alignSelf: 'center',
     elevation: 9,
     paddingVertical: 5,
   },
   title: {
     fontSize: 18,
-    flex: 1,
-    color: '#000',
+    // flex: 1,
+    // backgroundColor: '#79443B',
+    color: '#79443B',
     fontFamily: 'Gilroy-Regular',
   },
   titleContainer: {
@@ -163,8 +163,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleText: {
-    fontSize: 27,
-    color: '#000',
+    fontSize: 30,
+    // fontWeight:
+    color: '#79443B',
     marginTop: 10,
     fontFamily: 'Gilroy-Regular',
     marginBottom: 10,

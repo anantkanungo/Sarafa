@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {customerLogout} from '../reduxThunk/action/authAction';
+import { connect } from 'react-redux';
+import { customerLogout } from '../reduxThunk/action/authAction';
 import axios from 'axios';
 
-const YourOrder = ({customerLogout, route, details, navigation}) => {
-  const {orders} = route.params;
+const YourOrder = ({ customerLogout, route, details, navigation }) => {
+  const { orders } = route.params;
   // const [orders, setOrders] = useState([]);
   // const [id, setId] = useState(null);
 
@@ -40,7 +40,7 @@ const YourOrder = ({customerLogout, route, details, navigation}) => {
   //   fetchOrders();
   // }, [orders]);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => navigateToOrderPage(item)}>
@@ -53,7 +53,7 @@ const YourOrder = ({customerLogout, route, details, navigation}) => {
   );
 
   const navigateToOrderPage = selectedTask => {
-    navigation.navigate('Orderpage', {selectedTask});
+    navigation.navigate('Orderpage', { selectedTask });
   };
 
   return (
@@ -67,7 +67,7 @@ const YourOrder = ({customerLogout, route, details, navigation}) => {
             }}
           />
         </TouchableOpacity>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity onPress={() => customerLogout()}>
             <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
@@ -127,8 +127,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 27,
-    // fontWeight: 'bold',
-    color: '#000',
+    color: '#79443B',
     fontFamily: 'Gilroy-Regular',
   },
   list: {
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   logoutButtonText: {
-    color: 'black',
+    color: '#79443B',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     marginRight: 10,

@@ -1,12 +1,12 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Catalogs from '../components/home/Catalogs';
 import KarigarInfo from '../screens/KarigarInfo';
 import YourOrder from '../screens/YourOrder';
 import OrderPage from '../screens/OrderPage';
 import ScreenZoom from '../screens/ScreenZoom';
 import KarigarDetails from '../screens/KarigarDetails';
-import TaskAssign from '../screens/TaskAssign';
+// import TaskAssign from '../screens/TaskAssign';
 import KarigerOrder from '../screens/KarigarOrder';
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +25,7 @@ const StackNavigator = () => {
       <Stack.Screen name="ScreenZoom" component={ScreenZoom} />
       <Stack.Screen name="Karigar_Details" component={KarigarDetails} />
       <Stack.Screen name="KarigerOrder" component={KarigerOrder} />
-      <Stack.Screen name="TaskAssign" component={TaskAssign} />
+      {/* <Stack.Screen name="TaskAssign" component={TaskAssign} /> */}
     </Stack.Navigator>
   );
 };

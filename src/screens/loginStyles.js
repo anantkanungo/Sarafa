@@ -19,7 +19,7 @@ export default StyleSheet.create({
   input: {
     height: 60,
     flex: 1,
-    fontSize: 32,
+    fontSize: 22,
     textAlign: 'center',
     marginLeft: -25,
     fontFamily: 'Gilroy-Regular',
@@ -37,7 +37,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   loginText: {
-    fontSize: 38,
+    fontSize: 35,
     marginTop: 12,
     // marginBottom: 4,
     color: '#79443B',
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
   },
   loginText1: {
-    fontSize: 28,
+    fontSize: 25,
     // marginTop: 12,
     marginBottom: 15,
     color: '#79443B',
@@ -69,7 +69,7 @@ export default StyleSheet.create({
   loginButtonText: {
     color: '#fff',
     alignSelf: 'center',
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: 'Gilroy-Regular',
   },
 });

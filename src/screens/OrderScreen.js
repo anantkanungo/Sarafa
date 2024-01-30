@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
-import {customerLogout} from '../reduxThunk/action/authAction';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { customerLogout } from '../reduxThunk/action/authAction';
 import axios from 'axios';
 // import {useNavigation} from '@react-navigation/native';
 
-const OrderScreen = ({customerLogout, details, navigation}) => {
+const OrderScreen = ({ customerLogout, details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState('');
@@ -35,7 +35,7 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
     fetchOrders();
   }, []);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => navigation.navigate('ShopOrder')}>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Gilroy-Regular',
     padding: 10,
-    color: 'black',
+    color: '#79443B',
   },
   list: {
     flex: 1,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    color: '#000',
+    color: '#79443B',
     marginTop: 4,
     textTransform: 'capitalize',
   },
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   logoutButtonText: {
-    color: 'black',
+    color: '#79443B',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     marginRight: 15,
