@@ -243,45 +243,47 @@ const PlaceOrder = ({navigation}) => {
     }
   };
 
-  const editImage = async (imagePath) => {
+  const editImage = async imagePath => {
     await PhotoEditor.Edit({
-       path: imagePath,
-       output: editedImagePath,
-       onDone: () => {
-         setEditedImages((prevImages) => [...prevImages, editedImagePath]);
-       },
-       onCancel: () => {
-         console.log('on cancel');
-       },
+      path: imagePath,
+      output: editedImagePath,
+      onDone: () => {
+        setEditedImages(prevImages => [...prevImages, editedImagePath]);
+      },
+      onCancel: () => {
+        console.log('on cancel');
+      },
     });
-   };   
+  };
 
   // Function to open the photo editor
   const editPhoto = async index => {
     try {
       const photoPath = selectedGallery[index].uri;
-      let editedImagePath = RNFS.DocumentDirectoryPath + `/edited_${Date.now()}.jpg`;
+      let editedImagePath =
+        RNFS.DocumentDirectoryPath + `/edited_${Date.now()}.jpg`;
       console.log('PhotoPath :', photoPath);
       console.log('Photo :', editedImagePath);
       // await PhotoEditor.Edit({
       //   path: photoPath,
       // });
-      RNFetchBlob.config({ fileCache: true })
-      .fetch('GET', binaryFile.uri)
-      .then((resp) => {
-        RNFS.moveFile(resp.path(), photoPath)
-          .then(() => {
-            console.log('FILE WRITTEN!');
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
-      })
-      .catch((err) => {
-        console.log(err.message);
-      })
+      RNFetchBlob.config({fileCache: true})
+        .fetch('GET', binaryFile.uri)
+        .then(resp => {
+          RNFS.moveFile(resp.path(), photoPath)
+            .then(() => {
+              console.log('FILE WRITTEN!');
+            })
+            .catch(err => {
+              console.log(err.message);
+            });
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
     } catch (error) {
       console.error('Failed to open photo editor:', error);
+    }
   };
 
   // Audio Recording
