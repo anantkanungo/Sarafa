@@ -243,48 +243,72 @@ const PlaceOrder = ({navigation}) => {
     }
   };
 
-  const editImage = async imagePath => {
-    await PhotoEditor.Edit({
-      path: imagePath,
-      output: editedImagePath,
-      onDone: () => {
-        setEditedImages(prevImages => [...prevImages, editedImagePath]);
-      },
-      onCancel: () => {
-        console.log('on cancel');
-      },
-    });
-  };
-
   // Function to open the photo editor
-  const editPhoto = async index => {
+  const editImage = async (imagePath, index) => {
     try {
-      const photoPath = selectedGallery[index].uri;
-      let editedImagePath =
-        RNFS.DocumentDirectoryPath + `/edited_${Date.now()}.jpg`;
-      console.log('PhotoPath :', photoPath);
-      console.log('Photo :', editedImagePath);
-      // await PhotoEditor.Edit({
-      //   path: photoPath,
-      // });
-      RNFetchBlob.config({fileCache: true})
-        .fetch('GET', binaryFile.uri)
-        .then(resp => {
-          RNFS.moveFile(resp.path(), photoPath)
-            .then(() => {
-              console.log('FILE WRITTEN!');
-            })
-            .catch(err => {
-              console.log(err.message);
-            });
-        })
-        .catch(err => {
-          console.log(err.message);
-        });
+      // Move the image to the photo editing directory
+      const photoEditingPath = RNFS.DocumentDirectoryPath + '/editedPhoto.jpg';
+      await RNFS.moveFile(imagePath, photoEditingPath);
+
+      // Call PhotoEditor.Edit with the new path
+      PhotoEditor.Edit({
+        path: photoEditingPath,
+        stickers: [
+          'sticker0',
+          'sticker1',
+          'sticker2',
+          'sticker3',
+          'sticker4',
+          'sticker5',
+          'sticker6',
+          'sticker7',
+          'sticker8',
+          'sticker9',
+          'sticker10',
+        ],
+        colors: undefined,
+        onDone: () => {
+          console.log('on done');
+
+          // // Update the state with the edited photo
+          // setSelectedGallery(prevGallery => {
+          //   const editedPhotos = [...prevGallery];
+          //   editedPhotos[index] = {
+          //     uri: photoEditingPath,
+          //   };
+          //   return editedPhotos;
+          // });
+        },
+        onCancel: () => {
+          console.log('on cancel');
+        },
+      });
     } catch (error) {
-      console.error('Failed to open photo editor:', error);
+      console.error('Failed to move image:', error);
     }
   };
+
+  // useEffect(() => {
+  //   let photoPath = RNFS.DocumentDirectoryPath + '/photo.jpg';
+  //   let binaryFile = Image.resolveAssetSource(
+  //     require('./src/assets/NG_logo.png'),
+  //   );
+
+  //   RNFetchBlob.config({fileCache: true})
+  //     .fetch('GET', binaryFile.uri)
+  //     .then(resp => {
+  //       RNFS.moveFile(resp.path(), photoPath)
+  //         .then(() => {
+  //           console.log('FILE WRITTEN!');
+  //         })
+  //         .catch(err => {
+  //           console.log(err.message);
+  //         });
+  //     })
+  //     .catch(err => {
+  //       console.log(err.message);
+  //     });
+  // }, []);
 
   // Audio Recording
   const startRecording = async () => {
@@ -345,18 +369,21 @@ const PlaceOrder = ({navigation}) => {
           <ScrollView horizontal={true}>
             {selectedGallery.map((img, index) => (
               <View key={index}>
-                <Image source={img} style={{width: 100, height: 100}} />
-                <TouchableOpacity onPress={() => editPhoto(index)}>
+                <TouchableOpacity onPress={() => editImage(img.uri, index)}>
+                  <Image source={img} style={{width: 100, height: 100}} />
                   <Text>Edit</Text>
                 </TouchableOpacity>
               </View>
             ))}
             {camera.map((photo, index) => (
-              <Image
-                key={index}
-                source={{uri: photo.path}}
-                style={{width: 100, height: 100}}
-              />
+              <TouchableOpacity onPress={() => editImage(photo.path, index)}>
+                <Image
+                  key={index}
+                  source={{uri: photo.path}}
+                  style={{width: 100, height: 100}}
+                />
+                <Text>Edit</Text>
+              </TouchableOpacity>
             ))}
             <Pressable
               style={[Styles.button, Styles.buttonOpen]}
