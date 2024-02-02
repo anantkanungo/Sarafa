@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,10 +9,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 
-const Catalogs = ({details, navigation}) => {
+const Catalogs = ({ details, navigation }) => {
   const [catalog, setCatalog] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -82,7 +82,7 @@ const Catalogs = ({details, navigation}) => {
                   style={styles.card}
                   // onPress={() => navigation.navigate('Catagories')}
                   onPress={() =>
-                    navigation.navigate('Catagories', {category: item.category})
+                    navigation.navigate('Catagories', { category: item.category })
                   }>
                   <View style={styles.imageContainer}>
                     <FastImage

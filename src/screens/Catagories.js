@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Text,
   View,
@@ -10,7 +10,7 @@ import {
   LayoutAnimation,
   TextInput,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import styles from './CatagorieStyles';
 import Check from '../assets/icons8-checkmark-48.png';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -19,17 +19,17 @@ import {
   State,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
-import {addToCart, removeFromCart} from '../reduxThunk/action/orderAction';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart } from '../reduxThunk/action/orderAction';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import axios from 'axios';
-import {useRoute} from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import Slider from 'react-native-slider';
 import FastImage from 'react-native-fast-image';
 
-const Catagories = ({details, navigation}) => {
+const Catagories = ({ details, navigation }) => {
   const route = useRoute();
-  const {category} = route.params;
+  const { category } = route.params;
   // console.log('categry', category);
 
   const [categorys, setCategory] = useState([]);
@@ -41,7 +41,7 @@ const Catagories = ({details, navigation}) => {
 
       axios
         .get('http://139.59.58.151:8000/getallcatalog', {
-          headers: {Authorization: `Bearer ${token}`},
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then(res => {
           // console.log(res);
@@ -116,7 +116,7 @@ const Catagories = ({details, navigation}) => {
   // UI component to set weight filter
   const renderWeightFilter = () => (
     <View style={styles.sbContainer}>
-      <Text style={[styles.buttonText, {color: '#000'}]}>
+      <Text style={[styles.buttonText, { color: '#000' }]}>
         Filter by Weight:
       </Text>
       <TextInput
@@ -198,20 +198,20 @@ const Catagories = ({details, navigation}) => {
   //   setModalVisible(true);
   // };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
     var itemDimension = Dimensions.get('window').width / numColumns;
     return (
       <TouchableOpacity
-        style={[styles.item, {height: itemDimension}]}
+        style={[styles.item, { height: itemDimension }]}
         onPress={() => selectItem(item, false)}
         onLongPress={() => selectItem(item, true)}
         activeOpacity={0.8}>
         <View style={styles.innerItem}>
           <FastImage
-            style={{height: itemDimension - 2, width: itemDimension - 2}}
+            style={{ height: itemDimension - 2, width: itemDimension - 2 }}
             source={{
               uri: item.image[0],
               priority: FastImage.priority.high,
@@ -237,7 +237,7 @@ const Catagories = ({details, navigation}) => {
       numberOfElementsLastRow !== numColumns &&
       numberOfElementsLastRow !== 0
     ) {
-      data.push({_id: `blank-${numberOfElementsLastRow}`, empty: true});
+      data.push({ _id: `blank-${numberOfElementsLastRow}`, empty: true });
       numberOfElementsLastRow++;
     }
     return data;
@@ -287,13 +287,13 @@ const Catagories = ({details, navigation}) => {
   const renderSlider = () => (
     <View style={styles.sliderContainer}>
       <Slider
-        style={{width: 200, height: 40}}
+        style={{ width: 200, height: 40 }}
         minimumValue={2}
         maximumValue={5}
         step={1}
         value={numColumns}
         onValueChange={value => setNumColumns(value)}
-        trackStyle={{height: 8, borderRadius: 5, backgroundColor: 'grey'}}
+        trackStyle={{ height: 8, borderRadius: 5, backgroundColor: 'grey' }}
         thumbStyle={{
           backgroundColor: 'white',
           borderWidth: 2,
@@ -329,7 +329,7 @@ const Catagories = ({details, navigation}) => {
           marginVertical: 5,
         }}>
         {clearButtonVisible && (
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               style={styles.clearButton}
               onPress={() => {
@@ -362,7 +362,7 @@ const Catagories = ({details, navigation}) => {
       </View>
       <PinchGestureHandler
         onGestureEvent={onPinchGestureEvent}
-        onHandlerStateChange={({nativeEvent}) => {
+        onHandlerStateChange={({ nativeEvent }) => {
           if (nativeEvent.state === State.END) {
             // Save the scale value for future reference
             scaleRef.current /= nativeEvent.scale;
@@ -371,7 +371,7 @@ const Catagories = ({details, navigation}) => {
         simultaneousHandlers={['pinchX', 'pinchY']}>
         <FlatList
           key={numColumns}
-          style={{backgroundColor: '#e1d2c4'}}
+          style={{ backgroundColor: '#F2F3F4' }}
           // data={formatRow(category, numColumns)}
           data={categorys ? formatRow(categorys, numColumns) : []}
           // keyExtractor={item => {
@@ -401,16 +401,16 @@ const Catagories = ({details, navigation}) => {
         <GestureRecognizer
           onSwipeLeft={navigateToNextItem}
           onSwipeRight={navigateToPreviousItem}
-          config={{velocityThreshold: 0.3, directionalOffsetThreshold: 80}}
+          config={{ velocityThreshold: 0.3, directionalOffsetThreshold: 80 }}
           style={styles.popupOverlay}>
           <View style={styles.popup}>
             <View style={styles.popupContent}>
               <View contentContainerStyle={styles.modalInfo}>
                 <TouchableOpacity
                   onPress={navigateToNextItem}
-                  style={[styles.btn, {right: 10}]}>
+                  style={[styles.btn, { right: 10 }]}>
                   <Image
-                    style={[{tintColor: '#fff'}, styles.tinyLogo]}
+                    style={[{ tintColor: '#fff' }, styles.tinyLogo]}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/271/271228.png',
                     }}
@@ -418,16 +418,16 @@ const Catagories = ({details, navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={navigateToPreviousItem}
-                  style={[styles.btn, {left: 10}]}>
+                  style={[styles.btn, { left: 10 }]}>
                   <Image
-                    style={[{tintColor: '#fff'}, styles.tinyLogo]}
+                    style={[{ tintColor: '#fff' }, styles.tinyLogo]}
                     source={{
                       uri: 'https://cdn-icons-png.flaticon.com/128/271/271220.png',
                     }}
                   />
                 </TouchableOpacity>
                 <Image
-                  style={{width: 'auto', height: 300}}
+                  style={{ width: 'auto', height: 300 }}
                   source={{
                     uri:
                       userSelected &&

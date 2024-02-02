@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Modal,
 } from 'react-native';
 import styles from './cartStyles';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   removeFromCart,
   removeAllItemsFromCart,
@@ -19,7 +19,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const CartScreen = ({navigation}) => {
+const CartScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const cartData = useSelector(state => state.cart);
   const [cartItems, setCartItems] = useState([]);
@@ -33,7 +33,7 @@ const CartScreen = ({navigation}) => {
   const editItemInCart = (cartItems, itemId, newSize, newQuantity) => {
     return cartItems.map(item =>
       item._id === itemId
-        ? {...item, size: newSize, quantity: newQuantity}
+        ? { ...item, size: newSize, quantity: newQuantity }
         : item,
     );
   };
@@ -76,7 +76,7 @@ const CartScreen = ({navigation}) => {
           style: 'cancel',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -89,10 +89,10 @@ const CartScreen = ({navigation}) => {
       'Place Order',
       'Are you sure you want to place all this orders?',
       [
-        {text: 'Place Order', onPress: handlePlaceOrder},
-        {text: 'Cancel', style: 'cancel'},
+        { text: 'Place Order', onPress: handlePlaceOrder },
+        { text: 'Cancel', style: 'cancel' },
       ],
-      {cancelable: true},
+      { cancelable: true },
     );
   };
 
@@ -141,7 +141,7 @@ const CartScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={styles.tinyLogo}
-            source={{uri: 'https://img.icons8.com/ios/50/long-arrow-left.png'}}
+            source={{ uri: 'https://img.icons8.com/ios/50/long-arrow-left.png' }}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>My Cart</Text>
@@ -149,14 +149,14 @@ const CartScreen = ({navigation}) => {
       {cartItems.length > 0 ? (
         <>
           <FlatList
-            style={[styles.list, {backgroundColor: '#e1d2c4'}]}
+            style={[styles.list, { backgroundColor: '#F2F3F4' }]}
             data={cartItems}
             // keyExtractor={item => item.id.toString()}
             keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
             }}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View style={styles.card} key={item._id}>
                 <TouchableOpacity
                   onPress={() => handleRemoveFromCart(item)}
@@ -165,7 +165,7 @@ const CartScreen = ({navigation}) => {
                     source={{
                       uri: 'https://img.icons8.com/material-outlined/trash--v1.png',
                     }}
-                    style={{width: 18, height: 18, tintColor: '#000'}}
+                    style={{ width: 18, height: 18, tintColor: '#000' }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -173,15 +173,15 @@ const CartScreen = ({navigation}) => {
                     setModalVisible(true);
                     setSelectedItemId(item._id);
                   }}
-                  style={[styles.voiceButton, {top: '50%'}]}>
+                  style={[styles.voiceButton, { top: '50%' }]}>
                   <Image
                     source={{
                       uri: 'https://img.icons8.com/material-outlined/edit.png',
                     }}
-                    style={{width: 25, height: 25}}
+                    style={{ width: 25, height: 25 }}
                   />
                 </TouchableOpacity>
-                <Image style={styles.cardImage} source={{uri: item.image[0]}} />
+                <Image style={styles.cardImage} source={{ uri: item.image[0] }} />
                 <View style={styles.cardHeader}>
                   <Text style={styles.title}>{item.category}</Text>
                   <Text style={styles.order}>Weight: {item.weight}</Text>
@@ -200,9 +200,9 @@ const CartScreen = ({navigation}) => {
           </TouchableOpacity>
         </>
       ) : (
-        <View style={[styles.container, {justifyContent: 'center'}]}>
+        <View style={[styles.container, { justifyContent: 'center' }]}>
           <Image
-            style={{alignSelf: 'center', width: 100, height: 100}}
+            style={{ alignSelf: 'center', width: 100, height: 100 }}
             source={{
               uri: 'https://img.icons8.com/ios/100/000000/empty-box.png',
             }}
@@ -254,7 +254,7 @@ const CartScreen = ({navigation}) => {
                   maxLength={8}
                 />
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Button
                   title="Submit"
                   color={'#000'}
@@ -265,7 +265,7 @@ const CartScreen = ({navigation}) => {
                     setQuantity('');
                   }}
                 />
-                <View style={{width: 10}} />
+                <View style={{ width: 10 }} />
                 <Button
                   title="Cancel"
                   color={'red'}

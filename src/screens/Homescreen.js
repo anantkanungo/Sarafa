@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e1d2c4',
+    backgroundColor: '#F2F3F4',
   },
   headerText: {
     fontSize: 24,
