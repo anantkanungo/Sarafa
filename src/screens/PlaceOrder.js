@@ -249,35 +249,15 @@ const PlaceOrder = ({navigation}) => {
       // Move the image to the photo editing directory
       const photoEditingPath = RNFS.DocumentDirectoryPath + '/editedPhoto.jpg';
       await RNFS.moveFile(imagePath, photoEditingPath);
+      console.log(photoEditingPath);
 
       // Call PhotoEditor.Edit with the new path
       PhotoEditor.Edit({
         path: photoEditingPath,
-        stickers: [
-          'sticker0',
-          'sticker1',
-          'sticker2',
-          'sticker3',
-          'sticker4',
-          'sticker5',
-          'sticker6',
-          'sticker7',
-          'sticker8',
-          'sticker9',
-          'sticker10',
-        ],
-        colors: undefined,
-        onDone: () => {
+        onDone: editedImagePath => {
           console.log('on done');
-
-          // // Update the state with the edited photo
-          // setSelectedGallery(prevGallery => {
-          //   const editedPhotos = [...prevGallery];
-          //   editedPhotos[index] = {
-          //     uri: photoEditingPath,
-          //   };
-          //   return editedPhotos;
-          // });
+          // Handle saving the edited photo here
+          editImage(editedImagePath);
         },
         onCancel: () => {
           console.log('on cancel');
@@ -287,28 +267,6 @@ const PlaceOrder = ({navigation}) => {
       console.error('Failed to move image:', error);
     }
   };
-
-  // useEffect(() => {
-  //   let photoPath = RNFS.DocumentDirectoryPath + '/photo.jpg';
-  //   let binaryFile = Image.resolveAssetSource(
-  //     require('./src/assets/NG_logo.png'),
-  //   );
-
-  //   RNFetchBlob.config({fileCache: true})
-  //     .fetch('GET', binaryFile.uri)
-  //     .then(resp => {
-  //       RNFS.moveFile(resp.path(), photoPath)
-  //         .then(() => {
-  //           console.log('FILE WRITTEN!');
-  //         })
-  //         .catch(err => {
-  //           console.log(err.message);
-  //         });
-  //     })
-  //     .catch(err => {
-  //       console.log(err.message);
-  //     });
-  // }, []);
 
   // Audio Recording
   const startRecording = async () => {
@@ -371,7 +329,6 @@ const PlaceOrder = ({navigation}) => {
               <View key={index}>
                 <TouchableOpacity onPress={() => editImage(img.uri, index)}>
                   <Image source={img} style={{width: 100, height: 100}} />
-                  <Text>Edit</Text>
                 </TouchableOpacity>
               </View>
             ))}
@@ -382,7 +339,6 @@ const PlaceOrder = ({navigation}) => {
                   source={{uri: photo.path}}
                   style={{width: 100, height: 100}}
                 />
-                <Text>Edit</Text>
               </TouchableOpacity>
             ))}
             <Pressable
