@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {customerLogout} from '../reduxThunk/action/authAction';
+import { connect } from 'react-redux';
+import { customerLogout } from '../reduxThunk/action/authAction';
 import axios from 'axios';
 // import {useNavigation} from '@react-navigation/native';
 
-const OrderScreen = ({customerLogout, details, navigation}) => {
+const OrderScreen = ({ customerLogout, details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState('');
@@ -43,11 +43,11 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
     console.log(orders);
   }, [address, orders]);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigateToOrderPage(item)}>
       <View style={styles.card} key={item._id}>
-        <Image style={styles.cardImage} source={{uri: item.image[0]}} />
+        <Image style={styles.cardImage} source={{ uri: item.image[0] }} />
         <View style={styles.cardHeader}>
           <Text style={styles.title}>{item.category}</Text>
           <Text style={styles.order}>Weight: {item.weight}</Text>
@@ -59,7 +59,7 @@ const OrderScreen = ({customerLogout, details, navigation}) => {
   );
 
   const navigateToOrderPage = selectedTask => {
-    navigation.navigate('OrderPage', {selectedTask});
+    navigation.navigate('OrderPage', { selectedTask });
   };
 
   return (
@@ -121,6 +121,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(OrderScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: '#e1d2c4'
   },
   tinyLogo: {
     width: 30,
@@ -135,15 +136,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   infoContainer: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     marginHorizontal: 15,
     padding: 20,
+    borderWidth: .85,
+    borderColor: 'grey',
   },
   infoText: {
     textAlign: 'center',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    color: 'white',
+    color: '#79443B',
     marginTop: 8,
   },
   titleContainer: {
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Gilroy-Regular',
     padding: 10,
-    color: 'black',
+    color: '#79443B',
   },
   list: {
     flex: 1,
@@ -190,7 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   logoutButtonText: {
-    color: 'black',
+    color: '#79443B',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     marginRight: 15,
