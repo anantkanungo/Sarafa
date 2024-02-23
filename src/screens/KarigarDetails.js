@@ -121,9 +121,9 @@ const styles = StyleSheet.create({
   },
   tinyLogo: {
     width: 30,
-    height: 30,
+    height: 35,
     resizeMode: 'contain',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   headerContainer: {
     justifyContent: 'space-between',
@@ -132,7 +132,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   infoContainer: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
+    borderWidth: 0.85,
+    borderColor: 'grey',
+
     marginHorizontal: 15,
     padding: 20,
   },
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    color: 'white',
+    color: 'black',
     marginTop: 8,
   },
   titleContainer: {
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     padding: 10,
     color: 'black',
+    marginBottom: 10,
   },
   list: {
     flex: 1,
@@ -164,14 +168,15 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     marginHorizontal: 15,
-    borderColor: 'black',
-    borderWidth: 0.5,
+    borderColor: 'grey',
+    borderWidth: 0.85,
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 15,
+
+    backgroundColor: 'white', marginBottom: 15,
   },
   cardHighlight: {
-    backgroundColor: '#ACE1AF',
+    // backgroundColor: '#ACE1AF',
     position: 'absolute',
     height: '100%',
     width: 180,
@@ -179,12 +184,14 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     marginLeft: 15,
+
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: 'Gilroy-Regular',
     color: '#000',
     marginTop: 4,
+    textTransform: 'capitalize',
   },
   description: {
     fontSize: 15,

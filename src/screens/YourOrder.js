@@ -13,32 +13,7 @@ import axios from 'axios';
 
 const YourOrder = ({ customerLogout, route, details, navigation }) => {
   const { orders } = route.params;
-  // const [orders, setOrders] = useState([]);
-  // const [id, setId] = useState(null);
 
-  // const fetchOrders = async () => {
-  //   try {
-  //     const token = details?.token;
-  //     const response = await axios.get(
-  //       'http://139.59.58.151:8000/workshop/task',
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     );
-
-  //     const userData = response.data.data[0];
-  //     setOrders(userData.task || []); // Assuming 'task' contains the array of orders
-  //     setId(userData._id);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchOrders();
-  // }, [orders]);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -127,7 +102,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 27,
-    color: '#79443B',
+    color: 'black',
+    // color: '#79443B',
     fontFamily: 'Gilroy-Regular',
   },
   list: {
@@ -144,11 +120,12 @@ const styles = StyleSheet.create({
   cardContainer: {
     margin: 8,
     marginLeft: 5,
-    borderColor: 'black',
+    borderColor: 'grey',
     borderWidth: 0.25,
     alignItems: 'center',
-    // borderRadius: 10,
     flexDirection: 'row',
+
+    backgroundColor: 'white',
   },
   cardHighlight: {
     // backgroundColor: 'lightpink',
@@ -166,7 +143,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     // fontWeight: 'bold',
     fontFamily: 'Gilroy-Regular',
-    color: '#000',
+    // color: '#000',
+    // color: '#79443B',
+    color: 'grey',
+
+    textTransform: 'capitalize',
     marginTop: 4,
   },
   description: {
@@ -177,7 +158,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   logoutButtonText: {
-    color: '#79443B',
+    color: 'black',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     marginRight: 10,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,13 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {customerLogout} from '../reduxThunk/action/authAction';
+import { connect } from 'react-redux';
+import { customerLogout } from '../reduxThunk/action/authAction';
 import axios from 'axios';
 
-const KarigarInfo = ({route, customerLogout, details, navigation}) => {
+const KarigarInfo = ({ route, customerLogout, details, navigation }) => {
   const [orders, setOrders] = useState([]);
-  const {id} = route.params || {};
+  const { id } = route.params || {};
 
   const fetchOrders = async () => {
     // const id = '659a6b88c3cafd83cfd41cf2';
@@ -82,9 +82,9 @@ const KarigarInfo = ({route, customerLogout, details, navigation}) => {
 
   const [results, setResults] = useState(data);
 
-  const renderCategoryItem = ({item}) => (
+  const renderCategoryItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Karigar_Details', {orders})}
+      onPress={() => navigation.navigate('Karigar_Details', { orders })}
       style={styles.card}>
       <View style={styles.imageContainer}>
         <Image
@@ -111,7 +111,7 @@ const KarigarInfo = ({route, customerLogout, details, navigation}) => {
             }}
           />
         </TouchableOpacity>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           {/* </View> */}
           <TouchableOpacity onPress={() => customerLogout()}>
             <Text style={styles.logoutButtonText}>Logout</Text>

@@ -113,26 +113,33 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   list: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   listContainer: {
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   separator: {
-    marginTop: 10,
+    marginTop: 5,
   },
   card: {
     marginVertical: 10,
     backgroundColor: 'white',
-    flexBasis: '45%',
+    // flexBasis: '45%',
+    // width: '80%',
+    // flex: 1,
     marginHorizontal: 10,
     borderWidth: 0.5,
     borderColor: '#79443B',
+    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    justifyContent: 'space-evenly',
   },
   cardContent: {
-    paddingVertical: 4,
+    // paddingVertical: 4,
     paddingHorizontal: 10,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
   },
   cardImage: {
