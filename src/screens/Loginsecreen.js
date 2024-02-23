@@ -20,12 +20,13 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [buttonVisible, setbuttonVisible] = useState(false);
+  const [invalidUID, setinvalidUID] = useState('');
 
   const handleAddDetail = () => {
     if (password.length < 2) {
       Alert.alert(
         'Login Failed',
-        'Enter valid User Id & Password, please retry',
+        'Enter valid Password, Please try again',
       );
       return;
     }
@@ -45,6 +46,8 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       });
       console.log('Response:', response);
       console.log('Response data:', response.data);
+      // console.log('message user:', response.data.message);
+      setinvalidUID(response.data.message);
       return response.data; // Assuming the OTP is in the response data
     } catch (error) {
       console.error('Failed to get OTP. Error message:', error.message);
@@ -52,14 +55,27 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       throw error; // Rethrow the error to handle it outside this function if needed
     }
   };
-
+  // console.log('this is wrong', invalidUID);
   const handleOTP = async () => {
-    setbuttonVisible('true')
+    if (userId.length < 2) {
+      Alert.alert(
+        'Login Failed',
+        'Enter valid User Id.',
+      );
+      return;
+    }
     // Alert.alert(' Contact NG jewels for OTP');
     try {
       const otp = await getOTP(userId);
-      console.log(otp)
-
+      console.log(otp);
+      if (otp.message === 'Invalid User') {
+        Alert.alert(
+          'Login Failed',
+          'Enter valid User Id.',
+        );
+      } else {
+        setbuttonVisible('true')
+      }
       Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
       // Process the OTP as needed
 
