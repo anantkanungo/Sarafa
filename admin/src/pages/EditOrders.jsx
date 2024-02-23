@@ -21,17 +21,25 @@ const EditOrders = () => {
         "description": "",
         "createdOn": ""
     });
-
+    const token = localStorage.getItem("token");
     const UpdateData = (e) => {
         e.preventDefault();
-        axios.put(`http://139.59.58.151:8000/update/order/${id}`, inputValue).then((res) => {
+        axios.put(`http://139.59.58.151:8000/update/order/${id}`, inputValue, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then((res) => {
             setInputValue(res.data);
             alert("Status Updeted");
             navigate("/manage_user");
         }).catch(error => { console.log(error) })
     }
     useEffect(() => {
-        axios.get(`http://139.59.58.151:8000/update/order/${id}`).then((res) => {
+        axios.get(`http://139.59.58.151:8000/update/order/${id}`, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then((res) => {
             setInputValue(res.data);
         }).catch(error => console.log(error))
     }, [id]);
@@ -44,7 +52,7 @@ const EditOrders = () => {
                 <form method="post" onSubmit={UpdateData} >
                     <div className="row d-flex ">
                         <div className="col-sm-2"></div>
-                        <div className= "col-sm-8">
+                        <div className="col-sm-8">
                             <div className="form-group mt-2">
                                 <label htmlFor="">OrderId</label>
                                 <input type="text" className="form-control" onChange={InputHandler} name="title" value={inputValue.orderId} />
@@ -69,7 +77,7 @@ const EditOrders = () => {
                                 <label htmlFor="">Ordered On</label>
                                 <input type="date" className="form-control" onChange={InputHandler} name="postdate" value={inputValue.createdOn} />
                             </div>
-                            
+
                             <div className="form-group mt-2">
                                 <label htmlFor="">Status Update</label>
                                 <select type="text" className="form-control" onChange={InputHandler} name="jobtype">
