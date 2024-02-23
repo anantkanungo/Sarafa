@@ -12,34 +12,40 @@ const Home = () => {
   const navigate = useNavigate();
   return (
     <>
-     <div className="container mt-5 pt-5">
-     <div className="row mt-2">
-       <div className="col-sm-2 text-center mb-3">
-         <BiTask style={{ fontSize: "60px" }}/>
+      <div className="container mt-5 pt-5 me-auto ms-auto">
+        <div className="row mt-2 me-auto ms-auto text-center">
+          {/* <div className="col-sm-2 text-center mb-3" onClick={()=>{navigate('/task_assign')}} >
+         <BiTask className= 'icon'/>
          <p>Task Assign</p>
-       </div>
-       <div className="col-sm-2 text-center mb-3">
-         <GoBook style={{ fontSize: "60px" }} onClick={()=>{navigate('/catalog_update')}}/>
-         <p>Catalog Update</p>
-       </div>
-       <div className="col-sm-2 text-center mb-3">
-         <GrWorkshop style={{ fontSize: "60px" }}/>
-         <p>Workshops</p>
-       </div>
-       <div className="col-sm-2 text-center mb-3">
-         <BsFillFileEarmarkPersonFill style={{ fontSize: "60px" }}/>
-         <p>Kariger Details</p>
-       </div>
-       <div className="col-sm-2 text-center mb-3">
-         <IoPersonAdd style={{ fontSize: "60px" }}/>
-         <p>Add/Remove Customer</p>
-       </div>
-       <div className="col-sm-2 text-center mb-3">
-         <MdOutlinePreview style={{ fontSize: "60px" }}/>
-         <p>Review Orders</p>
-       </div>
-     </div>
-   </div>
+       </div> */}
+          <div className="col-sm-6 col-md-4 col-lg-2 text-center mb-3 " onClick={() => { navigate('/catalog_menu') }}>
+            <span class="material-symbols-outlined icon">
+              auto_stories
+            </span>
+            <p>Catalogue</p>
+          </div>
+          <div className="col-sm-6 col-md-4 col-lg-2 text-center mb-3" onClick={() => { navigate('/workshops') }}>
+            <span class="material-symbols-outlined icon">
+              workspaces
+            </span>
+            <p>Workshops</p>
+          </div>
+          <div className="col-sm-6 col-md-4 col-lg-2 text-center mb-3" onClick={() => { navigate('/kariger') }}>
+            <span class="material-symbols-outlined icon">
+              patient_list
+            </span>
+            <p>Karigars</p>
+          </div>
+          <div className="col-sm-6 col-md-4 col-lg-2 text-center mb-3" onClick={() => { navigate('/customer') }}>
+            <IoPersonAdd className='icon' />
+            <p>Customers</p>
+          </div>
+          <div className="col-sm-6 col-md-4 col-lg-2 text-center mb-3" onClick={() => { navigate('/review_orders') }}>
+            <MdOutlinePreview className='icon' />
+            <p>Review Orders</p>
+          </div>
+        </div>
+      </div>
       {/* <div className="container  mt-5 pt-5 " >
         <div className='icon-bar row' >
           <div className='card-group mt-5'>
@@ -53,7 +59,7 @@ const Home = () => {
         </div>
      
     </div > */}
-  </>
+    </>
   )
 }
 
