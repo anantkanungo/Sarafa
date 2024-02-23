@@ -2,12 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Card, ListGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+// import Form from 'react-bootstrap/Form';
+// import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import Accordion from 'react-bootstrap/Accordion';
 const CatalogUpdate = (props) => {
@@ -25,18 +25,27 @@ const CatalogUpdate = (props) => {
     "description": "",
     "weight": "",
   });
-
+  
+  const token = localStorage.getItem("token");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const delItem = async (delId) => {
     console.log("delId", delId);
-    const res = await axios.delete(`http://139.59.58.151:8000/delete/catalog/${delId}`);
+    const res = await axios.delete(`http://139.59.58.151:8000/delete/catalog/${delId}`, {
+      headers: {
+          "Authorization": "Bearer " + token
+      }
+  });
     if (res.data.success) { toast.warn("Order deleted..."); }
   }
   const updateItem = async (id) => {
     setShow(true);
     console.log("id", id);
-    const res = await axios.get(`http://139.59.58.151:8000/getcatalog/${id}`);
+    const res = await axios.get(`http://139.59.58.151:8000/getcatalog/${id}`, {
+      headers: {
+          "Authorization": "Bearer " + token
+      }
+  });
     console.log("res", res.data.data);
     setEditCatalog(res.data.data);
     setUpdateCatalog(res.data.data);
@@ -48,7 +57,6 @@ const CatalogUpdate = (props) => {
   }, [editCatalog]);
 
   const saveUpdate = async (id) => {
-    const token = localStorage.getItem("token");
     const form_data = new FormData();
     form_data.append("catalog", updateCatalog.image);
     form_data.append("category", updateCatalog.category);
@@ -74,8 +82,14 @@ const CatalogUpdate = (props) => {
   }
 
   useEffect(() => {
+  const token = localStorage.getItem("token");
+
     const fetchCatalog = async () => {
-      axios.get(`http://139.59.58.151:8000/getallcatalog`).then((res) => {
+      axios.get(`http://139.59.58.151:8000/getallcatalog`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    }).then((res) => {
         console.log(res);
 
 const result = res.data.data.filter((items, index)=>{
@@ -95,14 +109,16 @@ console.log("result", result);
   return (
     <>
       <div className='container mt-5 pt-5'>
-        <div className="pt-2"><h3 className="text-dark text-center mt-2"><strong>Catalog</strong></h3>
+        <div className="pt-2"><h3 className="text-dark text-center mt-2">Catalogue</h3>
           <hr /></div>
+          <ToastContainer/>
         <div className='row'>
           {catalog && catalog.reverse().map((items, index) => {
 
             return (
-              <Card className='m-2' style={{ width: '16rem', }}>
-                <Card.Img variant="top" className='p-2' style={{ width: '14rem', height: '14rem' }} src={items.image[0]} />
+              <div className='col-sm-6 col-md-6 col-lg-3'>
+               <Card className='m-2' style={{ border: "1px outset" }}>
+               <Card.Img variant="top" className='p-2 mt-2 ms-auto me-auto' style={{ width: '14rem', height: '14rem' }} src={items.image[0]} />
                 <Card.Body>
                   <Card.Title>Category: {items.category}</Card.Title>
                 </Card.Body>
@@ -119,6 +135,7 @@ console.log("result", result);
                   <Button className='btn btn-danger ms-2' onClick={() => { delItem(items._id) }}  ><AiFillDelete />Delete</Button>
                 </Card.Body>
               </Card>
+              </div>
             )
           })}
         </div>
@@ -129,7 +146,6 @@ console.log("result", result);
           return (
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
-
                 <Modal.Title></Modal.Title>
               </Modal.Header>
               <Modal.Body className='scrollable'>
