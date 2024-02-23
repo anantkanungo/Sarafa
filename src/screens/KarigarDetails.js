@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,14 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
-const KarigarDetails = ({route, details, navigation}) => {
+const KarigarDetails = ({ route, details, navigation }) => {
   const [order, setOrder] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState('');
-  const {orders} = route.params || [];
+  const { orders } = route.params || [];
   const id = orders[0]._id;
 
   const fetchOrders = async () => {
@@ -33,6 +33,8 @@ const KarigarDetails = ({route, details, navigation}) => {
       setAddress(userData.address);
       setOrder(userData.task || []); // Assuming 'task' contains the array of order
       setIsLoading(false);
+      console.log(userData);
+      console.log(userData.task);
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +45,7 @@ const KarigarDetails = ({route, details, navigation}) => {
     // console.log(id);
   }, [address, order]);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => navigateToOrderPage(item)}>
@@ -56,7 +58,7 @@ const KarigarDetails = ({route, details, navigation}) => {
   );
 
   const navigateToOrderPage = selectedTask => {
-    navigation.navigate('KarigerOrder', {selectedTask});
+    navigation.navigate('KarigerOrder', { selectedTask });
   };
 
   return (

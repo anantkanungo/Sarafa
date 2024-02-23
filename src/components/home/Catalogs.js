@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import localStorage from 'redux-persist/es/storage';
 
 const Catalogs = ({ details, navigation }) => {
   const [orders, setOrders] = useState([]);
@@ -29,6 +30,8 @@ const Catalogs = ({ details, navigation }) => {
       const userData = response.data.data[0];
       setOrders(userData.task || []); // Assuming 'task' contains the array of orders
       setId(userData._id);
+      console.log(userData)
+      console.log(orders)
     } catch (error) {
       console.log(error);
     }
