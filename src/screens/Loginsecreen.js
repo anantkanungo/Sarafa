@@ -98,20 +98,15 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
   }, []); // Empty dependency array ensures useEffect runs only once after the initial render
 
   const handleAddDetail = () => {
-    if (password.length < 3) {
+    if (password.length < 2) {
       Alert.alert(
         'Login Failed',
-        'Enter valid User Id & Password, please retry',
+        'Enter valid Password, Please try again',
       );
-      // setUserId('');
-      // setPassword('');
       return;
     }
 
     getCustomerDetails(userId, password);
-    // setUserId('');
-    // setPassword('');
-    // navigation.navigate('BottomTab'); // Navigate to the home screen
   };
 
   const getOTP = async (userId) => {
@@ -126,6 +121,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       });
       console.log('Response:', response);
       console.log('Response data:', response.data);
+      // console.log('message user:', response.data.message);
       return response.data; // Assuming the OTP is in the response data
     } catch (error) {
       console.error('Failed to get OTP. Error message:', error.message);
@@ -134,32 +130,27 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
     }
   };
 
-  // const handleOTP = async () => {
-  //   setbuttonVisible('true')
-  //   Alert.alert(' Contact NG jewels for OTP', { otp });
-
-  //   try {
-  //     const otp = await getOTP(userId);
-  //     console.log(otp)
-  //     // Alert.alert(' Contact NG jewels for OTP', { otp });
-  //     // Process the OTP as needed
-
-  //     // If you want to include the rest of the original code, you can do it here
-  //   } catch (error) {
-  //     console.error('Error in handleOTP:', error);
-  //   }
-  // };
   const handleOTP = async () => {
+    if (userId.length < 2) {
+      Alert.alert(
+        'Login Failed',
+        'Enter valid User Id.',
+      );
+      return;
+    }
+    // Alert.alert(' Contact NG jewels for OTP');
     try {
       const otp = await getOTP(userId);
       console.log(otp);
-
-      // Set the buttonVisible state
-      setbuttonVisible(true);
-
-      // Display the OTP in the Alert
+      if (otp.message === 'Invalid User') {
+        Alert.alert(
+          'Login Failed',
+          'Enter valid User Id.',
+        );
+      } else {
+        setbuttonVisible('true')
+      }
       Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
-
       // Process the OTP as needed
 
       // If you want to include the rest of the original code, you can do it here
@@ -167,7 +158,6 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       console.error('Error in handleOTP:', error);
     }
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
