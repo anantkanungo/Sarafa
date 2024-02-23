@@ -268,7 +268,7 @@ const CartScreen = ({ navigation }) => {
                 <View style={{ width: 10 }} />
                 <Button
                   title="Cancel"
-                  color={'red'}
+                  color={'black'}
                   onPress={() => {
                     setModalVisible(!modalVisible);
                   }}

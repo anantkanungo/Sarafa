@@ -54,6 +54,7 @@ export default StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
     color: '#000000',
+    backgroundColor: 'white',
   },
   voiceButton: {
     marginLeft: 10,
@@ -61,6 +62,7 @@ export default StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     borderWidth: 1,
     padding: 3.5,
+    backgroundColor: 'white',
     color: '#000000',
   },
   voiceButtonText: {
@@ -77,6 +79,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 1,
     flex: 1,
+    backgroundColor: 'white',
     marginTop: 15,
     color: '#000000',
   },
@@ -85,6 +88,8 @@ export default StyleSheet.create({
     marginHorizontal: 5,
     color: '#000000',
     fontFamily: 'Gilroy-Regular',
+
+    // backgroundColor: 'white',
   },
   tunchView2: {
     borderWidth: 1,
@@ -114,6 +119,8 @@ export default StyleSheet.create({
   input1: {
     height: 45,
     margin: 8,
+
+    backgroundColor: 'white',
     borderWidth: 1,
     padding: 10,
     width: 75,
