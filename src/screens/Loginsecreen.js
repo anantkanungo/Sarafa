@@ -160,6 +160,44 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
     }
   };
 
+  const getOTP = async userId => {
+    try {
+      const params = {
+        userId: userId,
+      };
+      const response = await axios.put(
+        'http://139.59.58.151:8000/getotp',
+        params,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+      console.log('Response:', response);
+      console.log('Response data:', response.data);
+      return response.data; // Assuming the OTP is in the response data
+    } catch (error) {
+      console.error('Failed to get OTP. Error message:', error.message);
+      console.error('Failed to get OTP. Error:', error);
+      throw error; // Rethrow the error to handle it outside this function if needed
+    }
+  };
+
+  const handleOTP = async () => {
+    setbuttonVisible('true');
+    Alert.alert(' Contact NG jewels for OTP');
+    try {
+      const otp = await getOTP(userId);
+      console.log(otp);
+      // Process the OTP as needed
+
+      // If you want to include the rest of the original code, you can do it here
+    } catch (error) {
+      console.error('Error in handleOTP:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.bottomView}>
@@ -181,34 +219,24 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               placeholderTextColor="#B8860B"
             />
           </View>
-          {buttonVisible ? (
-            <>
-              <View style={styles.inputView}>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={e => setPassword(e)}
-                  // label="Password"
-                  secureTextEntry={true}
-                  placeholder="Enter OTP"
-                  placeholderTextColor="#B8860B"
-                  autoCapitalize="none"
-                  textContentType="password"
-                />
-              </View>
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={handleAddDetail}>
-                <Text style={styles.loginButtonText}>Login</Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleOTP}>
-              <Text style={styles.loginButtonText}>Generate OTP</Text>
-            </TouchableOpacity>
-          )}
-
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={e => setPassword(e)}
+              secureTextEntry={true}
+              placeholder="Password"
+              placeholderTextColor="#b8860b"
+              autoCapitalize="none"
+              textContentType="password"
+              maxLength={20}
+              textTansform="lowercase"
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleAddDetail}>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
