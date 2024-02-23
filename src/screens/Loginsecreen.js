@@ -54,7 +54,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
 
   const handleOTP = async () => {
     setbuttonVisible('true')
-    Alert.alert(' Contact NG jewels for OTP');
+    // Alert.alert(' Contact NG jewels for OTP');
 
     try {
       const otp = await getOTP(userId);

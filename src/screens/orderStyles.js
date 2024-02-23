@@ -146,8 +146,8 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
   },
   color: {
-    width: 20,
-    height: 20,
+    width: 10,
+    height: '100%',
     marginRight: 2,
     borderRadius: 10,
   },

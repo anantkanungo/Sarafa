@@ -171,10 +171,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 15,
+    marginTop: 10,
   },
   cardHighlight: {
     // backgroundColor: 'white',
-    backgroundColor: '#ACE1AF',
+    // backgroundColor: '#ACE1AF',
     position: 'absolute',
     height: '100%',
     width: 180,
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     marginLeft: 15,
+    paddingTop: 2,
   },
   title: {
     fontSize: 22,
@@ -196,6 +198,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Gilroy-Regular',
     // color: 'grey',
     marginTop: 5,
+
+    marginBottom: 10,
   },
   logoutButtonText: {
     // color: 'black',
