@@ -108,7 +108,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(OrderScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
+    backgroundColor: '#E6E6E6',
   },
   tinyLogo: {
     width: 30,
@@ -124,19 +125,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoContainer: {
-    // backgroundColor: '',
-    // backgroundColor: '#e1d2c4',
-
-    backgroundColor: '#C19A6B',
+    backgroundColor: 'white',
     marginHorizontal: 15,
     padding: 20,
+    borderWidth: 0.85,
+    borderColor: 'grey',
   },
   infoText: {
     textAlign: 'center',
     fontSize: 22,
     fontFamily: 'Gilroy-Regular',
-    color: 'white',
-    // color: '#79443B',
+    // color: 'white',
+    color: '#79443B',
     marginTop: 8,
   },
   titleContainer: {
@@ -154,16 +154,20 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-  listContainer: {},
+  listContainer: {
+
+    // backgroundColor: 'white',
+  },
   separator: {
-    // height: 1,
+    height: 1,
     // backgroundColor: 'black',
     // marginVertical: 10,
   },
   cardContainer: {
     marginHorizontal: 15,
-    // borderColor: 'black',
-    // borderWidth: 5,
+    borderColor: 'grey',
+    backgroundColor: 'white',
+    borderWidth: 0.85,
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 15,
