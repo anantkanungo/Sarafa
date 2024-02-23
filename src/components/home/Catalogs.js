@@ -44,14 +44,14 @@ const Catalogs = ({ details, navigation }) => {
   const data = [
     {
       id: 1,
-      title: 'All Orders / सभी ऑर्डर',
+      title: 'All Orders',
       componentName: 'Your_Order',
       image:
         'https://img.icons8.com/ios-glyphs/FAB005/select-all.png'
     },
     {
       id: 2,
-      title: 'Karigar Details / कारीगर जानकारी',
+      title: 'Karigar Details',
       componentName: 'KarigarInfo',
       image:
         "https://img.icons8.com/glyph-neue/FAB005/about-us-male.png"
