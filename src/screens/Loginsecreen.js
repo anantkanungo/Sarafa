@@ -105,7 +105,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               placeholderTextColor="#B8860B"
             />
           </View>
-          <View style={styles.inputView}>
+          {/* <View style={styles.inputView}>
             <TextInput
               style={styles.input}
               onChangeText={e => setemail(e)}
@@ -115,7 +115,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               placeholderTextColor="#B8860B"
               keyboardType='email-address'
             />
-          </View>
+          </View> */}
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>

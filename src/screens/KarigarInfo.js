@@ -37,50 +37,9 @@ const KarigarInfo = ({ route, customerLogout, details, navigation }) => {
 
   useEffect(() => {
     fetchOrders();
-    // console.log(orders);
+    console.log(orders);
     // console.log(id);
   }, [orders]);
-
-  const data = [
-    {
-      id: 1,
-      title: 'Karigar_Name',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-    {
-      id: 2,
-      title: 'Karigar Details 2',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-    {
-      id: 3,
-      title: 'Karigar Details 3',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-    {
-      id: 4,
-      title: 'Karigar Details 4',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-    {
-      id: 5,
-      title: 'Sample_name',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-    {
-      id: 6,
-      title: 'Karigar Details 6',
-      image:
-        'https://static.vecteezy.com/system/resources/previews/015/271/968/non_2x/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg',
-    },
-  ];
-
-  const [results, setResults] = useState(data);
 
   const renderCategoryItem = ({ item }) => (
     <TouchableOpacity
