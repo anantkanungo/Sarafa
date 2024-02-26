@@ -34,7 +34,7 @@ const fetchOrders = async () => {
       },
     });
     // console.log(response);
-    console.log(response.data.data);
+    // console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     console.log(error);
@@ -110,6 +110,7 @@ const OrderScreen = ({ navigation }) => {
       fetchData();
     }
   }, [autoRefresh]);
+  console.log("Orders", orders)
 
   const handleCardPress = order => {
     setSelectedOrder(order);

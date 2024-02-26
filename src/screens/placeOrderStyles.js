@@ -191,10 +191,10 @@ export default StyleSheet.create({
     elevation: 5,
   },
   buttonClose: {
-    backgroundColor: 'red',
+    // backgroundColor: 'grey',
   },
   textStyle: {
-    color: '#000',
+    color: 'black',
     fontFamily: 'Gilroy-Regular',
     textAlign: 'center',
   },
