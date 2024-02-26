@@ -129,7 +129,6 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       throw error; // Rethrow the error to handle it outside this function if needed
     }
   };
-
   const handleOTP = async () => {
     if (userId.length < 2) {
       Alert.alert(
@@ -151,6 +150,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
         setbuttonVisible('true')
       }
       Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
+      console.log(email);
       // Process the OTP as needed
 
       // If you want to include the rest of the original code, you can do it here
@@ -165,22 +165,22 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
         <View>
           <Image style={styles.image} source={BackgroundImage} />
           <View style={{ marginTop: 100 }}>
-            <Text style={styles.loginText}>NG JEWELLERS</Text>
+            <Text style={styles.loginText}>NG Jewellers</Text>
             <Text style={styles.loginText1}>Customer</Text>
           </View>
         </View>
         <View style={styles.wrapper}>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={e => setUserId(e)}
-              autoCapitalize="none"
-              placeholder="User Id"
-              placeholderTextColor="#B8860b"
-              maxLength={20}
-              textTansform="lowercase"
-            />
-          </View>
+          {/* <View style={styles.inputView}>
+<TextInput
+style={styles.input}
+onChangeText={e => setemail(e)}
+// label="User"
+autoCapitalize="none"
+placeholder="Enter Your Email"
+placeholderTextColor="#B8860B"
+keyboardType='email-address'
+/>
+</View> */}
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>
@@ -202,11 +202,23 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               </TouchableOpacity>
             </>
           ) : (
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleOTP}>
-              <Text style={styles.loginButtonText}>Generate OTP</Text>
-            </TouchableOpacity>
+            <>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={e => setUserId(e)}
+                  // label="User"
+                  autoCapitalize="none"
+                  placeholder="User Id"
+                  placeholderTextColor="#B8860B"
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={handleOTP}>
+                <Text style={styles.loginButtonText}>Generate OTP</Text>
+              </TouchableOpacity>
+            </>
           )}
         </View>
       </View>
