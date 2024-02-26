@@ -95,27 +95,17 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
           </View>
         </View>
         <View style={styles.wrapper}>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={e => setUserId(e)}
-              // label="User"
-              autoCapitalize="none"
-              placeholder="Workshop Id"
-              placeholderTextColor="#B8860B"
-            />
-          </View>
           {/* <View style={styles.inputView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={e => setemail(e)}
-              // label="User"
-              autoCapitalize="none"
-              placeholder="Enter Your Email"
-              placeholderTextColor="#B8860B"
-              keyboardType='email-address'
-            />
-          </View> */}
+<TextInput
+style={styles.input}
+onChangeText={e => setemail(e)}
+// label="User"
+autoCapitalize="none"
+placeholder="Enter Your Email"
+placeholderTextColor="#B8860B"
+keyboardType='email-address'
+/>
+</View> */}
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>
@@ -137,11 +127,23 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               </TouchableOpacity>
             </>
           ) : (
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleOTP}>
-              <Text style={styles.loginButtonText}>Generate OTP</Text>
-            </TouchableOpacity>
+            <>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={e => setUserId(e)}
+                  // label="User"
+                  autoCapitalize="none"
+                  placeholder="Workshop Id"
+                  placeholderTextColor="#B8860B"
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={handleOTP}>
+                <Text style={styles.loginButtonText}>Generate OTP</Text>
+              </TouchableOpacity>
+            </>
           )}
 
         </View>
