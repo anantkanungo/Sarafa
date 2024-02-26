@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Text,
@@ -12,19 +11,22 @@ import {
 import styles from './loginStyles';
 import { connect } from 'react-redux';
 import { AuthFunction, customerLogin } from '../reduxThunk/action/authAction';
+// You can use your custom background image
 import BackgroundImage from '../assets/NG_logo.png';
+
 import axios from 'axios';
 
 const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [buttonVisible, setbuttonVisible] = useState(false);
+  const [email, setemail] = useState('');
 
   const handleAddDetail = () => {
     if (password.length < 2) {
       Alert.alert(
         'Login Failed',
-        'Enter valid User Id & Password, please retry',
+        'Enter valid Password, Please try again',
       );
       return;
     }
@@ -44,6 +46,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       });
       console.log('Response:', response);
       console.log('Response data:', response.data);
+      // console.log('message user:', response.data.message);
       return response.data; // Assuming the OTP is in the response data
     } catch (error) {
       console.error('Failed to get OTP. Error message:', error.message);
@@ -51,17 +54,28 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       throw error; // Rethrow the error to handle it outside this function if needed
     }
   };
-
   const handleOTP = async () => {
-    setbuttonVisible('true')
+    if (userId.length < 2) {
+      Alert.alert(
+        'Login Failed',
+        'Enter valid User Id.',
+      );
+      return;
+    }
     // Alert.alert(' Contact NG jewels for OTP');
-
     try {
       const otp = await getOTP(userId);
-      console.log(otp)
+      console.log(otp);
+      if (otp.message === 'Invalid User') {
+        Alert.alert(
+          'Login Failed',
+          'Enter valid User Id.',
+        );
+      } else {
+        setbuttonVisible('true')
+      }
       Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
-
-
+      console.log(email);
       // Process the OTP as needed
 
       // If you want to include the rest of the original code, you can do it here
@@ -81,16 +95,17 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
           </View>
         </View>
         <View style={styles.wrapper}>
-          <View style={styles.inputView}>
+          {/* <View style={styles.inputView}>
             <TextInput
               style={styles.input}
-              onChangeText={e => setUserId(e)}
+              onChangeText={e => setemail(e)}
               // label="User"
               autoCapitalize="none"
-              placeholder="Distributor Id"
+              placeholder="Enter Your Email"
               placeholderTextColor="#B8860B"
+              keyboardType='email-address'
             />
-          </View>
+          </View> */}
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>
@@ -112,11 +127,23 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
               </TouchableOpacity>
             </>
           ) : (
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleOTP}>
-              <Text style={styles.loginButtonText}>Generate OTP</Text>
-            </TouchableOpacity>
+            <>
+              <View style={styles.inputView}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={e => setUserId(e)}
+                  // label="User"
+                  autoCapitalize="none"
+                  placeholder="Distributor Id"
+                  placeholderTextColor="#B8860B"
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={handleOTP}>
+                <Text style={styles.loginButtonText}>Generate OTP</Text>
+              </TouchableOpacity>
+            </>
           )}
 
         </View>
@@ -142,5 +169,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
-
-
