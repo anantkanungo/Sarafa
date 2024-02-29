@@ -20,6 +20,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [buttonVisible, setbuttonVisible] = useState(false);
+  const [email, setemail] = useState('');
 
   const handleAddDetail = () => {
     if (password.length < 2) {
@@ -74,18 +75,20 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       } else {
         setbuttonVisible('true')
       }
-      // Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
+      // Process the OTP as needed
+
+      // If you want to include the rest of the original code, you can do it here
     } catch (error) {
       console.error('Error in handleOTP:', error);
     }
   };
-
   // Device info
   const deviceJSON = {};
   deviceJSON.systemName = DeviceInfo.getSystemName();
   deviceJSON.systemVersion = DeviceInfo.getSystemVersion();
   deviceJSON.appName = DeviceInfo.getApplicationName();
   deviceJSON.brand = DeviceInfo.getBrand();
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,6 +101,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
           </View>
         </View>
         <View style={styles.wrapper}>
+
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>
