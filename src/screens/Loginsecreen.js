@@ -18,6 +18,7 @@ import BackgroundImage from '../assets/NG_logo.png';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import axios from 'axios';
 import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+import DeviceInfo from 'react-native-device-info';
 
 const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
   const [userId, setUserId] = useState('');
@@ -95,6 +96,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
 
   useEffect(() => {
     requestPermissions();
+    // console.log(deviceJSON);
   }, []); // Empty dependency array ensures useEffect runs only once after the initial render
 
   const handleAddDetail = () => {
@@ -113,6 +115,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
     try {
       const params = {
         userId: userId,
+        device_info: deviceJSON
       };
       const response = await axios.put('http://139.59.58.151:8000/getotp', params, {
         headers: {
@@ -137,7 +140,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       );
       return;
     }
-    // Alert.alert(' Contact NG jewels for OTP');
+    Alert.alert(' Contact NG jewels for OTP');
     try {
       const otp = await getOTP(userId);
       console.log(otp);
@@ -149,8 +152,6 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       } else {
         setbuttonVisible('true')
       }
-      Alert.alert('Contact NG jewels for OTP', `OTP: ${JSON.stringify(otp.data.password)}`);
-      console.log(email);
       // Process the OTP as needed
 
       // If you want to include the rest of the original code, you can do it here
@@ -158,6 +159,13 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
       console.error('Error in handleOTP:', error);
     }
   };
+
+  // Device info
+  const deviceJSON = {};
+  deviceJSON.systemName = DeviceInfo.getSystemName();
+  deviceJSON.systemVersion = DeviceInfo.getSystemVersion();
+  deviceJSON.appName = DeviceInfo.getApplicationName();
+  deviceJSON.brand = DeviceInfo.getBrand();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -170,17 +178,7 @@ const LoginScreen = ({ getCustomerDetails, props, navigation }) => {
           </View>
         </View>
         <View style={styles.wrapper}>
-          {/* <View style={styles.inputView}>
-<TextInput
-style={styles.input}
-onChangeText={e => setemail(e)}
-// label="User"
-autoCapitalize="none"
-placeholder="Enter Your Email"
-placeholderTextColor="#B8860B"
-keyboardType='email-address'
-/>
-</View> */}
+
           {buttonVisible ? (
             <>
               <View style={styles.inputView}>
