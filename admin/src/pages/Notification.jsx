@@ -12,11 +12,19 @@ const Notification = () => {
 
     source.onmessage = function (event) {
       const data = JSON.parse(event.data);
+      const currentTime = new Date().getTime();
+      // Include a timestamp for when the OTP was created
+      const otpWithTimestamp = { ...data.otp, timestamp: currentTime };
       setOtps(prevOtps => {
-        const updatedOtps = [...prevOtps, data.otp];
+        const updatedOtps = [...prevOtps, otpWithTimestamp];
         localStorage.setItem('otps', JSON.stringify(updatedOtps));
         return updatedOtps;
       });
+      // setOtps(prevOtps => {
+      //   const updatedOtps = [...prevOtps, data.otp];
+      //   localStorage.setItem('otps', JSON.stringify(updatedOtps));
+      //   return updatedOtps;
+      // });
     };
     console.log("otp", otps);
     source.onerror = function (error) {
@@ -29,22 +37,43 @@ const Notification = () => {
       source.close();
     };
   }, []); // Empty dependency array ensures this effect runs only once on mount
+  useEffect(() => {
+    // This function will be called every 1000 milliseconds (1 second)
+    const interval = setInterval(() => {
+      // Logic to check and remove expired OTPs
+      const currentTime = new Date().getTime();
+      const duration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      const updatedOtps = otps.filter(otp => currentTime - otp.timestamp < duration);
+      localStorage.setItem('otps', JSON.stringify(updatedOtps));
+      setOtps(updatedOtps);
+    }, 1000); // Run this every 1 second
 
+    // Cleanup function to clear the interval when the component unmounts or when otps changes
+    return () => clearInterval(interval);
+  }, [otps]);
   return (
     <div className='container mt-5 pt-5'>
-      <div className="pt-3"><h3 className="text-dark text-center mt-4">Notification</h3>
-        <hr /></div>
+      <div className="pt-3">
+        <h3 className="text-dark text-center mt-4">Notification</h3>
+        <hr />
+      </div>
       <ListGroup as="ol" numbered>
-        <div className='row '>
-          {otps.reverse().map((otp, index) => {
-            return (
+        <div className='row'>
+          {otps.length === 0 ? (
+            <div className="pt-3">
+              <h3 className="text-dark text-center mt-4">No notification is there!</h3>
+            </div>
+          ) : (
+            otps.reverse().map((otp, index) => (
               <ListGroup.Item
                 as="li"
-                className="d-flex  align-items-start" >
-                <div className=" me-auto "><span class="material-symbols-outlined">
-                  news
-                </span>
-                  <div key={index}><h6>Name:{otp.name}</h6>
+                className="d-flex align-items-start"
+                key={index} // It's important to have a unique key for each child in a list
+              >
+                <div className="me-auto">
+                  <span className="material-symbols-outlined">news</span>
+                  <div>
+                    <h6>Name:{otp.name}</h6>
                     <h6>Role:{otp.role}</h6>
                     <p>UserId: <b>{otp.userId}</b><br />
                       Received OTP: <b>{otp.password}</b></p>
@@ -53,8 +82,8 @@ const Notification = () => {
                   </div>
                 </div>
               </ListGroup.Item>
-            )
-          })}
+            ))
+          )}
         </div>
       </ListGroup>
     </div>
