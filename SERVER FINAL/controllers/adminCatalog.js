@@ -112,9 +112,11 @@ const AddCatCategory = async (req, res) => {
     // console.log("files1", req.files);
     // console.log("files2", req.files.catalog);
 
-
-
     try {
+const getItem = await Catalog.find({category: req.body.category})
+if(getItem){
+    res.json({message: "this category is aldreay in catalogue menu"})
+} else{
         const result = new CatalogMenu({
             category: data.category,
             image: req.file.location
@@ -126,10 +128,11 @@ const AddCatCategory = async (req, res) => {
         } else {
             res.json({ message: "Not Found", success: true });
         }
+    }
     } catch (error) {
         console.log("error", error);
     }
-
+    
 };
 const GetCatCategory = async (req, res) => {
     try {
@@ -193,7 +196,7 @@ const UpdateCatalog = async (req, res) => {
     console.log("req.params", req.params);
 
     try {
-        let isMatch = await Catalog.findOneAndUpdate({ _id: req.params.id }, {
+        let isMatch = await Catalog.findByIdAndUpdate(req.params.id, {
             $set: {
                 image: req.body.image,
                 category: req.body.category,
@@ -204,9 +207,7 @@ const UpdateCatalog = async (req, res) => {
                 weight: req.body.weight,
                 tunch: req.body.tunch,
             }
-        },
-            { new: true }
-        );
+        }, { new: true });
         console.log("CatalogUpdate", isMatch);
         if (isMatch) {
             res.json({ data: isMatch, success: true })
