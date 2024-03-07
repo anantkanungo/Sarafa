@@ -8,6 +8,9 @@ const OrderScreen = ({ customerLogout, details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [address, setAddress] = useState('');
   const [uid, setUid] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+
 
   const fetchOrders = async () => {
     try {
@@ -52,6 +55,14 @@ const OrderScreen = ({ customerLogout, details, navigation }) => {
       </View>
     </TouchableOpacity>
   );
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await fetchOrders();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -86,10 +97,14 @@ const OrderScreen = ({ customerLogout, details, navigation }) => {
         keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={renderItem}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
     </View>
   );
 };
+
+
 
 const mapStateToProps = state => {
   return {
