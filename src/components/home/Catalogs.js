@@ -14,6 +14,8 @@ import localStorage from 'redux-persist/es/storage';
 const Catalogs = ({ details, navigation }) => {
   const [orders, setOrders] = useState([]);
   const [id, setId] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
 
   const fetchOrders = async () => {
     try {
@@ -79,6 +81,18 @@ const Catalogs = ({ details, navigation }) => {
       </View>
     </TouchableOpacity>
   );
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Call the function that fetches your data
+      await fetchOrders();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -86,6 +100,8 @@ const Catalogs = ({ details, navigation }) => {
         <Text style={styles.titleText}>Welcome to Workshop</Text>
       </View>
       <FlatList
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
         style={styles.list}
         contentContainerStyle={styles.listContainer}
         data={data}
