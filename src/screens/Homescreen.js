@@ -1,19 +1,35 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-// https://github.com/ladjs/react-native-loading-spinner-overlay
-// import Spinner from 'react-native-loading-spinner-overlay';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import Header from '../components/home/Header.js';
 import Catalogs from '../components/home/Catalogs.js';
 
 const HomeScreen = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    // Add your refresh logic here
+    // For example, you can fetch new data from your server
+
+    // Simulating a delay for demonstration purposes
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <View style={{ alignItems: 'center' }}>
-        <Text style={styles.headerText}>Catalogue</Text>
-      </View>
-      <Catalogs navigation={navigation} />
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.headerText}>Catalogue</Text>
+        </View>
+        <Catalogs navigation={navigation} />
+      </ScrollView>
     </SafeAreaView>
   );
 };
