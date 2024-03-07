@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,13 @@ import {
   FlatList,
 } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-const OrderPage = ({ details, route, navigation }) => {
+const OrderPage = ({details, route, navigation}) => {
   const [audioPlayer, setAudioPlayer] = useState();
   const [audioURL, setAudioURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const { selectedTask } = route.params;
+  const {selectedTask} = route.params;
 
   // const taskComplete = () => {
   //   Alert.alert('Your task is complete');
@@ -28,7 +28,7 @@ const OrderPage = ({ details, route, navigation }) => {
       const token = details?.token;
 
       // Update the statusIs field to "completed"
-      const updatedTask = { ...selectedTask, statusIs: 'completed' };
+      const updatedTask = {...selectedTask, statusIs: 'completed'};
 
       const id = selectedTask._id;
       console.log(id);
@@ -118,14 +118,14 @@ const OrderPage = ({ details, route, navigation }) => {
         <FlatList
           data={selectedTask?.image} // Assuming selectedTask.images is an array of image URIs
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ImageZoom', {
                   imageUrl: item,
                 })
               }>
-              <Image style={styles.image} source={{ uri: item }} />
+              <Image style={styles.image} source={{uri: item}} />
             </TouchableOpacity>
           )}
           horizontal
@@ -136,7 +136,7 @@ const OrderPage = ({ details, route, navigation }) => {
             justifyContent: 'center',
           }}>
           <Text style={styles.title}>{selectedTask.category}</Text>
-          <View style={{ flexDirection: 'row', margin: 10 }}>
+          <View style={{flexDirection: 'row', margin: 10}}>
             <Text style={styles.description}>Audio: </Text>
             {Array.isArray(audioURL) && audioURL.length > 0 ? (
               <TouchableOpacity
@@ -162,6 +162,7 @@ const OrderPage = ({ details, route, navigation }) => {
               <Text style={styles.description}>No Audio Available</Text>
             )}
           </View>
+          <Text style={styles.description}>Date: {new Date(selectedTask.createdAt).toLocaleString()}</Text>
           <Text style={styles.description}>Size: {selectedTask.size}</Text>
           <Text style={styles.description}>
             Quantity: {selectedTask.quantity}
@@ -186,9 +187,11 @@ const OrderPage = ({ details, route, navigation }) => {
         </View>
       </ScrollView>
       <View style={styles.sbContainer}>
-        <TouchableOpacity onPress={taskComplete}>
-          <Text style={styles.SubmitButtonText}>Task Complete</Text>
-        </TouchableOpacity>
+        {selectedTask.statusIs !== 'completed' && (
+          <TouchableOpacity onPress={taskComplete}>
+            <Text style={styles.SubmitButtonText}>Task Complete</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
