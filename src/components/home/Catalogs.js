@@ -15,6 +15,8 @@ import FastImage from 'react-native-fast-image';
 const Catalogs = ({ details, navigation }) => {
   const [catalog, setCatalog] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
 
   const fetchCatalog = async () => {
     try {
@@ -56,6 +58,19 @@ const Catalogs = ({ details, navigation }) => {
       clearInterval(intervalId); // Clear the interval when the component unmounts
     };
   }, []);
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const data = await fetchCatalog();
+      setCatalog(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -64,6 +79,8 @@ const Catalogs = ({ details, navigation }) => {
       ) : catalog && catalog.length > 0 ? (
         <>
           <FlatList
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
             style={styles.list}
             contentContainerStyle={styles.listContainer}
             data={catalog}

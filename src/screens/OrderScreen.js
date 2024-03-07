@@ -52,6 +52,8 @@ const OrderScreen = ({ navigation }) => {
   const [statusInput, setStatusInput] = useState('');
   const [clearFilterStatus, setClearFilterStatus] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
 
   // Function to filter options by status
   const filterOptionsByStatus = statusIs => {
@@ -154,6 +156,18 @@ const OrderScreen = ({ navigation }) => {
       }
     };
   }, []);
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const data = await fetchOrders();
+      setOrders(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -172,6 +186,8 @@ const OrderScreen = ({ navigation }) => {
       ) : orders.length > 0 ? (
         <>
           <FlatList
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
             style={styles.list}
             data={orders}
             keyExtractor={item => {
