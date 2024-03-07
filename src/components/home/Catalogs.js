@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Image,
   FlatList,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -17,11 +17,9 @@ const Catalogs = ({ details, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-
   const fetchCatalog = async () => {
     try {
       const token = details?.token;
-
       const response = await axios.get(
         'http://139.59.58.151:8000/getallcatalog/category',
         {
@@ -30,47 +28,39 @@ const Catalogs = ({ details, navigation }) => {
           },
         },
       );
-      // console.log(response);
-      // console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.log(error);
+      throw error; // Re-throw the error to be caught by the caller
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const data = await fetchCatalog();
+      setCatalog(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchCatalog();
-        setCatalog(data);
-        // console.log('Data: ', data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
-
-    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
   }, []);
+
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      const data = await fetchCatalog();
-      setCatalog(data);
+      await fetchData();
     } catch (error) {
       console.error(error);
     } finally {
       setRefreshing(false);
     }
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -86,18 +76,17 @@ const Catalogs = ({ details, navigation }) => {
             data={catalog}
             horizontal={false}
             numColumns={2}
-            keyExtractor={item => {
+            keyExtractor={(item) => {
               return item._id.toString();
             }}
             ItemSeparatorComponent={() => {
               return <View style={styles.separator} />;
             }}
-            renderItem={catalog => {
+            renderItem={(catalog) => {
               const item = catalog.item;
               return (
                 <TouchableOpacity
                   style={styles.card}
-                  // onPress={() => navigation.navigate('Catagories')}
                   onPress={() =>
                     navigation.navigate('Catagories', { category: item.category })
                   }>
@@ -119,21 +108,18 @@ const Catalogs = ({ details, navigation }) => {
           />
         </>
       ) : (
-        <Text
-          style={{
-            textAlign: 'center',
-            color: '#000',
-            fontSize: 22,
-            fontFamily: 'Gilroy-Regular',
-          }}>
-          Your Orders is empty!
-        </Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>Your Orders is empty!</Text>
+          <TouchableOpacity onPress={handleRefresh}>
+            <Text style={styles.refreshText}>Click here to Refresh</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loading: state.loading,
     details: state.login.details,
@@ -146,7 +132,6 @@ export default connect(mapStateToProps)(Catalogs);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 20,
   },
   list: {
     paddingHorizontal: 10,
@@ -154,16 +139,13 @@ const styles = StyleSheet.create({
   listContainer: {
     alignItems: 'center',
   },
-  separator: {
-    // marginTop: 10,
-  },
-  /******** card **************/
+  separator: {},
   card: {
     marginVertical: 8,
     backgroundColor: 'white',
     flexBasis: '45%',
     marginHorizontal: 10,
-    elevation: 5, // Android
+    elevation: 5,
   },
   cardContent: {
     paddingVertical: 4,
@@ -187,13 +169,26 @@ const styles = StyleSheet.create({
     shadowRadius: 5.46,
     elevation: 9,
   },
-  /******** card components **************/
   title: {
     fontFamily: 'Gilroy-Regular',
     fontSize: 18,
     flex: 1,
     color: '#000',
-    // fontWeight: 'bold',
     textTransform: 'uppercase',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 22,
+    fontFamily: 'Gilroy-Regular',
+  },
+  refreshText: {
+    color: 'blue',
+    marginTop: 10,
   },
 });
