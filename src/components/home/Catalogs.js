@@ -33,7 +33,7 @@ const Catalogs = ({ details, navigation }) => {
       setOrders(userData.task || []); // Assuming 'task' contains the array of orders
       setId(userData._id);
       console.log(userData)
-      console.log(orders)
+      console.log(userData.task); // Log the task array instead of 'orders'
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +41,7 @@ const Catalogs = ({ details, navigation }) => {
 
   useEffect(() => {
     fetchOrders();
-  }, [orders, id]);
+  }, [id]);
 
   const data = [
     {
