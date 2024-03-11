@@ -202,7 +202,7 @@ const PlaceOrder = ({ navigation }) => {
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
       includeBase64: true,
-      compressImageQuality: 0.5,
+      // compressImageQuality: 0.5,
     })
       .then(image => {
         console.log('image', image);
@@ -226,7 +226,7 @@ const PlaceOrder = ({ navigation }) => {
       const images = await ImagePicker.openPicker({
         width: 300,
         height: 300,
-        compressImageQuality: 0.5,
+        // compressImageQuality: 0.5,
         multiple: true,
         includeBase64: true,
         includeExif: true,
