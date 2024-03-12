@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import { Badge, Card, ListGroup, Offcanvas } from 'react-bootstrap';
+import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -31,7 +32,7 @@ const ReviewOrders = () => {
   const inputHandler = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value })
   }
-  
+
 
   const handlecanvaClose = () => setCanvashow(false);
   const handlecanvaShow = () => setCanvashow(true);
@@ -53,7 +54,7 @@ const ReviewOrders = () => {
   //   if (res.data.success) { toast.warn("Order deleted..."); }
   // }}
   const delItem = async (delId) => {
-    console.log("delId", delId);
+    // console.log("delId", delId);
     if (window.confirm("Do you want to delete this?")) {
       try {
         const res = await axios.delete(`http://139.59.58.151:8000/delete/order/${delId}`, {
@@ -78,7 +79,7 @@ const ReviewOrders = () => {
   const updateItem = async (id) => {
     try {
       setShow(true);
-      console.log("id", id);
+      // console.log("id", id);
       const res = await axios.get(`http://139.59.58.151:8000/getallorders/${id}`, {
         headers: {
           "Authorization": 'Bearer ' + token,
@@ -127,11 +128,38 @@ const ReviewOrders = () => {
     }
 
   }
+  const UpdateStatus = async (id) => {
+    try {
+      console.log("id", id);
+      const token = localStorage.getItem("token");
+      const data = { statusIs: currentStatus }
+      const res = await axios.put(`http://139.59.58.151:8000/update/task/${id}`, data, {
+        headers: {
+          "Authorization": 'Bearer ' + token,
+          Accept: "application/json",
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log("res", res.data);
+      // setEditOrder(res.data.data);
+      setShow(false);
+      if (res.data.success) {
+        toast.success('Order updated successfully');
+        const updatedOrders = orders.map((order) => (order._id === editOrder._id ? res.data.data : order));
+        setOrders(updatedOrders);
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Network Error")
+
+    }
+
+  }
 
   useEffect(() => {
     try {
       const fetchOrders = async () => {
-        axios.get(`http://139.59.58.151:8000/getallorders`, {
+        await axios.get(`http://139.59.58.151:8000/getallorders`, {
           headers: {
             "Authorization": 'Bearer ' + token,
             Accept: "application/json",
@@ -248,20 +276,34 @@ const ReviewOrders = () => {
             return (
               <div className='col-sm-6 col-md-6 col-lg-3'>
                 <Card className='m-2' style={{ border: "1px outset" }}>
-                  <div style={{ height: "10px" }}>{(items.urgent) === true ? (<span className="material-symbols-outlined icon-end" style={{ color: "#d42202", }}>
-                    {/* hourglass_bottom */}
-                    {/* stars */}
-                    notification_important
-                  </span>) : null}
-                  </div>
-                  <div style={{ height: "10px" }}>{(items.statusIs) == "completed" ? (<span className="material-symbols-outlined icon-end" style={{ color: "#d42202", }}>
+                  <div className='row d-flex '>
+                    <div className='col-sm-10'></div>
+                 
+                  <div  className='col-sm-1' style={{ height: "10px"}}>{(items.statusIs) == "completed" ? (<span className="material-symbols-outlined icon-end" style={{ color: "green"}}>
                     {/* hourglass_bottom */}
                     {/* stars */}
                     done
                   </span>) : null}
                   </div>
+                  <div className='col-sm-1' style={{ height: "10px" }}>{(items.urgent) === true ? (<span className="material-symbols-outlined icon-end" style={{ color: "#d42202", }}>
+                    {/* hourglass_bottom */}
+                    {/* stars */}
+                    notification_important
+                  </span>) : null}
+                  </div>
+                  </div>
+                  {/* <Card.Img variant="top" className='p-2 ms-auto me-auto' style={{ width: '14rem', height: '14rem' }} src={items.image[0]} />  */}
+                  <Carousel >
+                    {items.image.map((img, index) => (
+                      <Carousel.Item key={index}>
+                        <Card.Img variant="top" className='d-block p-2 ms-auto me-auto' style={{ width: '14rem', height: '14rem' }}
 
-                  <Card.Img variant="top" className='p-2 ms-auto me-auto' style={{ width: '14rem', height: '14rem' }} src={items.image[0]} />
+                          src={img}
+                          alt="image"
+                        />
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
                   <Card.Body>
                     <Card.Title><h6>OrderBy: {items.createdBy.name}</h6></Card.Title>
                     <Card.Title><h6>OrderId: {items.orderId}</h6></Card.Title>
@@ -294,7 +336,18 @@ const ReviewOrders = () => {
               <Modal.Header closeButton>
               </Modal.Header>
               <Modal.Body className='scrollable'>
-                <img variant="top" src={items.image[0]} className='img-thumbnail ' />
+                {/* <img variant="top" src={items.image[0]} className='img-thumbnail ' /> */}
+                <Carousel >
+                  {items.image.map((img, index) => (
+                    <Carousel.Item key={index}>
+                      <Card.Img variant="top" className='d-block p-2 ms-auto me-auto' style={{ width: '14rem', height: '14rem' }}
+
+                        src={img}
+                        alt="image"
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
                 <h6>OrderId: {items.orderId}</h6>
                 <Accordion defaultActiveKey="0">
                   <Accordion.Item eventKey="0">
@@ -314,6 +367,21 @@ const ReviewOrders = () => {
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
+                <Form onSubmit={(e) => { e.preventDefault(); UpdateStatus(items._id); }}>
+                  <FloatingLabel controlId="floatingSelect" label="Update Status ">
+                    <Form.Select name="status" onChange={(e) => setCurrentStatus(e.target.value)}>
+                      <option disabled selected>Update Status</option>
+                      <option id='status' value="pending">Pending</option>
+                      <option id='status' value="processing">Processing</option>
+                      <option id='status' value="completed">Completed</option>
+                      <option id='status' value="rejected">Reject</option>
+
+                    </Form.Select>
+                    <Button variant="secondary" className='text-center ms-auto me-auto mt-2' type="submit">
+                      Save Status
+                    </Button>
+                  </FloatingLabel>
+                </Form>
                 <Form onSubmit={saveUpdate}>
                   <FloatingLabel controlId="floatingSelect" label="Task Assign ">
                     <Form.Select htmlFor='order' name='order' onChange={inputHandler}>
@@ -330,10 +398,10 @@ const ReviewOrders = () => {
                     <br />
                     <Form.Select htmlFor='kariger' name='kariger' onChange={inputHandler}>
                       <option>Select Kariger</option>
-                      {kariger && kariger.filter((kariger)=>kariger.workshop._id === task.workshop).map((items, index) => <option id='kariger' key={index} value={items._id} >{items.name}</option>
+                      {kariger && kariger.filter((kariger) => kariger.workshop._id === task.workshop).map((items, index) => <option id='kariger' key={index} value={items._id} >{items.name}</option>
                       )}
                     </Form.Select>
-                 
+
                     <Button variant="secondary" className='text-center ms-auto me-auto mt-2' type="submit">
                       Assign
                     </Button>
