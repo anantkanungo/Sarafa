@@ -1,56 +1,62 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { ToastContainer, toast } from 'react-toastify';
 const Notification = () => {
-  const [otps, setOtps] = useState(() => {
-    const savedOtps = localStorage.getItem('otps');
-    return savedOtps ? JSON.parse(savedOtps) : [];
-  });
+  const [otps, setOtps]= useState([]);
+  // const [otps, setOtps] = useState(() => {
+  //   const savedOtps = localStorage.getItem('otps');
+  //   return savedOtps ? JSON.parse(savedOtps) : [];
+  // });
 
-  useEffect(() => {
-    const source = new EventSource('http://139.59.58.151:8000/otp-updates');
+  useEffect(()=>{
+    let token = localStorage.getItem("token");
+    const getotp =async()=>{
 
-    source.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      const currentTime = new Date().getTime();
-      // Include a timestamp for when the OTP was created
-      const otpWithTimestamp = { ...data.otp, timestamp: currentTime };
-      setOtps(prevOtps => {
-        const updatedOtps = [...prevOtps, otpWithTimestamp];
-        localStorage.setItem('otps', JSON.stringify(updatedOtps));
-        return updatedOtps;
+      const res = await axios.get(`http://139.59.58.151:8000/otp-updates`, {
+        headers: {
+          "Authorization": 'Bearer ' + token,
+          Accept: "application/json",
+          'Content-Type': 'application/json'
+        }
       });
-      // setOtps(prevOtps => {
-      //   const updatedOtps = [...prevOtps, data.otp];
-      //   localStorage.setItem('otps', JSON.stringify(updatedOtps));
-      //   return updatedOtps;
-      // });
-    };
-    console.log("otp", otps);
-    source.onerror = function (error) {
-      console.error('EventSource failed:', error);
-      // You can add logic here to handle errors, such as reconnecting or showing an error message
-    };
+      console.log(res);
+      setOtps(res.data.data);
+    }
+    getotp();
+  });
+  // useEffect(() => {
+  //   const source = new EventSource('http://139.59.58.151:8000/otp-updates');
 
-    // Cleanup function to close the EventSource connection when the component unmounts
-    return () => {
-      source.close();
-    };
-  }, []); // Empty dependency array ensures this effect runs only once on mount
-  useEffect(() => {
-    // This function will be called every 1000 milliseconds (1 second)
-    const interval = setInterval(() => {
-      // Logic to check and remove expired OTPs
-      const currentTime = new Date().getTime();
-      const duration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      const updatedOtps = otps.filter(otp => currentTime - otp.timestamp < duration);
-      localStorage.setItem('otps', JSON.stringify(updatedOtps));
-      setOtps(updatedOtps);
-    }, 1000); // Run this every 1 second
+  //   source.onmessage = function (event) {
+  //     const data = JSON.parse(event.data);
+  //     const currentTime = new Date().getTime();
+  //     // Include a timestamp for when the OTP was created
+  //     const otpWithTimestamp = { ...data.otp, timestamp: currentTime };
+  //     setOtps(prevOtps => {
+  //       const updatedOtps = [...prevOtps, otpWithTimestamp];
+  //       localStorage.setItem('otps', JSON.stringify(updatedOtps));
+  //       return updatedOtps;
+  //     });
+  //     // setOtps(prevOtps => {
+  //     //   const updatedOtps = [...prevOtps, data.otp];
+  //     //   localStorage.setItem('otps', JSON.stringify(updatedOtps));
+  //     //   return updatedOtps;
+  //     // });
+  //   };
+  //   console.log("otp", otps);
+  //   source.onerror = function (error) {
+  //     console.error('EventSource failed:', error);
+  //     // You can add logic here to handle errors, such as reconnecting or showing an error message
+  //   };
 
-    // Cleanup function to clear the interval when the component unmounts or when otps changes
-    return () => clearInterval(interval);
-  }, [otps]);
+  //   // Cleanup function to close the EventSource connection when the component unmounts
+  //   return () => {
+  //     // source.close();
+  //   };
+  // }, []); // Empty dependency array ensures this effect runs only once on mount
+ 
   return (
     <div className='container mt-5 pt-5'>
       <div className="pt-3">
@@ -64,7 +70,7 @@ const Notification = () => {
               <h3 className="text-dark text-center mt-4">No notification is there!</h3>
             </div>
           ) : (
-            otps.reverse().map((otp, index) => (
+          otps.reverse().map((otp, index) => (
               <ListGroup.Item
                 as="li"
                 className="d-flex align-items-start"
